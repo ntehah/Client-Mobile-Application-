@@ -11,6 +11,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import profileimage from "../assets/images/robot-dev.png";
 import Colors from "../constants/Colors";
+import Cart from "../components/Cart"
 
 export default function HomeScreen() {
   return (
@@ -41,7 +42,9 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
           <ScrollView horizontal={true} style={styles.CardScrollView}>
-            <View style={styles.Card}></View>
+            <View style={styles.Card}>
+            <Cart/>
+            </View>
             <View style={styles.Card}></View>
             <View style={styles.Card}></View>
             <View style={styles.Card}></View>
@@ -50,7 +53,7 @@ export default function HomeScreen() {
         {/* -------------------------------------------------------------------------------------------*/}
         {/* ------------------------------------------Populaire----------------------------------------*/}
         <View style={styles.prochain}>
-        <View style={styles.textView}>
+          <View style={styles.textView}>
             <Text style={styles.textLeft}>Populaire</Text>
             <TouchableOpacity>
               <Text style={styles.textRight}>Voir tout</Text>
@@ -66,7 +69,7 @@ export default function HomeScreen() {
         {/* -------------------------------------------------------------------------------------------*/}
         {/* ------------------------------------Association--------------------------------------*/}
         <View style={styles.prochain}>
-        <View style={styles.textView}>
+          <View style={styles.textView}>
             <Text style={styles.textLeft}>Association</Text>
             <TouchableOpacity>
               <Text style={styles.textRight}>Voir tout</Text>
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
     height: 220,
   },
   textView: {
-    backgroundColor:"#fff",
+    backgroundColor: "#fff",
     height: 20,
     width: "100%",
     flexDirection: "row",
@@ -156,16 +159,18 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   Card: {
-    backgroundColor: Colors.warningText,
+    borderColor:Colors.tintColor,
+    borderWidth: 0.3,
+    borderRadius:10,
     height: 180,
-    width:300,
+    width: 300,
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
-    shadowRadius: 3
+    shadowRadius: 3,
   },
   CardScrollView: {
     height: 200,

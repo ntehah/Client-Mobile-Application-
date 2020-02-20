@@ -16,6 +16,6 @@ export default {
   WHITE: "#FFF",
   DODGER_BLUE: "#428AF8",
   SILVER: "#CCE6F4",
-  TORCH_RED: "#F8262F",
+  TORCH_RED: "#D00000",
   MISCHKA: "#E5E4E6",
 };
