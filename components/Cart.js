@@ -5,15 +5,15 @@ import Colors from "../constants/Colors";
 export default function Cart(props) {
   return (
     <View style={styles.Cart}>
-      <Image source={profileimage} style={styles.image} />{" "}
+      <Image source={profileimage} style={styles.image} />
       <View style={styles.textCart}>
         <View style={styles.date}>
-          <Text style={styles.textJour}> 31 </Text>{" "}
-          <Text style={styles.textMois}> DEC </Text>{" "}
+          <Text style={styles.textJour}> 31 </Text>
+          <Text style={styles.textMois}> DEC </Text>
         </View>{" "}
         <View style={styles.textCartNameEtCity}>
-          <Text style={styles.textNameAndCity}> Nom Event </Text>{" "}
-          <Text style={styles.textNameAndCity}> 5: 00 PM - City here </Text>{" "}
+          <Text style={styles.textNameAndCity}> Nom Event </Text>
+          <Text style={styles.textNameAndCity}> 5: 00 PM - City here </Text>
         </View>{" "}
       </View>{" "}
     </View>
