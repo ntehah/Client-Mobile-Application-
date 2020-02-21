@@ -43,7 +43,9 @@ export default function HomeScreen() {
           </View>
           <ScrollView horizontal={true} style={styles.CardScrollView}>
             <View style={styles.Card}>
+            <TouchableOpacity>
             <Cart/>
+            </TouchableOpacity>
             </View>
             <View style={styles.Card}></View>
             <View style={styles.Card}></View>

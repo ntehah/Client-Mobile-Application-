@@ -3,10 +3,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
-import LoginScreen from "../screens/LoginScreen"
-
+import LoginScreen from "../screens/LoginScreen";
+import { Ionicons } from '@expo/vector-icons';
+import Colors from "../constants/Colors"
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = "Home";
+
 
 export default function BottomTabNavigator() {
   return (
@@ -36,8 +37,13 @@ export default function BottomTabNavigator() {
         component={LinksScreen}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="gear" />
+          tabBarIcon: (
+            <Ionicons
+              name=""
+              size={30}
+              style={{ marginBottom: -3 }}
+              color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            />
           ),
         }}
       />
@@ -54,4 +60,3 @@ export default function BottomTabNavigator() {
     </BottomTab.Navigator>
   );
 }
-
