@@ -10,12 +10,12 @@ export default function Cart(props) {
         <View style={styles.date}>
           <Text style={styles.textJour}> 31 </Text>
           <Text style={styles.textMois}> DEC </Text>
-        </View>{" "}
+        </View>
         <View style={styles.textCartNameEtCity}>
           <Text style={styles.textNameAndCity}> Nom Event </Text>
           <Text style={styles.textNameAndCity}> 5: 00 PM - City here </Text>
-        </View>{" "}
-      </View>{" "}
+        </View>
+      </View>
     </View>
   );
 }
@@ -31,13 +31,6 @@ const styles = StyleSheet.create({
     height: 120,
     borderWidth: 0.3,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 3,
   },
   textCart: {
     flexDirection: "row",

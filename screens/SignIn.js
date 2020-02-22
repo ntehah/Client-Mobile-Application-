@@ -32,7 +32,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <Image source={imageLogo} style={styles.logo} /> */}
+        <Image source={imageLogo} style={styles.logo} />
         <View style={styles.header}></View>
         {/* <Text style={styles.connexion}>Connexion</Text> */}
         <KeyboardAvoidingView behavior="padding" style={styles.form}>
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 20,
-    width: 100,
-    height: 100,
+    width: "80%",
+    height: 80,
   },
 });
 
