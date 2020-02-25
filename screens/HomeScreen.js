@@ -11,7 +11,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import profileimage from "../assets/images/robot-dev.png";
 import Colors from "../constants/Colors";
-import Cart from "../components/Cart"
+import Cart from "../components/Cart";
 
 export default function HomeScreen() {
   return (
@@ -43,7 +43,7 @@ export default function HomeScreen() {
           </View>
           <ScrollView horizontal={true} style={styles.CardScrollView}>
             <View style={styles.Card}>
-            <Cart/>
+              <Cart />
             </View>
             <View style={styles.Card}></View>
             <View style={styles.Card}></View>
@@ -159,9 +159,9 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   Card: {
-    borderColor:Colors.tintColor,
+    borderColor: Colors.tintColor,
     borderWidth: 0.3,
-    borderRadius:10,
+    borderRadius: 10,
     height: 180,
     width: 300,
     marginTop: 10,
