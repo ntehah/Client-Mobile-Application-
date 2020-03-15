@@ -1,5 +1,5 @@
 import * as React from "react";
-import profileimage from "../assets/images/robot-dev.png";
+import profileimage from "../assets/images/logo.png";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Colors from "../constants/Colors";
 export default function Cart(props) {

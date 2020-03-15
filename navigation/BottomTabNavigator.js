@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import LoginScreen from "../screens/LoginScreen"
 import NotificationScreen from "../screens/NotificationScreen"
+import Community from "../screens/Community"
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
@@ -24,7 +25,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="tableau"
-        component={LinksScreen}
+        component={Community}
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
