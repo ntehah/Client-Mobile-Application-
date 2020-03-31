@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { MaterialCommunityIcons, EvilIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, EvilIcons,AntDesign } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
@@ -44,6 +44,13 @@ export default function Community() {
             color={Colors.tintColor}
           />
         </TouchableOpacity>
+        <View style={styles.iconClose}>
+          <TouchableOpacity onPress={()=> {
+            
+          }}>
+            <AntDesign name="closecircleo" size={25} color={Colors.WHITE} />
+          </TouchableOpacity>
+        </View>
       </View>
       <ScrollView
         style={styles.container}
@@ -101,5 +108,13 @@ const styles = StyleSheet.create({
   },
   icon:{
     marginRight:15,
+  },
+  iconClose:{
+    height:"100%",
+    width:"100%",
+    justifyContent:"flex-start",
+    paddingTop:2,
+    paddingLeft:10,
+
   },
 });

@@ -99,6 +99,7 @@ export default function ContactDetail(props) {
           <Text style={styles.text}>Nom</Text>
           <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
         </View>
+        
       </View>
       <View style={styles.NavBar}>
         <TouchableOpacity
@@ -242,4 +243,5 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     color: Colors.tintColor,
   },
+ 
 });
