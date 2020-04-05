@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex:1,
-    width:"100%"
+    width:"100%",
+    height:"100%",
   },
   TextInput:{
     width:'95%',
