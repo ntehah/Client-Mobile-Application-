@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontFamily: "space-mono",
     color: Colors.tintColor,
   },
   IconView:{

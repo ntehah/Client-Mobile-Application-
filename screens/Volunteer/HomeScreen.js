@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
-import profileimage from "../assets/images/logo.png";
-import Colors from "../constants/Colors";
-import Cart from "../components/Cart";
+import profileimage from "../../assets/images/logo.png";
+import Colors from "../../constants/Colors";
+import Cart from "../../components/Cart";
 
 export default function HomeScreen() {
   return (

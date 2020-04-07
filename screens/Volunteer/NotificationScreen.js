@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import NotificationCart from "../components/NotificationCart";
+import NotificationCart from "../../components/NotificationCart";
 
 export default function NotificationScreen() {
   return (

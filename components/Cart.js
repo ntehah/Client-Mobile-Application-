@@ -45,12 +45,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   textJour: {
-    fontFamily: "space-mono",
     fontSize: 20,
     fontWeight: "bold",
   },
   textMois: {
-    fontFamily: "space-mono",
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.TORCH_RED,
@@ -60,7 +58,6 @@ const styles = StyleSheet.create({
   },
   textNameAndCity: {
     fontSize: 15,
-    fontFamily: "space-mono",
     marginTop: 5,
     marginBottom: 5,
   },

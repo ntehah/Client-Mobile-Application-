@@ -1,15 +1,11 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
-import LoginScreen from "../screens/LoginScreen"
-import NotificationScreen from "../screens/NotificationScreen"
-import Community from "../screens/Community"
-import ProfilUser from "../screens/ProfilUser"
+import HomeScreen from "../screens/Volunteer/HomeScreen";
+import NotificationScreen from "../screens/Volunteer/NotificationScreen";
+import ProfilUser from "../screens/Volunteer/ProfilUser";
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = "Home";
 
 export default function BottomTabNavigatorUser() {
   return (
@@ -26,7 +22,7 @@ export default function BottomTabNavigatorUser() {
       />
       <BottomTab.Screen
         name="tableau"
-        component={Community}
+        component={NotificationScreen}
         options={{
           tabBarLabel: "Message",
           tabBarIcon: ({ focused }) => (
@@ -45,10 +41,10 @@ export default function BottomTabNavigatorUser() {
         }}
       />
       <BottomTab.Screen
-        name="profil"
+        name="Profil"
         component={ProfilUser}
         options={{
-          tabBarLabel: "profil",
+          tabBarLabel: "Profil",
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="user" />
           ),
@@ -57,4 +53,3 @@ export default function BottomTabNavigatorUser() {
     </BottomTab.Navigator>
   );
 }
-

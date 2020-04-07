@@ -299,13 +299,11 @@ const InfoStyles = StyleSheet.create({
   text: {
     color: Colors.tintColor,
     fontSize: 14,
-    fontFamily: "space-mono",
   },
   textTitle: {
     fontSize: 17,
     fontWeight: "bold",
     color: Colors.DODGER_BLUE,
-    fontFamily: "space-mono",
   },
   Availability: {
     paddingLeft: 8,
@@ -320,7 +318,6 @@ const InfoStyles = StyleSheet.create({
     width: 100,
     color: Colors.tintColor,
     fontSize: 14,
-    fontFamily: "space-mono",
   },
   Jour: {
     flexDirection: "row",
@@ -352,7 +349,6 @@ const InfoStyles = StyleSheet.create({
   ButtonText: {
     color: Colors.TORCH_RED,
     fontSize: 14,
-    fontFamily: "space-mono",
   },
   AddNote: {
     paddingRight: 30,
@@ -447,7 +443,6 @@ const QualificationStyles = StyleSheet.create({
   textSkill: {
     color: Colors.DODGER_BLUE,
     fontSize: 16,
-    fontFamily: "space-mono",
   },
   skill: {
     borderColor: Colors.DODGER_BLUE,
@@ -465,7 +460,6 @@ const QualificationStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.DODGER_BLUE,
-    fontFamily: "space-mono",
   },
   IconAdd: {
     flexDirection: "row",
@@ -661,24 +655,20 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: "bold",
-    fontFamily: "space-mono",
     color: Colors.tintColor,
   },
   textDateHeader: {
     fontSize: 12,
-    fontFamily: "space-mono",
     color: Colors.WHITE,
     marginTop: 15,
   },
   texttextNavBarOnpress: {
     fontSize: 13,
-    fontFamily: "space-mono",
     fontWeight: "bold",
     color: Colors.DODGER_BLUE,
   },
   textNavBar: {
     fontSize: 12,
-    fontFamily: "space-mono",
     opacity: 0.5,
     color: Colors.tintColor,
   },

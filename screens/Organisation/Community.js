@@ -9,9 +9,9 @@ import {
 import { MaterialCommunityIcons, EvilIcons,AntDesign } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import Colors from "../constants/Colors";
-import ContactCart from "../components/ContactCart";
-import ContactDetail from "../components/ContactDetail";
+import Colors from "../../constants/Colors";
+import ContactCart from "../../components/ContactCart";
+import ContactDetail from "../../components/ContactDetail";
 
 export default function Community() {
   return (
@@ -56,7 +56,9 @@ export default function Community() {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
-        <ContactDetail/>
+        <ContactCart/>
+        <ContactCart/>
+        <ContactCart/>
       </ScrollView>
     </View>
   );

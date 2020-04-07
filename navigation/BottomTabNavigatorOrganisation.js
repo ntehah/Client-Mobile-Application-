@@ -1,11 +1,10 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
-import LoginScreen from "../screens/LoginScreen"
-import NotificationScreen from "../screens/NotificationScreen"
-import Community from "../screens/Community"
+import HomeScreen from "../screens/Organisation/HomeScreen";
+import NotificationScreen from "../screens/Organisation/NotificationScreen"
+import Community from "../screens/Organisation/Community"
+import ProfilScreen from '../screens/Organisation/ProfilScreen'
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
@@ -17,42 +16,53 @@ export default function BottomTabNavigator() {
         name="Accueil"
         component={HomeScreen}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Accueil",
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="home" />
           ),
         }}
       />
       <BottomTab.Screen
-        name="tableau"
+        name="Community"
         component={Community}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Communauté",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="tasks" />
+            <TabBarIcon focused={focused} name="group" />
           ),
         }}
       />
       <BottomTab.Screen
-        name="paramètre"
+        name="Organisation"
+        component={ProfilScreen}
+        options={{
+          tabBarLabel: "Organisation",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="institution" />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Messages"
         component={NotificationScreen}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Messages",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="bell-o" />
+            <TabBarIcon focused={focused} name="wechat" />
           ),
         }}
       />
       <BottomTab.Screen
-        name="Login"
-        component={LoginScreen}
+        name="other"
+        component={NotificationScreen}
         options={{
-          tabBarLabel: "",
+          tabBarLabel: "Plus",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="user" />
+            <TabBarIcon focused={focused} name="align-justify" />
           ),
         }}
       />
+      
     </BottomTab.Navigator>
   );
 }
