@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
-import Colors from "../../constants/Colors"
-export default class HomeScreen2 extends Component {
+import Colors from "../constants/Colors";
+export default class TimeLine extends Component {
   constructor() {
     super();
     this.onEventPress = this.onEventPress.bind(this);
@@ -15,7 +15,7 @@ export default class HomeScreen2 extends Component {
             title: "evenement 2",
             description:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            icon: require("../../assets/images/event.png"),
+            icon: require("../assets/images/event.png"),
             imageUrl:
               "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
           },
@@ -25,7 +25,7 @@ export default class HomeScreen2 extends Component {
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
         lineColor: "#009688",
-        icon: require("../../assets/images/event.png"),
+        icon: require("../assets/images/event.png"),
         imageUrl:
           "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
       },
@@ -34,14 +34,14 @@ export default class HomeScreen2 extends Component {
         title: "Event 2",
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        icon: require("../../assets/images/event.png"),
+        icon: require("../assets/images/event.png"),
         imageUrl:
           "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
       },
       {
         time: "12:00",
         title: "Event 3",
-        icon: require("../../assets/images/event.png"),
+        icon: require("../assets/images/event.png"),
       },
       {
         time: "14:00",
@@ -49,7 +49,7 @@ export default class HomeScreen2 extends Component {
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
         lineColor: "#009688",
-        icon: require("../../assets/images/event.png"),
+        icon: require("../assets/images/event.png"),
         imageUrl:
           "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
       },
@@ -58,7 +58,7 @@ export default class HomeScreen2 extends Component {
         title: "Event 5",
         description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        icon: require("../../assets/images/event.png"),
+        icon: require("../assets/images/event.png"),
         imageUrl:
           "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
       },
@@ -67,7 +67,12 @@ export default class HomeScreen2 extends Component {
   }
 
   onEventPress(data) {
-    this.setState({ selected: data });
+    // this.setState({ selected: data });
+    this.props.navigation.navigate("EventDetait",{
+      title: data.title,
+      description: data.description,
+    });
+
   }
 
   renderSelected() {

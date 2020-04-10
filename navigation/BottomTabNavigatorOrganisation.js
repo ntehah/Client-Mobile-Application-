@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen2 from "../screens/Organisation/HomeScreen2";
+import HomeScreen from "../screens/Organisation/HomeScreen";
 import MenuScreen from "../screens/Organisation/MenuScreen"
 import Community from "../screens/Organisation/Community"
 import CommunityDemo from "../screens/Organisation/CommunityDemo"
@@ -16,7 +16,7 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator headerMode="none" backBehavior="none">
       <BottomTab.Screen
         name="Accueil"
-        component={HomeScreen2}
+        component={HomeScreen}
         options={{
           tabBarLabel: "Accueil",
           tabBarIcon: ({ focused }) => (
