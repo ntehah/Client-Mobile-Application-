@@ -10,10 +10,10 @@ export default function LoginScreen() {
   return (
     <Stack.Navigator screenOptions={{
       headerStyle: {
-        backgroundColor: Colors.tintColor,
+        backgroundColor: Colors.WHITE,
       },
-      headerTitleStyle: { color: Colors.WHITE },
-      headerTintColor: Colors.WHITE,
+      headerTitleStyle: { color: Colors.tintColor },
+      headerTintColor: Colors.tintColor,
     }}
     >
       <Stack.Screen name="connexion" component={SignIn} />

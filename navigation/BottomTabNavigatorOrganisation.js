@@ -1,10 +1,12 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBarIcon from "../components/TabBarIcon";
-import HomeScreen from "../screens/Organisation/HomeScreen";
-import NotificationScreen from "../screens/Organisation/NotificationScreen"
+import HomeScreen2 from "../screens/Organisation/HomeScreen2";
+import MenuScreen from "../screens/Organisation/MenuScreen"
 import Community from "../screens/Organisation/Community"
+import CommunityDemo from "../screens/Organisation/CommunityDemo"
 import ProfilScreen from '../screens/Organisation/ProfilScreen'
+import Messages from '../screens/Organisation/Messages'
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
@@ -14,7 +16,7 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator headerMode="none" backBehavior="none">
       <BottomTab.Screen
         name="Accueil"
-        component={HomeScreen}
+        component={HomeScreen2}
         options={{
           tabBarLabel: "Accueil",
           tabBarIcon: ({ focused }) => (
@@ -24,7 +26,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Community"
-        component={Community}
+        component={CommunityDemo}
         options={{
           tabBarLabel: "Communauté",
           tabBarIcon: ({ focused }) => (
@@ -44,7 +46,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Messages"
-        component={NotificationScreen}
+        component={Messages}
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ focused }) => (
@@ -53,10 +55,10 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="other"
-        component={NotificationScreen}
+        name="Menu"
+        component={MenuScreen}
         options={{
-          tabBarLabel: "Plus",
+          tabBarLabel: "Menu",
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="align-justify" />
           ),

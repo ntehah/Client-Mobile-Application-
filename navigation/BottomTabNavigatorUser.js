@@ -4,7 +4,7 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/Volunteer/HomeScreen";
 import NotificationScreen from "../screens/Volunteer/NotificationScreen";
 import ProfilUser from "../screens/Volunteer/ProfilUser";
-
+import Messages from "../screens/Volunteer/Messages";
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigatorUser() {
@@ -21,10 +21,10 @@ export default function BottomTabNavigatorUser() {
         }}
       />
       <BottomTab.Screen
-        name="tableau"
-        component={NotificationScreen}
+        name="Messages"
+        component={Messages}
         options={{
-          tabBarLabel: "Message",
+          tabBarLabel: "Messages",
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="inbox" />
           ),

@@ -40,7 +40,7 @@ class Messages extends React.Component {
     this.setState({ AddIcon: true, InboxIcon: false, ContactIcon: false });
   };
   OnclickIconInbox = () => {
-    this.setState({ AddIcon: false, InboxIcon: true, ContactIcon: false });S
+    this.setState({ AddIcon: false, InboxIcon: true, ContactIcon: false });
   };
   OnclickIconContact = () => {
     this.setState({ AddIcon: false, InboxIcon: false, ContactIcon: true });

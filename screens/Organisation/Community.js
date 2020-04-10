@@ -6,68 +6,45 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { MaterialCommunityIcons, EvilIcons,AntDesign } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  EvilIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
 import ContactCart from "../../components/ContactCart";
 import ContactDetail from "../../components/ContactDetail";
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function Community() {
-  return (
-    <View>
-      <View style={styles.inputHeader}>
-        <View style={styles.TextInput}>
-          <EvilIcons name="search" size={35} color={Colors.tintColor} />
-          <TextInput style={styles.Input} placeholder="recherche"></TextInput>
-        </View>
-      </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.icon}>
-          <MaterialCommunityIcons
-            name="email-plus"
-            size={25}
-            color={Colors.tintColor}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon}>
-          <MaterialCommunityIcons
-            name="message-text"
-            size={25}
-            color={Colors.tintColor}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon}>
-          <MaterialCommunityIcons
-            name="plus"
-            size={25}
-            color={Colors.tintColor}
-          />
-        </TouchableOpacity>
-        <View style={styles.iconClose}>
-          <TouchableOpacity onPress={()=> {
-            
-          }}>
-            <AntDesign name="closecircleo" size={25} color={Colors.WHITE} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <ContactCart/>
-        <ContactCart/>
-        <ContactCart/>
-      </ScrollView>
-    </View>
-  );
+const Stack = createStackNavigator();
+
+export default class Community extends React.Component {
+  OnClickContact = () => {
+    this.props.navigation.navigate("ContactDetail");
+  };
+  render() {
+    return (
+       <Stack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: Colors.tintColor,
+      },
+      headerTitleStyle: { color: Colors.WHITE },
+      headerTintColor: Colors.WHITE,
+    }}
+    >
+      <Stack.Screen name="ContactDetail" component={ContactDetail} />
+    </Stack.Navigator>
+        
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fafafa",
-    height:"83%",
+    height: "83%",
   },
   contentContainer: {
     paddingTop: 1,
@@ -77,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "15%",
     backgroundColor: "#fafafa",
-    paddingBottom:10,
+    paddingBottom: 10,
   },
   TextInput: {
     alignItems: "center",
@@ -103,20 +80,19 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
     height: 30,
-    backgroundColor:"#fafafa",
+    backgroundColor: "#fafafa",
     // paddingRight: "5%",
-    borderBottomColor:Colors.tintColor,
-    borderBottomWidth:1,
+    borderBottomColor: Colors.tintColor,
+    borderBottomWidth: 1,
   },
-  icon:{
-    marginRight:15,
+  icon: {
+    marginRight: 15,
   },
-  iconClose:{
-    height:"100%",
-    width:"100%",
-    justifyContent:"flex-start",
-    paddingTop:2,
-    paddingLeft:10,
-
+  iconClose: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "flex-start",
+    paddingTop: 2,
+    paddingLeft: 10,
   },
 });

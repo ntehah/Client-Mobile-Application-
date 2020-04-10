@@ -523,7 +523,7 @@ export default function ProfilUser(props) {
     }
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.imageView}>
           <Image source={image} style={styles.image} />
@@ -605,13 +605,14 @@ export default function ProfilUser(props) {
       <View>
         <Affiche />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop:30,
   },
   header: {
     flexDirection: "row",
