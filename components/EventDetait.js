@@ -8,30 +8,22 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { CheckBox } from "react-native-elements";
 import Colors from "../constants/Colors";
-import { Button } from "react-native-elements";
-import image from "../assets/images/Profile.png";
 import { MaterialIcons } from "@expo/vector-icons";
-import FormTextInput from "../components/FormTextInput";
 
 export default function EventDetail({ route, navigation }) {
+
   const { title } = route.params;
   const { description } = route.params;
+  const { image } = route.params;
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.imageView}>
-          <Image
-            source={{
-              uri:
-                "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-            }}
-            style={styles.image}
-          />
+          <Image source={{ uri: image }} style={styles.image} />
         </View>
         <View style={styles.TitleView}>
-          <Text style={styles.titleText}> Social Entrepreneurship </Text>
+          <Text style={styles.titleText}>{title}</Text>
         </View>
 
         <View style={styles.Organization}>
@@ -46,7 +38,17 @@ export default function EventDetail({ route, navigation }) {
             <Text style={styles.OrganizationText}>FSB</Text>
           </View>
           <View>
-            <Button title="Abonné" type="outline" />
+            <TouchableOpacity style={styles.ButtonFollow}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: Colors.DODGER_BLUE,
+                }}
+              >
+                Abonné
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.EventDate}>
@@ -75,13 +77,31 @@ export default function EventDetail({ route, navigation }) {
             <Text>Faculte de science de bizerte</Text>
           </View>
         </View>
+        <View style={styles.DescriptionView}>
+          <Text style={{ paddingBottom: 10, fontSize: 17, fontWeight: "bold" }}>
+            Description
+          </Text>
+          <Text
+            style={{ paddingBottom: 10, fontSize: 15, fontWeight: "normal" }}
+          >
+            {description}
+          </Text>
+        </View>
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.ButtonFooter}>
-          <Text style={{fontSize: 16, fontWeight: "bold",color:Colors.WHITE}}>Participer</Text>
+          <Text
+            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
+          >
+            Participer
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.ButtonFooter}>
-          <Text style={{fontSize: 16, fontWeight: "bold",color:Colors.WHITE}}>Organisé</Text>
+          <Text
+            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
+          >
+            Organisé
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -91,6 +111,8 @@ export default function EventDetail({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.WHITE,
+    paddingBottom: 55,
   },
   imageView: {
     width: "100%",
@@ -162,5 +184,18 @@ const styles = StyleSheet.create({
     height: 35,
     alignItems: "center",
     justifyContent: "center",
+  },
+  ButtonFollow: {
+    borderRadius: 5,
+    backgroundColor: Colors.WHITE,
+    borderColor: Colors.DODGER_BLUE,
+    borderWidth: 1,
+    width: 100,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  DescriptionView: {
+    paddingLeft: 15,
   },
 });
