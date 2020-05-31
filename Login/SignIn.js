@@ -1,61 +1,85 @@
-import React from "react";
-import { Image, StyleSheet, View, Text,KeyboardAvoidingView } from "react-native";
+import React, { useState } from "react";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  AsyncStorage,
+  KeyboardAvoidingView,
+} from "react-native";
 import { ButtonDefault, ButtonInscription } from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import imageLogo from "../assets/images/logo.png";
 import Colors from "../constants/Colors";
-
-class SignIn extends React.Component {
-  state = {
-    email: "",
-    password: "",
-  };
-
-  handleEmailChange = email => {
-    this.setState({ email: email });
-  };
-
-  handlePasswordChange = password => {
-    this.setState({ password: password });
-  };
+import { AuthContext } from "../Services/AuthContext";
+export default function SignIn({navigation}) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signIn } = React.useContext(AuthContext);
 
   handleLoginPress = () => {
-    console.log(this.state.email);
-    console.log(this.state.password);
+    fetch("http://192.168.1.20:8080/api/auth/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usernameOrEmail: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === undefined) {
+          signIn(data);
+        } else {
+          console.log(data.status)
+          Alert.alert(
+            "Login",
+            "Email ou mot de passe incorrect",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false },
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   handleInscriptionPress = () => {
     console.log("Inscription button pressed");
-    this.props.navigation.navigate("inscription");
+    navigation.navigate("inscription");
   };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}></View>
-        {/* <Text style={styles.connexion}>Connexion</Text> */}
-        <KeyboardAvoidingView behavior="padding" style={styles.form}>
-          <FormTextInput
-            placeHolder="Email"
-            nameIcon="user"
-            value={this.state.email}
-            onChangeText={this.handleEmailChange}
-          />
-          <FormTextInput
-            placeHolder="Mot de Pass"
-            nameIcon="eye"
-            value={this.state.password}
-            onChangeText={this.handlePasswordChange}
-            secureTextEntry={true}
-          />
-          <ButtonDefault label="Connexion" onPress={this.handleLoginPress} />
-          <ButtonInscription
-            label="Inscription"
-            onPress={this.handleInscriptionPress}
-          />
-        </KeyboardAvoidingView>
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}></View>
+      {/* <Text style={styles.connexion}>Connexion</Text> */}
+      <KeyboardAvoidingView behavior="padding" style={styles.form}>
+        <FormTextInput
+          placeHolder="Email"
+          nameIcon="user"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+        />
+        <FormTextInput
+          placeHolder="Mot de Pass"
+          nameIcon="eye"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          secureTextEntry={true}
+        />
+        <ButtonDefault label="Connexion" onPress={handleLoginPress} />
+        <ButtonInscription
+          label="Inscription"
+          onPress={handleInscriptionPress}
+        />
+      </KeyboardAvoidingView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -86,5 +110,3 @@ const styles = StyleSheet.create({
     height: 80,
   },
 });
-
-export default SignIn;

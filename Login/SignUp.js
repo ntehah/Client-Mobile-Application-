@@ -1,95 +1,387 @@
-import React from "react";
-import { Image, StyleSheet, View, Text, TouchableOpacity,KeyboardAvoidingView } from "react-native";
+import React, { useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from "react-native";
 import { ButtonDefault } from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import Colors from "../constants/Colors";
-function BenevolatInscription() {
-  return (
-    <KeyboardAvoidingView behavior="padding">
-      <FormTextInput placeHolder="Nom et Prenom" nameIcon="user" />
-      <FormTextInput placeHolder="Email" nameIcon="email" />
-      <FormTextInput placeHolder="Mot de pass" nameIcon="lock" />
-      <FormTextInput placeHolder="confirmer mot de passe" nameIcon="lock" />
+import { AuthContext } from "../Services/AuthContext";
 
-      <ButtonDefault label="Inscription" />
-    </KeyboardAvoidingView>
+function BenevolatInscription(props) {
+  const { signUp } = React.useContext(AuthContext);
+  const [NomEtPrenom, setNomEtPrenom] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Pass, setPass] = useState("");
+  const [ConfirmerPass, setConfirmerPass] = useState("");
+  const [ValidNomEtPrenom, setValidNomEtPrenom] = useState(true);
+  const [ValidEmail, setValidEmail] = useState(true);
+  const [ValidPass, setValidPass] = useState(true);
+  const [ValidConfirmerPass, setValidConfirmerPass] = useState(true);
+  const validateEmail = (email) => {
+    const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    return expression.test(String(email).toLowerCase());
+  };
+  async function Login() {
+    fetch("http://192.168.1.20:8080/api/auth/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usernameOrEmail: Email,
+        password: Pass,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === undefined) {
+          signUp(data);
+        } else {
+          console.log(data.status);
+          Alert.alert(
+            "Login",
+            "Email ou mot de passe incorrect",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false },
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  function Submit() {
+    if (
+      ValidNomEtPrenom &&
+      ValidEmail &&
+      ValidPass &&
+      ValidConfirmerPass &&
+      NomEtPrenom.length &&
+      Email.length &&
+      Pass.length &&
+      ConfirmerPass.length
+    ) {
+      fetch("http://192.168.1.20:8080/api/auth/signup", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: NomEtPrenom,
+          username: NomEtPrenom,
+          email: Email,
+          password: Pass,
+          role: "ROLE_VOLUNTEER",
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data.success === true) {
+            Login()
+            props.navigation.navigate("Information", { email: Email });
+          } else {
+            console.log(data);
+            Alert.alert(
+              "Login",
+              " problème de serveur ",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              { cancelable: false },
+            );
+          }
+        });
+    } else {
+      // Alert.alert(
+      //   "Login",
+      //   " verifier les champs ",
+      //   [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      //   { cancelable: false },
+      // );
+      
+    }
+  }
+  return (
+    <ScrollView
+      style={{ paddingTop: 70 }}
+      keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}
+    >
+      <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={64}>
+        <FormTextInput
+          placeHolder="Nom et Prenom"
+          nameIcon={ValidNomEtPrenom ? "user" : "circle-with-cross"}
+          ColorIcon={ValidNomEtPrenom ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setNomEtPrenom(text);
+            if (text.length < 8) setValidNomEtPrenom(false);
+            else {
+              setValidNomEtPrenom(true);
+            }
+          }}
+          value={NomEtPrenom}
+        />
+        <FormTextInput
+          placeHolder="Email"
+          nameIcon={ValidEmail ? "email" : "circle-with-cross"}
+          ColorIcon={ValidEmail ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (!validateEmail(text)) setValidEmail(false);
+            else {
+              setValidEmail(true);
+            }
+          }}
+          value={Email}
+        />
+        <FormTextInput
+          placeHolder="Mot de pass"
+          nameIcon={ValidPass ? "lock" : "circle-with-cross"}
+          ColorIcon={ValidPass ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setPass(text);
+            setValidConfirmerPass(false);
+            if (text.length < 7) setValidPass(false);
+            else {
+              setValidPass(true);
+            }
+          }}
+          secureTextEntry={true}
+          value={Pass}
+        />
+
+        <FormTextInput
+          placeHolder="confirmer mot de passe"
+          nameIcon={ValidConfirmerPass ? "lock" : "circle-with-cross"}
+          ColorIcon={ValidConfirmerPass ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setConfirmerPass(text);
+            if (text === Pass) setValidConfirmerPass(true);
+            else {
+              setValidConfirmerPass(false);
+            }
+          }}
+          secureTextEntry={true}
+          value={ConfirmerPass}
+        />
+
+        <ButtonDefault label="Rejoignez-nous" onPress={Submit} />
+      </KeyboardAvoidingView>
+      <View style={{ height: 400 }}></View>
+    </ScrollView>
   );
 }
 function AssociationInscription() {
+  const [NomEtPrenom, setNomEtPrenom] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Pass, setPass] = useState("");
+  const [ConfirmerPass, setConfirmerPass] = useState("");
+  const [ValidNomEtPrenom, setValidNomEtPrenom] = useState(true);
+  const [ValidEmail, setValidEmail] = useState(true);
+  const [ValidPass, setValidPass] = useState(true);
+  const [ValidConfirmerPass, setValidConfirmerPass] = useState(true);
+  const validateEmail = (email) => {
+    const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    return expression.test(String(email).toLowerCase());
+  };
+  function Login() {
+    fetch("http://192.168.1.18:8080/api/auth/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usernameOrEmail: Email,
+        password: Pass,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === undefined) {
+          signIn(data);
+        } else {
+          console.log(data.status);
+          Alert.alert(
+            "Login",
+            "Email ou mot de passe incorrect",
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false },
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  function Submit() {
+    if (
+      ValidNomEtPrenom &&
+      ValidEmail &&
+      ValidPass &&
+      ValidConfirmerPass &&
+      NomEtPrenom.length &&
+      Email.length &&
+      Pass.length &&
+      ConfirmerPass.length
+    ) {
+      fetch("http://192.168.1.18:8080/api/auth/signup", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: NomEtPrenom,
+          username: NomEtPrenom,
+          email: Email,
+          password: Pass,
+          role: "ROLE_ORGANIZATION",
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data.success === true) {
+            Login();
+          } else {
+            console.log(data);
+            Alert.alert(
+              "Login",
+              " problème de serveur ",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              { cancelable: false },
+            );
+          }
+        });
+    } else {
+      Alert.alert(
+        "Login",
+        " verifier les champs ",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false },
+      );
+    }
+  }
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <FormTextInput placeHolder="Nom de l'association" nameIcon="calendar" />
-      <FormTextInput placeHolder="Email" nameIcon="email" />
-      <FormTextInput placeHolder="Mot de pass" nameIcon="lock" />
-      <FormTextInput placeHolder="confirmer mot de passe" nameIcon="lock" />
+    <ScrollView
+      style={{ paddingTop: 70 }}
+      keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}
+    >
+      <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={64}>
+        <FormTextInput
+          placeHolder="Nom de l'association"
+          nameIcon={ValidNomEtPrenom ? "calendar" : "circle-with-cross"}
+          ColorIcon={ValidNomEtPrenom ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setNomEtPrenom(text);
+            if (text.length < 8) setValidNomEtPrenom(false);
+            else {
+              setValidNomEtPrenom(true);
+            }
+          }}
+          value={NomEtPrenom}
+        />
+        <FormTextInput
+          placeHolder="Email"
+          nameIcon={ValidEmail ? "email" : "circle-with-cross"}
+          ColorIcon={ValidEmail ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (!validateEmail(text)) setValidEmail(false);
+            else {
+              setValidEmail(true);
+            }
+          }}
+          value={Email}
+        />
+        <FormTextInput
+          placeHolder="Mot de pass"
+          nameIcon={ValidPass ? "lock" : "circle-with-cross"}
+          ColorIcon={ValidPass ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setPass(text);
+            setValidConfirmerPass(false);
+            if (text.length < 7) setValidPass(false);
+            else {
+              setValidPass(true);
+            }
+          }}
+          secureTextEntry={true}
+          value={Pass}
+        />
 
-      <ButtonDefault label="Rejoignez-nous" />
-    </KeyboardAvoidingView>
+        <FormTextInput
+          placeHolder="confirmer mot de passe"
+          nameIcon={ValidConfirmerPass ? "lock" : "circle-with-cross"}
+          ColorIcon={ValidConfirmerPass ? Colors.BLACK : Colors.TORCH_RED}
+          onChangeText={(text) => {
+            setConfirmerPass(text);
+            if (text === Pass) setValidConfirmerPass(true);
+            else {
+              setValidConfirmerPass(false);
+            }
+          }}
+          secureTextEntry={true}
+          value={ConfirmerPass}
+        />
+
+        <ButtonDefault label="Rejoignez-nous" onPress={Submit} />
+      </KeyboardAvoidingView>
+      <View style={{ height: 400 }}></View>
+    </ScrollView>
   );
 }
 
-class SignUp extends React.Component {
-  state = {
-    ButtonBenevolat: true,
-    ButtonAssociation: false,
-  };
+export default function SignUp({ navigation }) {
+  const [ButtonBenevolat, setButtonBenevolat] = useState(true);
+  const [ButtonAssociation, setButtonAssociation] = useState(false);
 
   AssociationPress = () => {
-    this.setState({
-      ButtonAssociation: true,
-      ButtonBenevolat: false,
-    });
+    setButtonAssociation(true);
+    setButtonBenevolat(false);
   };
   BenevolatPress = () => {
-    this.setState({
-      ButtonBenevolat: true,
-      ButtonAssociation: false,
-    });
+    setButtonAssociation(false);
+    setButtonBenevolat(true);
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={
-              this.state.ButtonBenevolat
-                ? styles.buttonSimple
-                : styles.buttonShow
-            }
-            onPress={this.BenevolatPress}
-          >
-            <Text style={
-              this.state.ButtonAssociation
-                ? styles.text2
-                : styles.text
-            }>Bénévolat</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              this.state.ButtonAssociation
-                ? styles.buttonSimple
-                : styles.buttonShow
-            }
-            onPress={this.AssociationPress}
-          >
-            <Text style={
-              this.state.ButtonAssociation
-                ? styles.text
-                : styles.text2
-            }>association</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.form}>
-          {this.state.ButtonBenevolat ? (
-            <BenevolatInscription />
-          ) : (
-            <AssociationInscription />
-          )}
-        </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={ButtonBenevolat ? styles.buttonSimple : styles.buttonShow}
+          onPress={BenevolatPress}
+        >
+          <Text style={ButtonAssociation ? styles.text2 : styles.text}>
+            Bénévolat
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ButtonAssociation ? styles.buttonSimple : styles.buttonShow}
+          onPress={AssociationPress}
+        >
+          <Text style={ButtonAssociation ? styles.text : styles.text2}>
+            association
+          </Text>
+        </TouchableOpacity>
       </View>
-    );
-  }
+      <View style={styles.form}>
+        {ButtonBenevolat ? (
+          <BenevolatInscription navigation={navigation} />
+        ) : (
+          <AssociationInscription />
+        )}
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -143,5 +435,3 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-
-export default SignUp;

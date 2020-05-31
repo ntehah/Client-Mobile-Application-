@@ -12,7 +12,9 @@ import { CheckBox } from "react-native-elements";
 import Colors from "../../constants/Colors";
 import image from "../../assets/images/Profile.png";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FormTextInput from "../../components/FormTextInput";
+import { AuthContext } from "../../Services/AuthContext";
 
 function Info() {
   const [LundiMatin, setLundiMatin] = useState(false);
@@ -428,7 +430,6 @@ function Qualification() {
       <View style={QualificationStyles.Affectations}>
         <Text style={QualificationStyles.textTitle}>Affectations</Text>
       </View>
-
     </View>
   );
 }
@@ -438,7 +439,7 @@ const QualificationStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: 10,
-    marginTop:8,
+    marginTop: 8,
   },
   textSkill: {
     color: Colors.DODGER_BLUE,
@@ -466,8 +467,8 @@ const QualificationStyles = StyleSheet.create({
     justifyContent: "flex-end",
     marginRight: 6,
   },
-  Affectations:{
-    marginLeft:10,
+  Affectations: {
+    marginLeft: 10,
   },
 });
 function Activite() {
@@ -503,7 +504,8 @@ const FormStyles = StyleSheet.create({
   },
 });
 
-export default function ProfilUser(props) {
+export default function ProfilUser() {
+  const { signOut } = React.useContext(AuthContext);
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
@@ -522,97 +524,115 @@ export default function ProfilUser(props) {
       return <Form />;
     }
   };
+  
+  const SignOutHundler = () => {
+    signOut();
+  }
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.imageView}>
-          <Image source={image} style={styles.image} />
+    <View style={styles.container}>
+      <View style={styles.nav}>
+        <TouchableOpacity style={{flexDirection:"row",alignItems:"center"}} onPress={SignOutHundler}>
+          <MaterialCommunityIcons name="logout" size={24} color={Colors.DODGER_BLUE} />
+          <Text style={{color:Colors.DODGER_BLUE}}>Déconnexion</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <View style={styles.header}>
+          <View style={styles.imageView}>
+            <Image source={image} style={styles.image} />
+          </View>
+          <View style={styles.textView}>
+            <Text style={styles.text}>Prenom</Text>
+            <Text style={styles.text}>Nom</Text>
+            <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
+          </View>
         </View>
-        <View style={styles.textView}>
-          <Text style={styles.text}>Prenom</Text>
-          <Text style={styles.text}>Nom</Text>
-          <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
+        <View style={styles.NavBar}>
+          <TouchableOpacity
+            onPress={() => {
+              if (info) setInfo(info);
+              else {
+                setInfo(!info);
+                setQualification(false);
+                setActivite(false);
+                setForm(false);
+              }
+            }}
+          >
+            <Text
+              style={info ? styles.texttextNavBarOnpress : styles.textNavBar}
+            >
+              Profile
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (qualification) setQualification(qualification);
+              else {
+                setInfo(false);
+                setQualification(!qualification);
+                setActivite(false);
+                setForm(false);
+              }
+            }}
+          >
+            <Text
+              style={
+                qualification ? styles.texttextNavBarOnpress : styles.textNavBar
+              }
+            >
+              Qualification
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (activite) setActivite(activite);
+              else {
+                setInfo(false);
+                setQualification(false);
+                setActivite(!activite);
+                setForm(false);
+              }
+            }}
+          >
+            <Text
+              style={
+                activite ? styles.texttextNavBarOnpress : styles.textNavBar
+              }
+            >
+              Activité
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (form) setForm(form);
+              else {
+                setInfo(false);
+                setQualification(false);
+                setActivite(false);
+                setForm(!form);
+              }
+            }}
+          >
+            <Text
+              style={form ? styles.texttextNavBarOnpress : styles.textNavBar}
+            >
+              Form
+            </Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.NavBar}>
-        <TouchableOpacity
-          onPress={() => {
-            if (info) setInfo(info);
-            else {
-              setInfo(!info);
-              setQualification(false);
-              setActivite(false);
-              setForm(false);
-            }
-          }}
-        >
-          <Text style={info ? styles.texttextNavBarOnpress : styles.textNavBar}>
-            Profile
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (qualification) setQualification(qualification);
-            else {
-              setInfo(false);
-              setQualification(!qualification);
-              setActivite(false);
-              setForm(false);
-            }
-          }}
-        >
-          <Text
-            style={
-              qualification ? styles.texttextNavBarOnpress : styles.textNavBar
-            }
-          >
-            Qualification
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (activite) setActivite(activite);
-            else {
-              setInfo(false);
-              setQualification(false);
-              setActivite(!activite);
-              setForm(false);
-            }
-          }}
-        >
-          <Text
-            style={activite ? styles.texttextNavBarOnpress : styles.textNavBar}
-          >
-            Activité
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (form) setForm(form);
-            else {
-              setInfo(false);
-              setQualification(false);
-              setActivite(false);
-              setForm(!form);
-            }
-          }}
-        >
-          <Text style={form ? styles.texttextNavBarOnpress : styles.textNavBar}>
-            Form
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Affiche />
-      </View>
-    </ScrollView>
+        <View>
+          <Affiche />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:30,
+    paddingTop: 20,
   },
   header: {
     flexDirection: "row",
@@ -621,6 +641,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.DODGER_BLUE,
     paddingLeft: 15,
+  },
+  nav: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent:"flex-end",
+    paddingRight:15,
+    height: 40,
   },
   NavBar: {
     flexDirection: "row",

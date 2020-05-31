@@ -1,6 +1,5 @@
 import React from "react";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+
 import Colors from "../constants/Colors"
 import { createStackNavigator } from '@react-navigation/stack';
 

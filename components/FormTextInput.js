@@ -4,7 +4,7 @@ import Colors from "../constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 
 function FormTextInput(props) {
-  const { placeHolder,nameIcon,style, ...otherProps } = props;
+  const { placeHolder,nameIcon,ColorIcon,style, ...otherProps } = props;
   return (
     <View style={styles.container}>
     <View style={styles.TextInput}>
@@ -16,7 +16,7 @@ function FormTextInput(props) {
       />
       </View>
       <View style={styles.icon}>
-      <Entypo name={nameIcon} size={18} color={Colors.BLACK}/>
+      <Entypo name={nameIcon} size={18} color={ColorIcon}/>
       </View>
     </View>
   );
