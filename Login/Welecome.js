@@ -23,13 +23,13 @@ export default function Welecome({ navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        Adress: state.Adresse,
-        Calendrier: state.Calendrier,
-        Numero: state.Numero,
-        Email: state.Email,
-        DateDeNaissance: state.DateDeNaissance,
-        Photo: state.Photo,
-        Qualification: state.Qualification,
+        adress: state.Adresse,
+        calendrier: state.Calendrier,
+        numero: state.Numero,
+        email: state.Email,
+        dateDeNaissance: state.DateDeNaissance,
+        photo: state.Photo,
+        qualification: state.Qualification,
       }),
     })
       .then((response) => response.text())

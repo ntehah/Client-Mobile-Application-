@@ -67,7 +67,7 @@ export default function Calendrier({ navigation }) {
         apresmidi: SamediApresMidi,
         soire: SamediSoiree,
       },
-      dimenche: {
+      dimanche: {
         matin: DimancheMatin,
         apresmidi: DimancheApresMidi,
         soire: DimancheSoiree,
