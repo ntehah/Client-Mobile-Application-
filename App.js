@@ -15,6 +15,7 @@ import Information from "./Login/Information";
 import Calendrier from "./Login/Calendrier";
 import Welecome from "./Login/Welecome";
 import ProfilPhoto from "./Login/ProfilPhoto";
+import About from "./Login/About";
 
 import Colors from "./constants/Colors";
 import { NavigationContainer } from "@react-navigation/native";
@@ -22,6 +23,7 @@ import BottomTabNavigatorUser from "./navigation/BottomTabNavigatorUser";
 import BottomTabNavigatorOrganisation from "./navigation/BottomTabNavigatorOrganisation";
 import { AuthContext } from "./Services/AuthContext";
 import { ProviderVolunteerInscription } from "./Services/VolunteerInscription";
+import { ProviderOrganizationInscription } from "./Services/OrganizationInscription";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +37,7 @@ export default function App() {
             userToken: action.token,
             isLoading: false,
             Role: action.role,
+            email: "",
           };
         case "SIGN_IN":
           return {
@@ -42,6 +45,7 @@ export default function App() {
             isSignout: false,
             userToken: action.token,
             Role: action.role,
+            email: "",
           };
         case "SIGN_OUT":
           return {
@@ -56,27 +60,31 @@ export default function App() {
       isSignout: false,
       userToken: null,
       Role: null,
+      email: "",
     },
   );
 
   React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
       let userRole;
+      let userEmail;
       try {
         userToken = await AsyncStorage.getItem("id_token");
         userRole = await AsyncStorage.getItem("id_role");
+        userEmail = await AsyncStorage.getItem("email");
       } catch (e) {
-        // Restoring token failed
+
         console.log(e);
       }
 
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      dispatch({ type: "RESTORE_TOKEN", token: userToken, role: userRole });
+   
+      dispatch({
+        type: "RESTORE_TOKEN",
+        token: userToken,
+        role: userRole,
+        email: userEmail,
+      });
     };
 
     bootstrapAsync();
@@ -84,11 +92,7 @@ export default function App() {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
+      signIn: async (data, email) => {
         const _onValueChange = async (item, selectedValue) => {
           try {
             await AsyncStorage.setItem(item, selectedValue);
@@ -98,15 +102,16 @@ export default function App() {
         };
         _onValueChange("id_token", data.accessToken);
         _onValueChange("id_role", data.role);
-
-        console.log(data);
+        _onValueChange("email", email);
       },
       signOut: () => {
         AsyncStorage.removeItem("id_token");
+        AsyncStorage.removeItem("id_role");
+        AsyncStorage.removeItem("email");
+
         dispatch({ type: "SIGN_OUT" });
       },
-      signUp: async (data) => {
-      
+      signUp: async (data, email) => {
         const _onValueChange = async (item, selectedValue) => {
           try {
             await AsyncStorage.setItem(item, selectedValue);
@@ -116,7 +121,7 @@ export default function App() {
         };
         _onValueChange("id_token", data.accessToken);
         _onValueChange("id_role", data.role);
-        // dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
+        _onValueChange("email", email);
       },
     }),
     [],
@@ -129,65 +134,75 @@ export default function App() {
     );
   }
   return (
-    <AuthContext.Provider value={authContext}>
-      <ProviderVolunteerInscription>
-        <NavigationContainer>
-          {state.userToken == null ? (
-            <Stack.Navigator
-              screenOptions={{
-                headerStyle: {
-                  backgroundColor: Colors.WHITE,
-                },
-                headerTitleStyle: { color: Colors.tintColor },
-                headerTintColor: Colors.tintColor,
-              }}
-            >
-              <Stack.Screen name="connexion" component={SignIn} />
-              <Stack.Screen
-                name="inscription"
-                component={SignUp}
-                options={{ title: "inscription", headerBackTitle: "Retour" }}
-              />
-              <Stack.Screen
-                name="Qualification"
-                component={Qualification}
-                options={{ title: "Qualification", headerBackTitle: "Retour" }}
-              />
-              <Stack.Screen
-                name="Information"
-                component={Information}
-                options={{ title: "Information", headerBackTitle: "Retour" }}
-              />
-              <Stack.Screen
-                name="Calendrier"
-                component={Calendrier}
-                options={{
-                  title: "emploi du temps ",
-                  headerBackTitle: "Retour",
+    <AuthContext.Provider value={[state, authContext]}>
+      <ProviderOrganizationInscription>
+        <ProviderVolunteerInscription>
+          <NavigationContainer>
+            {state.userToken == null ? (
+              <Stack.Navigator
+                screenOptions={{
+                  headerStyle: {
+                    backgroundColor: Colors.WHITE,
+                  },
+                  headerTitleStyle: { color: Colors.tintColor },
+                  headerTintColor: Colors.tintColor,
                 }}
-              />
-              <Stack.Screen
-                name="Welecome"
-                component={Welecome}
-                options={{ title: "", headerBackTitle: "Retour" }}
-              />
-              <Stack.Screen
-                name="Photo"
-                component={ProfilPhoto}
-                options={{ title: "", headerBackTitle: "Retour" }}
-              />
-            </Stack.Navigator>
-          ) : state.Role == "ROLE_VOLUNTEER" ? (
-            <BottomTabNavigatorUser />
-          ) : state.Role == "ROLE_ORGANIZATION" ? (
-            <BottomTabNavigatorOrganisation />
-          ) : (
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <ActivityIndicator size="large" color={Colors.BLACK} />
-            </View>
-          )}
-        </NavigationContainer>
-      </ProviderVolunteerInscription>
+              >
+                <Stack.Screen name="connexion" component={SignIn} />
+                <Stack.Screen
+                  name="inscription"
+                  component={SignUp}
+                  options={{ title: "inscription", headerBackTitle: "Retour" }}
+                />
+                <Stack.Screen
+                  name="Qualification"
+                  component={Qualification}
+                  options={{
+                    title: "Qualification",
+                    headerBackTitle: "Retour",
+                  }}
+                />
+                <Stack.Screen
+                  name="Information"
+                  component={Information}
+                  options={{ title: "Information", headerBackTitle: "Retour" }}
+                />
+                <Stack.Screen
+                  name="Calendrier"
+                  component={Calendrier}
+                  options={{
+                    title: "emploi du temps ",
+                    headerBackTitle: "Retour",
+                  }}
+                />
+                <Stack.Screen
+                  name="Welecome"
+                  component={Welecome}
+                  options={{ title: "", headerBackTitle: "Retour" }}
+                />
+                <Stack.Screen
+                  name="Photo"
+                  component={ProfilPhoto}
+                  options={{ title: "", headerBackTitle: "Retour" }}
+                />
+                <Stack.Screen
+                  name="About"
+                  component={About}
+                  options={{ title: "", headerBackTitle: "Retour" }}
+                />
+              </Stack.Navigator>
+            ) : state.Role == "ROLE_VOLUNTEER" ? (
+              <BottomTabNavigatorUser />
+            ) : state.Role == "ROLE_ORGANIZATION" ? (
+              <BottomTabNavigatorOrganisation />
+            ) : (
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <ActivityIndicator size="large" color={Colors.BLACK} />
+              </View>
+            )}
+          </NavigationContainer>
+        </ProviderVolunteerInscription>
+      </ProviderOrganizationInscription>
     </AuthContext.Provider>
   );
 }

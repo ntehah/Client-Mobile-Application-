@@ -505,7 +505,7 @@ const FormStyles = StyleSheet.create({
 });
 
 export default function ProfilUser() {
-  const { signOut } = React.useContext(AuthContext);
+  const [state,authContext] = React.useContext(AuthContext);
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
@@ -526,7 +526,7 @@ export default function ProfilUser() {
   };
   
   const SignOutHundler = () => {
-    signOut();
+    authContext.signOut();
   }
   return (
     <View style={styles.container}>

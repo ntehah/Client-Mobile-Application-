@@ -11,13 +11,14 @@ import FormTextInput from "../components/FormTextInput";
 import imageLogo from "../assets/images/logo.png";
 import Colors from "../constants/Colors";
 import { AuthContext } from "../Services/AuthContext";
-export default function SignIn({navigation}) {
+import { UrlServer } from "../constants/UrlServer";
+export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn } = React.useContext(AuthContext);
+  const [state, authContext] = React.useContext(AuthContext);
 
   handleLoginPress = () => {
-    fetch("http://192.168.1.20:8080/api/auth/signin", {
+    fetch(UrlServer + "auth/signin", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -31,9 +32,9 @@ export default function SignIn({navigation}) {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === undefined) {
-          signIn(data);
+          authContext.signIn(data, email);
         } else {
-          console.log(data.status)
+          console.log(data.status);
           Alert.alert(
             "Login",
             "Email ou mot de passe incorrect",

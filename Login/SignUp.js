@@ -12,9 +12,10 @@ import { ButtonDefault } from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import Colors from "../constants/Colors";
 import { AuthContext } from "../Services/AuthContext";
+import { UrlServer } from "../constants/UrlServer";
 
 function BenevolatInscription(props) {
-  const { signUp } = React.useContext(AuthContext);
+  const [state, authContext] = React.useContext(AuthContext);
   const [NomEtPrenom, setNomEtPrenom] = useState("");
   const [Email, setEmail] = useState("");
   const [Pass, setPass] = useState("");
@@ -28,7 +29,7 @@ function BenevolatInscription(props) {
     return expression.test(String(email).toLowerCase());
   };
   async function Login() {
-    fetch("http://192.168.1.20:8080/api/auth/signin", {
+    fetch(UrlServer + "auth/signin", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -42,7 +43,7 @@ function BenevolatInscription(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === undefined) {
-          signUp(data);
+          authContext.signUp(data, Email);
         } else {
           console.log(data.status);
           Alert.alert(
@@ -69,7 +70,7 @@ function BenevolatInscription(props) {
       Pass.length &&
       ConfirmerPass.length
     ) {
-      fetch("http://192.168.1.20:8080/api/auth/signup", {
+      fetch(UrlServer + "auth/signup", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -86,7 +87,7 @@ function BenevolatInscription(props) {
         .then((resp) => resp.json())
         .then((data) => {
           if (data.success === true) {
-            Login()
+            Login();
             props.navigation.navigate("Information", { email: Email });
           } else {
             console.log(data);
@@ -105,7 +106,6 @@ function BenevolatInscription(props) {
       //   [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       //   { cancelable: false },
       // );
-      
     }
   }
   return (
@@ -178,7 +178,8 @@ function BenevolatInscription(props) {
     </ScrollView>
   );
 }
-function AssociationInscription() {
+function AssociationInscription(props) {
+  const [state,authContext] = React.useContext(AuthContext);
   const [NomEtPrenom, setNomEtPrenom] = useState("");
   const [Email, setEmail] = useState("");
   const [Pass, setPass] = useState("");
@@ -192,7 +193,7 @@ function AssociationInscription() {
     return expression.test(String(email).toLowerCase());
   };
   function Login() {
-    fetch("http://192.168.1.18:8080/api/auth/signin", {
+    fetch(UrlServer + "auth/signin", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -206,7 +207,7 @@ function AssociationInscription() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === undefined) {
-          signIn(data);
+          authContext.signUp(data, Email);
         } else {
           console.log(data.status);
           Alert.alert(
@@ -232,7 +233,7 @@ function AssociationInscription() {
       Pass.length &&
       ConfirmerPass.length
     ) {
-      fetch("http://192.168.1.18:8080/api/auth/signup", {
+      fetch(UrlServer + "auth/signup", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -250,6 +251,7 @@ function AssociationInscription() {
         .then((data) => {
           if (data.success === true) {
             Login();
+            props.navigation.navigate("About", { email: Email });
           } else {
             console.log(data);
             Alert.alert(
@@ -377,7 +379,7 @@ export default function SignUp({ navigation }) {
         {ButtonBenevolat ? (
           <BenevolatInscription navigation={navigation} />
         ) : (
-          <AssociationInscription />
+          <AssociationInscription navigation={navigation} />
         )}
       </View>
     </View>

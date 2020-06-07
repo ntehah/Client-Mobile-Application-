@@ -9,20 +9,26 @@ import {
 } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { AuthContext } from "../../Services/AuthContext";
-export default function MenuScreen() {
-  const { signOut } = React.useContext(AuthContext);
+import { createStackNavigator } from "@react-navigation/stack";
+import AddEvenement from "./AddEvenement";
+const Stack = createStackNavigator();
 
-  SignOutHundler = () => {
-    signOut();
+function Menu({ navigation }) {
+  const [state,authContext] = React.useContext(AuthContext);
+
+  AddEventHandler = () => {
+    navigation.navigate("AddEvent");
   };
-
+  SignOutHundler = () => {
+    authContext.signOut();
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.title}>
         <Text style={styles.textTitle}>Menu</Text>
       </View>
       <View style={styles.Buttons}>
-        <TouchableOpacity style={styles.Button}>
+        <TouchableOpacity style={styles.Button} onPress={AddEventHandler}>
           <Ionicons name="ios-add" size={40} color={Colors.DODGER_BLUE} />
           <Text style={styles.text}>Ajouter</Text>
           <Text style={styles.text}>Événement</Text>
@@ -37,22 +43,6 @@ export default function MenuScreen() {
           <Text style={styles.text}>Événements</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.Buttons}>
-        <TouchableOpacity style={styles.Button}>
-          <Ionicons name="ios-document" size={30} color={Colors.DODGER_BLUE} />
-          <Text style={styles.text}>Ajouter</Text>
-          <Text style={styles.text}>Document</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.Button}>
-          <MaterialCommunityIcons
-            name="file-document-box-multiple"
-            size={30}
-            color={Colors.DODGER_BLUE}
-          />
-          <Text style={styles.text}>Toutes les</Text>
-          <Text style={styles.text}>Documents</Text>
-        </TouchableOpacity>
-      </View>
       <View>
         <TouchableOpacity style={styles.Button} onPress={SignOutHundler}>
           <MaterialCommunityIcons
@@ -64,6 +54,26 @@ export default function MenuScreen() {
         </TouchableOpacity>
       </View>
     </ScrollView>
+  );
+}
+export default function MenuScreen() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: Colors.WHITE,
+        },
+        headerTitleStyle: { color: Colors.tintColor },
+        headerTintColor: Colors.tintColor,
+      }}
+    >
+      <Stack.Screen name="Menu" component={Menu} />
+      <Stack.Screen
+        name="AddEvent"
+        component={AddEvenement}
+        options={{ title: "inscription", headerBackTitle: "Retour" }}
+      />
+    </Stack.Navigator>
   );
 }
 const styles = StyleSheet.create({

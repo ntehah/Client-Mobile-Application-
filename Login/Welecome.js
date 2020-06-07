@@ -10,12 +10,14 @@ import {
 import Colors from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { VolunteerInscription } from "../Services/VolunteerInscription";
+import { UrlServer } from "../constants/UrlServer";
+
 export default function Welecome({ navigation }) {
   const [state, InscriptionContext] = useContext(VolunteerInscription);
 
   const AjouterVolunteer = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
-    fetch("http://192.168.1.20:8080/api/volunteer/ajouter", {
+    fetch(UrlServer + "volunteer/ajouter", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + DEMO_TOKEN,
@@ -40,6 +42,8 @@ export default function Welecome({ navigation }) {
       .done();
   };
   const ContinueHandler = () => {
+    console.log(state.Qualification);
+    console.log(state.Calendrier);
     AjouterVolunteer();
   };
   return (
