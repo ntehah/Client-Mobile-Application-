@@ -64,8 +64,8 @@ export default function AddEvenement() {
   const AjouterVolunteer = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
     var EMAIL = await AsyncStorage.getItem("email");
-    var stringDate=date.toString().substr(0,16);
-    console.log(date+"hhhhhhhh"+stringDate);
+    var stringDate = date.toString().substr(0, 16);
+    console.log(date + "hhhhhhhh" + stringDate);
     fetch(UrlServer + "evenement/ajouter", {
       method: "POST",
       headers: {
@@ -75,9 +75,9 @@ export default function AddEvenement() {
       },
       body: JSON.stringify({
         titre: titre,
-        date: date,
-        debut: debut,
-        fin: fin,
+        date: date.getTime(),
+        debut: debut.getTime(),
+        fin: fin.getTime(),
         city: city,
         adress: adress,
         photo: photo,
@@ -94,6 +94,7 @@ export default function AddEvenement() {
   };
   const AjouterEventHandler = () => {
     AjouterVolunteer();
+    console.log("date" + date.getTime() + "debut" + debut.getTime());
   };
   return (
     <ScrollView

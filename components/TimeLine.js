@@ -1,83 +1,113 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+} from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import Colors from "../constants/Colors";
+import { UrlServer } from "../constants/UrlServer";
+
 export default class TimeLine extends Component {
   constructor() {
     super();
     this.onEventPress = this.onEventPress.bind(this);
     this.renderSelected = this.renderSelected.bind(this);
     this.renderDetail = this.renderDetail.bind(this);
-
-    this.data = [
-      {
-        time: "05/02/2020",
-        title: "Événement 1",
-        description:
-          "An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.",
-        icon: require("../assets/images/event.png"),
-        imageUrl:
-          "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-      },
-      {
-        time: "08/02/2020",
-        title: "Événement 2",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-        lineColor: "#009688",
-        icon: require("../assets/images/event.png"),
-        imageUrl:
-          "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-      },
-      {
-        time: "10/02/2020",
-        title: "Événement 3",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        icon: require("../assets/images/event.png"),
-        imageUrl:
-          "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-      },
-      {
-        time: "11/02/2020",
-        title: "Événement 4",
-        icon: require("../assets/images/event.png"),
-      },
-      {
-        time: "13/02/2020",
-        title: "Événement 5",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-        lineColor: "#009688",
-        icon: require("../assets/images/event.png"),
-        imageUrl:
-          "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-      },
-      {
-        time: "17/02/2020",
-        title: "Événement 6",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        icon: require("../assets/images/event.png"),
-        imageUrl:
-          "https://images.pexels.com/photos/2250394/pexels-photo-2250394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=250",
-      },
-    ];
-    this.state = { selected: null };
+    this.state = { selected: null, events: [], data: [] };
   }
-
+  componentDidMount() {
+    this.GetAll();
+  }
   onEventPress(data) {
-    this.props.navigation.navigate("EventDetait", {
-      title: data.title,
-      description: data.description,
-      image: data.imageUrl,
-    });
-  }
+    console.log
+    let ev=this.state.events;
+    for (var i in ev) {
+      var item = ev[i];
 
+      console.log(item.titre);
+      console.log(data.title);
+
+      if (item.titre === data.title) {
+        this.props.navigation.navigate("EventDetait", {
+          address: item.address,
+          date: item.date,
+          titre: item.titre,
+          debut: item.debut,
+          description: item.description,
+          fin: item.fin,
+          city: item.city,
+          organizationName: item.organizationName,
+          photoEvent: item.photoEvent,
+          photoOrganization: item.photoOrganization,
+        });
+      }
+    }
+    console.log("header");
+  }
+  GetAll = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "evenement/getall", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(DEMO_TOKEN);
+        for (var i in data) {
+          var item = data[i];
+
+          this.setState({
+            events: [
+              ...this.state.events,
+              {
+                id: item.id,
+                address: item.adress,
+                date: item.date,
+                titre: item.titre,
+                debut: item.debut,
+                description: item.description,
+                fin: item.fin,
+                city: item.city,
+                organizationName: item.organization.name,
+                photoEvent: item.photo,
+                photoOrganization: item.organization.photo,
+              },
+            ],
+          });
+          this.setState({
+            data: [
+              ...this.state.data,
+              {
+                id: item.id,
+                time: item.date,
+                title: item.titre,
+                description: item.description,
+                icon: require("../assets/images/event.png"),
+                imageUrl: item.photo,
+              },
+            ],
+          });
+        }
+      })
+
+      .done();
+  };
   renderSelected() {
     if (this.state.selected)
       return (
-        <Text >
+        <Text>
           Selected event: {this.state.selected.title} at{" "}
           {this.state.selected.time}
         </Text>
@@ -112,7 +142,7 @@ export default class TimeLine extends Component {
       <View style={styles.container}>
         <Timeline
           style={styles.list}
-          data={this.data}
+          data={this.state.data}
           circleSize={20}
           circleColor={Colors.WHITE}
           lineColor={Colors.DODGER_BLUE}
@@ -121,7 +151,7 @@ export default class TimeLine extends Component {
             textAlign: "center",
             backgroundColor: Colors.tintColor,
             color: "white",
-            padding:5,
+            padding: 5,
             borderRadius: 13,
           }}
           descriptionStyle={{ color: "gray" }}

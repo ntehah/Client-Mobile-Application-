@@ -15,11 +15,12 @@ import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 import FormTextInput from "../components/FormTextInput";
 import { OrganizationInscription } from "../Services/OrganizationInscription";
+import { UrlServer } from "../constants/UrlServer";
 
 export default function About({ navigation, route }) {
   const [photo, setphoto] = useState(null);
   const [description, setDescription] = useState("");
-  const { email } = route.params;
+  const { email,name } = route.params;
 
   const [state, Context] = useContext(OrganizationInscription);
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function About({ navigation, route }) {
   });
   const AddOrganization = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
-    fetch("http://192.168.1.20:8080/api/organization/ajouter", {
+    fetch(UrlServer+"organization/ajouter", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + DEMO_TOKEN,
@@ -38,6 +39,7 @@ export default function About({ navigation, route }) {
         description: description,
         email: email,
         photo: photo,
+        name:name,
       }),
     })
       .then((response) => response.text())
@@ -80,7 +82,7 @@ export default function About({ navigation, route }) {
       email: email,
     });
     AddOrganization();
-    navigation.navigate("Welecome");
+    // navigation.navigate("Welecome");
   };
   return (
     <ScrollView style={Styles.container}>
@@ -118,6 +120,7 @@ export default function About({ navigation, route }) {
         }}
         value={description}
       />
+      
       <View style={Styles.ButtonViewContinue}>
         <TouchableOpacity
           style={Styles.ButtonContinue}

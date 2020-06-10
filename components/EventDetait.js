@@ -11,33 +11,40 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function EventDetail({ route, navigation }) {
-
-  const { title } = route.params;
-  const { description } = route.params;
-  const { image } = route.params;
+export default function EventDetail({ route, navigation,props }) {
+  const {
+    address,
+    date,
+    titre,
+    debut,
+    description,
+    fin,
+    city,
+    organizationName,
+    photoEvent,
+    photoOrganization,
+  } = route.params;
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.imageView}>
-          <Image source={{ uri: image }} style={styles.image} />
+          <Image source={{ uri: photoEvent }} style={styles.image} />
         </View>
         <View style={styles.TitleView}>
-          <Text style={styles.titleText}>{title}</Text>
+          <Text style={styles.titleText}>{titre}</Text>
         </View>
 
         <View style={styles.Organization}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               source={{
-                uri:
-                  "https://pbs.twimg.com/profile_images/1210618202457292802/lt9KD2lt_400x400.jpg",
+                uri: photoOrganization,
               }}
               style={styles.OrganizationLogo}
             />
-            <Text style={styles.OrganizationText}>FSB</Text>
+            <Text style={styles.OrganizationText}>{organizationName}</Text>
           </View>
-          <View>
+          {/* <View>
             <TouchableOpacity style={styles.ButtonFollow}>
               <Text
                 style={{
@@ -49,7 +56,7 @@ export default function EventDetail({ route, navigation }) {
                 Abonné
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <View style={styles.EventDate}>
           <MaterialIcons name="event" size={25} color={Colors.tintColor} />
@@ -57,9 +64,11 @@ export default function EventDetail({ route, navigation }) {
             <Text
               style={{ paddingBottom: 10, fontSize: 16, fontWeight: "bold" }}
             >
-              Ven Avr 17,2020
+              {date}
             </Text>
-            <Text>17:00 - 22:00 </Text>
+            <Text>
+              {debut} - {fin}{" "}
+            </Text>
           </View>
         </View>
         <View style={styles.EventDate}>
@@ -72,9 +81,9 @@ export default function EventDetail({ route, navigation }) {
             <Text
               style={{ paddingBottom: 10, fontSize: 16, fontWeight: "bold" }}
             >
-              Bizerte
+              {city}
             </Text>
-            <Text>Faculte de science de bizerte</Text>
+            <Text>{address}</Text>
           </View>
         </View>
         <View style={styles.DescriptionView}>

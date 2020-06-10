@@ -12,6 +12,7 @@ export function ProviderVolunteerInscription(props) {
             Numero: action.numero,
             Adresse: action.adresse,
             DateDeNaissance: action.date,
+            Name:action.Name,
           };
         case "CALENDRIER":
           return {
@@ -32,6 +33,7 @@ export function ProviderVolunteerInscription(props) {
     },
     {
       Email: "",
+      Name: "",
       Numero: "",
       Adresse: "",
       DateDeNaissance: "",
@@ -49,6 +51,7 @@ export function ProviderVolunteerInscription(props) {
           numero: data.numero,
           adresse: data.adresse,
           date: data.date,
+          Name:data.Name
         });
       },
       Calendrier: async (data) => {

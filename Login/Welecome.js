@@ -32,6 +32,7 @@ export default function Welecome({ navigation }) {
         dateDeNaissance: state.DateDeNaissance,
         photo: state.Photo,
         qualification: state.Qualification,
+        name: state.Name,
       }),
     })
       .then((response) => response.text())

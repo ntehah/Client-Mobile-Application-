@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  AsyncStorage,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -15,6 +16,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FormTextInput from "../../components/FormTextInput";
 import { AuthContext } from "../../Services/AuthContext";
+import { UrlServer } from "../../constants/UrlServer";
 
 function Info() {
   const [LundiMatin, setLundiMatin] = useState(false);
@@ -48,6 +50,84 @@ function Info() {
   const [AddNote, setAddNote] = useState(false);
   const [Note, setNote] = useState("");
   //-------------------------------------------------------
+
+  const [Email, setEmail] = useState("");
+  const [Numero, setNumero] = useState("");
+  const [Address, setAddress] = useState("");
+  const [Date, setDate] = useState("");
+
+  //-------------------------------------------------------
+
+  useEffect(() => {
+    getProfile();
+  });
+  getProfile = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "volunteer/getprofil", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        // setProfile(data);
+      })
+
+      .done();
+  };
+  setProfile = (data) => {
+    
+    setEmail(data.email);
+    setAddress(data.address);
+    setDate(data.date_naissance);
+    setNumero(data.numero);
+    let cal = data.calendrier;
+    for (var i in cal) {
+      var item = cal[i];
+      switch (item.username) {
+        case "lundi":
+          setLundiMatin(item.matin);
+          setLundiApresMidi(item.midi);
+          setLundiSoiree(item.soir);
+        case "mardi":
+          setMardiMatin(item.matin);
+          setMardiApresMidi(item.midi);
+          setMardiSoiree(item.soir);
+        case "mercredi":
+          setMercrediMatin(item.matin);
+          setMercrediApresMidi(item.midi);
+          setMercrediSoiree(item.soir);
+
+        case "jeudi":
+          setJeudiMatin(item.matin);
+          setJeudiApresMidi(item.midi);
+          setJeudiSoiree(item.soir);
+
+        case "vendredi":
+          setVendrediMatin(item.matin);
+          setVendrediApresMidi(item.midi);
+          setVendrediSoiree(item.soir);
+        case "samedi":
+          setSamediMatin(item.matin);
+          setSamediApresMidi(item.midi);
+          setSamediSoiree(item.soir);
+
+        case "dimanche":
+          setDimancheMatin(item.matin);
+          setDimancheApresMidi(item.midi);
+          setDimancheSoiree(item.soir);
+      }
+    }
+    //setLundiMatin(data.calendrier[1].matin)
+  };
   const OnButtonToggleAddNote = () => {
     if (AddNote === true) {
       return (
@@ -81,19 +161,19 @@ function Info() {
 
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Email: </Text>
-        <Text style={InfoStyles.text}>ntehah.kdr07@gmail.com</Text>
+        <Text style={InfoStyles.text}>{Email}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Numero: </Text>
-        <Text style={InfoStyles.text}>+21695282211</Text>
+        <Text style={InfoStyles.text}>{Numero}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Address: </Text>
-        <Text style={InfoStyles.text}>Zarzouna,Bizerte</Text>
+        <Text style={InfoStyles.text}>{Address}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Date de naissance: </Text>
-        <Text style={InfoStyles.text}>20/02/2000</Text>
+        <Text style={InfoStyles.text}>{Date}</Text>
       </View>
       <View style={InfoStyles.TitleView}>
         <Text style={InfoStyles.textTitle}>Documents</Text>
@@ -113,21 +193,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={LundiMatin}
-            onPress={() => {
-              setLundiMatin(!LundiMatin);
-            }}
+            // onPress={() => {
+            //   setLundiMatin(!LundiMatin);
+            // }}
           />
           <CheckBox
             checked={LundiApresMidi}
-            onPress={() => {
-              setLundiApresMidi(!LundiApresMidi);
-            }}
+            // onPress={() => {
+            //   setLundiApresMidi(!LundiApresMidi);
+            // }}
           />
           <CheckBox
             checked={LundiSoiree}
-            onPress={() => {
-              setLundiSoiree(!LundiSoiree);
-            }}
+            // onPress={() => {
+            //   setLundiSoiree(!LundiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -135,21 +215,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MardiMatin}
-            onPress={() => {
-              setMardiMatin(!MardiMatin);
-            }}
+            // onPress={() => {
+            //   setMardiMatin(!MardiMatin);
+            // }}
           />
           <CheckBox
             checked={MardiApresMidi}
-            onPress={() => {
-              setMardiApresMidi(!MardiApresMidi);
-            }}
+            // onPress={() => {
+            //   setMardiApresMidi(!MardiApresMidi);
+            // }}
           />
           <CheckBox
             checked={MardiSoiree}
-            onPress={() => {
-              setMardiSoiree(!MardiSoiree);
-            }}
+            // onPress={() => {
+            //   setMardiSoiree(!MardiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -157,21 +237,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MercrediMatin}
-            onPress={() => {
-              setMercrediMatin(!MercrediMatin);
-            }}
+            // onPress={() => {
+            //   setMercrediMatin(!MercrediMatin);
+            // }}
           />
           <CheckBox
             checked={MercrediApresMidi}
-            onPress={() => {
-              setMercrediApresMidi(!MercrediApresMidi);
-            }}
+            // onPress={() => {
+            //   setMercrediApresMidi(!MercrediApresMidi);
+            // }}
           />
           <CheckBox
             checked={MercrediSoiree}
-            onPress={() => {
-              setMercrediSoiree(!MercrediSoiree);
-            }}
+            // onPress={() => {
+            //   setMercrediSoiree(!MercrediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -179,21 +259,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={JeudiMatin}
-            onPress={() => {
-              setJeudiMatin(!JeudiMatin);
-            }}
+            // onPress={() => {
+            //   setJeudiMatin(!JeudiMatin);
+            // }}
           />
           <CheckBox
             checked={JeudiApresMidi}
-            onPress={() => {
-              setJeudiApresMidi(!JeudiApresMidi);
-            }}
+            // onPress={() => {
+            //   setJeudiApresMidi(!JeudiApresMidi);
+            // }}
           />
           <CheckBox
             checked={JeudiSoiree}
-            onPress={() => {
-              setJeudiSoiree(!JeudiSoiree);
-            }}
+            // onPress={() => {
+            //   setJeudiSoiree(!JeudiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -201,21 +281,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={VendrediMatin}
-            onPress={() => {
-              setVendrediMatin(!VendrediMatin);
-            }}
+            // onPress={() => {
+            //   setVendrediMatin(!VendrediMatin);
+            // }}
           />
           <CheckBox
             checked={VendrediApresMidi}
-            onPress={() => {
-              setVendrediApresMidi(!VendrediApresMidi);
-            }}
+            // onPress={() => {
+            //   setVendrediApresMidi(!VendrediApresMidi);
+            // }}
           />
           <CheckBox
             checked={VendrediSoiree}
-            onPress={() => {
-              setVendrediSoiree(!VendrediSoiree);
-            }}
+            // onPress={() => {
+            //   setVendrediSoiree(!VendrediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -223,21 +303,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={SamediMatin}
-            onPress={() => {
-              setSamediMatin(!SamediMatin);
-            }}
+            // onPress={() => {
+            //   setSamediMatin(!SamediMatin);
+            // }}
           />
           <CheckBox
             checked={SamediApresMidi}
-            onPress={() => {
-              setSamediApresMidi(!SamediApresMidi);
-            }}
+            // onPress={() => {
+            //   setSamediApresMidi(!SamediApresMidi);
+            // }}
           />
           <CheckBox
             checked={SamediSoiree}
-            onPress={() => {
-              setSamediSoiree(!SamediSoiree);
-            }}
+            // onPress={() => {
+            //   setSamediSoiree(!SamediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -245,21 +325,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={DimancheMatin}
-            onPress={() => {
-              setDimancheMatin(!DimancheMatin);
-            }}
+            // onPress={() => {
+            //   setDimancheMatin(!DimancheMatin);
+            // }}
           />
           <CheckBox
             checked={DimancheApresMidi}
-            onPress={() => {
-              setDimancheApresMidi(!DimancheApresMidi);
-            }}
+            // onPress={() => {
+            //   setDimancheApresMidi(!DimancheApresMidi);
+            // }}
           />
           <CheckBox
             checked={DimancheSoiree}
-            onPress={() => {
-              setDimancheSoiree(!DimancheSoiree);
-            }}
+            // onPress={() => {
+            //   setDimancheSoiree(!DimancheSoiree);
+            // }}
           />
         </View>
       </View>
@@ -505,7 +585,7 @@ const FormStyles = StyleSheet.create({
 });
 
 export default function ProfilUser() {
-  const [state,authContext] = React.useContext(AuthContext);
+  const [state, authContext] = React.useContext(AuthContext);
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
@@ -524,16 +604,23 @@ export default function ProfilUser() {
       return <Form />;
     }
   };
-  
+
   const SignOutHundler = () => {
     authContext.signOut();
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.nav}>
-        <TouchableOpacity style={{flexDirection:"row",alignItems:"center"}} onPress={SignOutHundler}>
-          <MaterialCommunityIcons name="logout" size={24} color={Colors.DODGER_BLUE} />
-          <Text style={{color:Colors.DODGER_BLUE}}>Déconnexion</Text>
+        <TouchableOpacity
+          style={{ flexDirection: "row", alignItems: "center" }}
+          onPress={SignOutHundler}
+        >
+          <MaterialCommunityIcons
+            name="logout"
+            size={24}
+            color={Colors.DODGER_BLUE}
+          />
+          <Text style={{ color: Colors.DODGER_BLUE }}>Déconnexion</Text>
         </TouchableOpacity>
       </View>
       <ScrollView>
@@ -645,8 +732,8 @@ const styles = StyleSheet.create({
   nav: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:"flex-end",
-    paddingRight:15,
+    justifyContent: "flex-end",
+    paddingRight: 15,
     height: 40,
   },
   NavBar: {

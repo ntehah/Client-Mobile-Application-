@@ -14,7 +14,7 @@ import { VolunteerInscription } from "../Services/VolunteerInscription";
 
 export default function Information({ navigation, route }) {
   const [state, InscriptionContext] = useContext(VolunteerInscription);
-  const { email } = route.params;
+  const { email ,name} = route.params;
   const [Numero, setNumero] = useState("");
   const [Adresse, setAdress] = useState("");
   const [Jour, setJour] = useState("");
@@ -34,6 +34,7 @@ export default function Information({ navigation, route }) {
         adresse: Adresse,
         date: date,
         Email: email,
+        Name:name,
       });
       navigation.navigate("Photo");
     } else {

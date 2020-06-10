@@ -88,7 +88,7 @@ function BenevolatInscription(props) {
         .then((data) => {
           if (data.success === true) {
             Login();
-            props.navigation.navigate("Information", { email: Email });
+            props.navigation.navigate("Information", { email: Email,name:NomEtPrenom });
           } else {
             console.log(data);
             Alert.alert(
@@ -251,7 +251,7 @@ function AssociationInscription(props) {
         .then((data) => {
           if (data.success === true) {
             Login();
-            props.navigation.navigate("About", { email: Email });
+            props.navigation.navigate("About", { email: Email,name:NomEtPrenom });
           } else {
             console.log(data);
             Alert.alert(
