@@ -45,7 +45,7 @@ export default function App() {
             isSignout: false,
             userToken: action.token,
             Role: action.role,
-            email: "",
+            email: action.email,
           };
         case "SIGN_OUT":
           return {
@@ -74,11 +74,9 @@ export default function App() {
         userRole = await AsyncStorage.getItem("id_role");
         userEmail = await AsyncStorage.getItem("email");
       } catch (e) {
-
         console.log(e);
       }
 
-   
       dispatch({
         type: "RESTORE_TOKEN",
         token: userToken,
@@ -103,6 +101,12 @@ export default function App() {
         _onValueChange("id_token", data.accessToken);
         _onValueChange("id_role", data.role);
         _onValueChange("email", email);
+        dispatch({
+          type: "SIGN_IN",
+          token: data.accessToken,
+          role: data.role,
+          email: email,
+        });
       },
       signOut: () => {
         AsyncStorage.removeItem("id_token");

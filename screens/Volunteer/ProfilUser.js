@@ -18,7 +18,7 @@ import FormTextInput from "../../components/FormTextInput";
 import { AuthContext } from "../../Services/AuthContext";
 import { UrlServer } from "../../constants/UrlServer";
 
-function Info() {
+function Info(props) {
   const [LundiMatin, setLundiMatin] = useState(false);
   const [LundiApresMidi, setLundiApresMidi] = useState(false);
   const [LundiSoiree, setLundiSoiree] = useState(false);
@@ -57,77 +57,58 @@ function Info() {
   const [Date, setDate] = useState("");
 
   //-------------------------------------------------------
-
   useEffect(() => {
-    getProfile();
-  });
-  getProfile = async () => {
-    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
-    var EMAIL = await AsyncStorage.getItem("email");
-    fetch(UrlServer + "volunteer/getprofil", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + DEMO_TOKEN,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: EMAIL,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        // setProfile(data);
-      })
-
-      .done();
-  };
-  setProfile = (data) => {
-    
-    setEmail(data.email);
-    setAddress(data.address);
-    setDate(data.date_naissance);
-    setNumero(data.numero);
-    let cal = data.calendrier;
+    setProfile();
+  }, []);
+  setProfile = () => {
+    setEmail(props.Data.email);
+    setAddress(props.Data.address);
+    setDate(props.Data.date_naissance);
+    setNumero(props.Data.numero);
+    let cal = props.calendrier;
     for (var i in cal) {
       var item = cal[i];
-      switch (item.username) {
-        case "lundi":
-          setLundiMatin(item.matin);
-          setLundiApresMidi(item.midi);
-          setLundiSoiree(item.soir);
-        case "mardi":
-          setMardiMatin(item.matin);
-          setMardiApresMidi(item.midi);
-          setMardiSoiree(item.soir);
-        case "mercredi":
-          setMercrediMatin(item.matin);
-          setMercrediApresMidi(item.midi);
-          setMercrediSoiree(item.soir);
+      console.log(item);
 
-        case "jeudi":
-          setJeudiMatin(item.matin);
-          setJeudiApresMidi(item.midi);
-          setJeudiSoiree(item.soir);
-
-        case "vendredi":
-          setVendrediMatin(item.matin);
-          setVendrediApresMidi(item.midi);
-          setVendrediSoiree(item.soir);
-        case "samedi":
-          setSamediMatin(item.matin);
-          setSamediApresMidi(item.midi);
-          setSamediSoiree(item.soir);
-
-        case "dimanche":
-          setDimancheMatin(item.matin);
-          setDimancheApresMidi(item.midi);
-          setDimancheSoiree(item.soir);
+      if (item.journame == "lundi") {
+        setLundiMatin(item.matin);
+        setLundiApresMidi(item.midi);
+        setLundiSoiree(item.soir);
+      }
+      if (item.journame == "mardi") {
+        setMardiMatin(item.matin);
+        setMardiApresMidi(item.midi);
+        setMardiSoiree(item.soir);
+      }
+      if (item.journame == "mercredi") {
+        setMercrediMatin(item.matin);
+        setMercrediApresMidi(item.midi);
+        setMercrediSoiree(item.soir);
+      }
+      if (item.journame == "jeudi") {
+        setJeudiMatin(item.matin);
+        setJeudiApresMidi(item.midi);
+        setJeudiSoiree(item.soir);
+      }
+      if (item.journame == "vendredi") {
+        setVendrediMatin(item.matin);
+        setVendrediApresMidi(item.midi);
+        setVendrediSoiree(item.soir);
+      }
+      if (item.journame == "samedi") {
+        setSamediMatin(item.matin);
+        setSamediApresMidi(item.midi);
+        setSamediSoiree(item.soir);
+      }
+      if (item.journame == "dimanche") {
+        setDimancheMatin(item.matin);
+        setDimancheApresMidi(item.midi);
+        setDimancheSoiree(item.soir);
       }
     }
-    //setLundiMatin(data.calendrier[1].matin)
   };
+  //setLundiMatin(data.calendrier[1].matin)
+
   const OnButtonToggleAddNote = () => {
     if (AddNote === true) {
       return (
@@ -174,9 +155,6 @@ function Info() {
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Date de naissance: </Text>
         <Text style={InfoStyles.text}>{Date}</Text>
-      </View>
-      <View style={InfoStyles.TitleView}>
-        <Text style={InfoStyles.textTitle}>Documents</Text>
       </View>
       <View></View>
       <View style={InfoStyles.TitleView}>
@@ -343,7 +321,7 @@ function Info() {
           />
         </View>
       </View>
-      <View style={InfoStyles.Note}>
+      {/* <View style={InfoStyles.Note}>
         <CheckBox
           center
           title="créer une note sur abdelkade"
@@ -359,12 +337,12 @@ function Info() {
         <View>
           <OnButtonToggleAddNote />
         </View>
-      </View>
-      <View style={InfoStyles.ButtonView}>
+      </View> */}
+      {/* <View style={InfoStyles.ButtonView}>
         <TouchableOpacity style={InfoStyles.Button}>
           <Text style={InfoStyles.ButtonText}>Supprimer de l'organistaion</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -452,7 +430,7 @@ const InfoStyles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
-function Qualification() {
+function Qualification(props) {
   const [AddSikll, setAddSkill] = useState(false);
   const [skill, setskill] = useState("");
   const OnButtonToggleAddSkill = () => {
@@ -480,16 +458,15 @@ function Qualification() {
   return (
     <View style={QualificationStyles.container}>
       <View style={QualificationStyles.Skills}>
-        <Text style={QualificationStyles.textTitle}>Prenom Compétences</Text>
+        <Text style={QualificationStyles.textTitle}>Compétences</Text>
         <View style={QualificationStyles.skillTab}>
-          <View style={QualificationStyles.skill}>
-            <Text style={QualificationStyles.text}>Java</Text>
-          </View>
-          <View style={QualificationStyles.skill}>
-            <Text style={QualificationStyles.text}>Python</Text>
-          </View>
+          {props.Skills.map((s, index) => (
+            <View style={QualificationStyles.skill} key={index}>
+              <Text style={QualificationStyles.text}>{s.qualifacation}</Text>
+            </View>
+          ))}
         </View>
-        <View style={QualificationStyles.IconAdd}>
+        {/* <View style={QualificationStyles.IconAdd}>
           <CheckBox
             iconRight
             iconType="material"
@@ -502,13 +479,10 @@ function Qualification() {
               setAddSkill(!AddSikll);
             }}
           />
-        </View>
-        <View>
+        </View> */}
+        {/* <View>
           <OnButtonToggleAddSkill />
-        </View>
-      </View>
-      <View style={QualificationStyles.Affectations}>
-        <Text style={QualificationStyles.textTitle}>Affectations</Text>
+        </View> */}
       </View>
     </View>
   );
@@ -590,12 +564,38 @@ export default function ProfilUser() {
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
   const [form, setForm] = useState(false);
+  const [Data, setData] = useState({});
+  useEffect(() => {
+    getProfile();
+  }, []);
+  getProfile = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    console.log(EMAIL);
+    fetch(UrlServer + "volunteer/getprofil", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        // console.log(data.calendrier);
+      })
+      .done();
+  };
   const Affiche = () => {
     if (info) {
-      return <Info />;
+      return <Info Data={Data} calendrier={Data.calendrier} />;
     }
     if (qualification) {
-      return <Qualification />;
+      return <Qualification Skills={Data.qualifacations} />;
     }
     if (activite) {
       return <Activite />;
@@ -626,12 +626,11 @@ export default function ProfilUser() {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.imageView}>
-            <Image source={image} style={styles.image} />
+            <Image source={{ uri: Data.photo }} style={styles.image} />
           </View>
           <View style={styles.textView}>
-            <Text style={styles.text}>Prenom</Text>
-            <Text style={styles.text}>Nom</Text>
-            <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
+            <Text style={styles.text}>{Data.name}</Text>
+            <Text style={styles.textDateHeader}>Cree Juin 2020</Text>
           </View>
         </View>
         <View style={styles.NavBar}>

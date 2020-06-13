@@ -38,133 +38,44 @@ function About(props) {
   );
 }
 
-class ProfilScreen extends React.Component {
-  state = {
-    eventIcon: true,
-    aboutIcon: false,
-    image: null,
-    name: "",
-    nbMembre: 0,
-    nbEvents: 0,
-    description: "",
-    loading: true,
-  };
-  componentDidMount() {
-    this.getProfile();
-  }
-  getProfile = async () => {
-    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
-    var EMAIL = await AsyncStorage.getItem("email");
-    fetch(UrlServer + "organization/getprofil", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + DEMO_TOKEN,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: EMAIL,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(DEMO_TOKEN);
-        this.setState({
-          image: data.photo,
-          name: data.name,
-          nbMembre: 0,
-          nbEvents: 0,
-          description: data.description,
-          loading: false,
-        });
-      })
-
-      .done();
-  };
-  OnclickIconEvent = () => {
-    this.setState({ eventIcon: true, aboutIcon: false });
-  };
-  OnclickAboutIcon = () => {
-    this.setState({ aboutIcon: true, eventIcon: false });
-  };
-
-  render() {
-    let l = this.state.loading;
-    return (
-      <ScrollView style={styles.container}>
-        {l ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 300,
-            }}
-          >
-            <ActivityIndicator size="large" color={Colors.BLACK} />
+export default function ProfilScreen({ route }) {
+  const { image, name, description } = route.params;
+  return (
+    <ScrollView style={styles.container}>
+      <View>
+        <View style={styles.header}>
+          <View style={styles.imageView}>
+            <Image source={{ uri: image }} style={styles.image} />
           </View>
-        ) : (
+          <View style={styles.title}>
+            <Text style={styles.titleText}>{name}</Text>
+          </View>
+          <View style={styles.MemberAndEvents}>
+            <Text style={styles.textNumber}>0</Text>
+            <Text style={styles.text}>Member </Text>
+            <Text style={styles.textNumber}>0 </Text>
+            <Text style={styles.text}>Events</Text>
+          </View>
           <View>
-            <View style={styles.header}>
-              <View style={styles.imageView}>
-                <Image
-                  source={{ uri: this.state.image }}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.title}>
-                <Text style={styles.titleText}>{this.state.name}</Text>
-              </View>
-              <View style={styles.MemberAndEvents}>
-                <Text style={styles.textNumber}>{this.state.nbMembre} </Text>
-                <Text style={styles.text}>Member </Text>
-                <Text style={styles.textNumber}>{this.state.nbEvents} </Text>
-                <Text style={styles.text}>Events</Text>
-              </View>
-              <View>
-                <Text style={styles.text}>{this.state.description}</Text>
-              </View>
-            </View>
-            <View style={styles.BarIcons}>
-              <TouchableOpacity
-                style={styles.EventIcon}
-                onPress={this.OnclickIconEvent}
-              >
-                <MaterialCommunityIcons
-                  name="eventbrite"
-                  size={30}
-                  color={
-                    this.state.eventIcon
-                      ? Colors.tabIconSelected
-                      : Colors.tabIconDefault
-                  }
-                />
-                <Text>Events</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.EventIcon}
-                onPress={this.OnclickAboutIcon}
-              >
-                <AntDesign
-                  name="infocirlceo"
-                  size={30}
-                  color={
-                    this.state.aboutIcon
-                      ? Colors.tabIconSelected
-                      : Colors.tabIconDefault
-                  }
-                />
-                <Text>à propos</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.display}>
-              {this.state.eventIcon ? <Events /> : <About />}
-            </View>
+            <Text style={styles.text}>{description}</Text>
           </View>
-        )}
-      </ScrollView>
-    );
-  }
+        </View>
+        <View style={styles.BarIcons}>
+          <TouchableOpacity style={styles.EventIcon}>
+            <MaterialCommunityIcons
+              name="eventbrite"
+              size={30}
+              color={Colors.tabIconSelected}
+            />
+            <Text>Events</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.display}>
+          <Events />
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -242,5 +153,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-export default ProfilScreen;

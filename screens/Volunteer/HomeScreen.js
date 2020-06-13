@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   Platform,
@@ -6,85 +6,220 @@ import {
   Text,
   TouchableOpacity,
   View,
+  AsyncStorage,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import profileimage from "../../assets/images/logo.png";
 import Colors from "../../constants/Colors";
 import Cart from "../../components/Cart";
+import CartOrganization from "../../components/CartOrganization";
+import { createStackNavigator } from "@react-navigation/stack";
+import ProfilScreen from "../Organisation/ProfilScreen";
+import EventDetait from "../../components/EventDetait";
+const Stack = createStackNavigator();
 
-export default function HomeScreen() {
+import { UrlServer } from "../../constants/UrlServer";
+function ListOrganization(props) {
+  const [DataOr, setDataOr] = useState({});
+  const [Org, setOrg] = useState({});
+
+  useEffect(() => {
+    GetAll();
+  }, []);
+  GetAll = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    fetch(UrlServer + "organization/getallorganization", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDataOr(data);
+      })
+
+      .done();
+  };
+  function handleOrg() {
+    props.navigation.navigate("organization", {
+      image: Org.photo,
+      name: Org.name,
+      description: Org.description,
+    });
+  }
+  return (
+    <View style={styles.prochain}>
+      <View style={styles.textView}>
+        <Text style={styles.textLeft}>Association</Text>
+      </View>
+      <ScrollView horizontal={true} style={styles.CardScrollView}>
+        {DataOr.length ? (
+          <View>
+            {DataOr.map((org, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    setOrg(org);
+                    handleOrg();
+                  }}
+                  key={index}
+                >
+                  <CartOrganization image={org.photo} name={org.name} />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ) : (
+          <View>
+            <Text>Non Organization</Text>
+          </View>
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+function ListEvent(props) {
+  const [DataEv, setDataEv] = useState({});
+  const [Eve, setEve] = useState({});
+
+  useEffect(() => {
+    GetEvents();
+  }, []);
+  GetEvents = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    fetch(UrlServer + "evenement/getallevent", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDataEv(data);
+      })
+
+      .done();
+  };
+  function handleEvent() {
+    props.navigation.navigate("EventDetait",{
+      address: Eve.address,
+      date: Eve.date,
+      titre: Eve.titre,
+      debut: Eve.debut,
+      description: Eve.description,
+      fin: Eve.fin,
+      city: Eve.city,
+      organizationName: Eve.organization.name,
+      photoEvent: Eve.photo,
+      photoOrganization: Eve.organization.photo,
+    });
+  }
+  return (
+    <View style={styles.prochain}>
+      <View style={styles.textView}>
+        <Text style={styles.textLeft}>Evènement</Text>
+      </View>
+      <ScrollView horizontal={true} style={styles.CardScrollView}>
+        {DataEv.length ? (
+          <View>
+            {DataEv.map((eve, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    setEve(eve);
+                    handleEvent();
+                  }}
+                >
+                  <Cart
+                    image={eve.photo}
+                    name={eve.titre}
+                    debut={eve.debut}
+                    city={eve.city}
+                    date={eve.date}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ) : (
+          <View>
+            <Text>Non Organization</Text>
+          </View>
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+function Container({ navigation }) {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.buttonHeader}>
-          <TouchableOpacity>
-            <Ionicons name="md-locate" size={30} color={Colors.tintColor} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={profileimage} style={styles.profile} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputHeader}>
-          <View style={styles.TextInput}>
-            <EvilIcons name="search" size={35} color={Colors.tintColor} />
-            <TextInput style={styles.Input} placeholder="recherche"></TextInput>
-          </View>
-        </View>
-      </View>
       <ScrollView style={styles.containerContent}>
         {/* --------------------------------------Prochain Evènement-----------------------------------------------------*/}
-        <View style={styles.prochain}>
-          <View style={styles.textView}>
-            <Text style={styles.textLeft}>Prochain Evènement</Text>
-            <TouchableOpacity>
-              <Text style={styles.textRight}>Voir tout</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView horizontal={true} style={styles.CardScrollView}>
-            <View style={styles.Card}>
-              <Cart />
-            </View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-          </ScrollView>
-        </View>
-        {/* -------------------------------------------------------------------------------------------*/}
-        {/* ------------------------------------------Populaire----------------------------------------*/}
-        <View style={styles.prochain}>
-          <View style={styles.textView}>
-            <Text style={styles.textLeft}>Populaire</Text>
-            <TouchableOpacity>
-              <Text style={styles.textRight}>Voir tout</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView horizontal={true} style={styles.CardScrollView}>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-          </ScrollView>
-        </View>
+
+        <ListEvent navigation={navigation} />
         {/* -------------------------------------------------------------------------------------------*/}
         {/* ------------------------------------Association--------------------------------------*/}
-        <View style={styles.prochain}>
-          <View style={styles.textView}>
-            <Text style={styles.textLeft}>Association</Text>
-            <TouchableOpacity>
-              <Text style={styles.textRight}>Voir tout</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView horizontal={true} style={styles.CardScrollView}>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-            <View style={styles.Card}></View>
-          </ScrollView>
-        </View>
+        <ListOrganization navigation={navigation} />
         {/* -------------------------------------------------------------------------------------------*/}
       </ScrollView>
     </View>
+  );
+}
+export default function HomeScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Container"
+        component={Container}
+        options={{
+          title: "Accueil",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="EventDetait"
+        component={EventDetait}
+        options={{
+          title: "Evenement Description",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerBackTitle: "Retour",
+        }}
+      />
+      <Stack.Screen
+        name="organization"
+        component={ProfilScreen}
+        options={{
+          title: "Evenement Description",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerBackTitle: "Retour",
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 

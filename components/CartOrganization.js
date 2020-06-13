@@ -1,24 +1,13 @@
 import * as React from "react";
-import profileimage from "../assets/images/logo.png";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Colors from "../constants/Colors";
-export default function Cart(props) {
-  let date =Date.parse(props.date);
-  var d = new Date(date);
+export default function CartOrganization(props) {
   return (
     <View style={styles.Cart}>
-      <Image source={{ uri: props.image }} style={styles.image} />
+      <Image source={{ uri: props.image }}  style={styles.image} />
       <View style={styles.textCart}>
-        <View style={styles.date}>
-          <Text style={styles.textJour}>{d.getDate()}</Text>
-          <Text style={styles.textMois}> {d.toDateString().substring(4,7).toUpperCase()} </Text>
-        </View>
         <View style={styles.textCartNameEtCity}>
           <Text style={styles.textNameAndCity}>{props.name}</Text>
-          <Text style={styles.textNameAndCity}>
-            {" "}
-            {props.debut.substring(0, 5)}  -  {props.city}{" "}
-          </Text>
         </View>
       </View>
     </View>
@@ -27,15 +16,17 @@ export default function Cart(props) {
 
 const styles = StyleSheet.create({
   Cart: {
-    height: 180,
-    width: 300,
+    height: 250,
+    width: 150,
     flexDirection: "column",
+    alignItems:"center",
+    justifyContent:"center",
   },
   image: {
-    width: 299,
+    width: 120,
     height: 120,
     borderWidth: 0.3,
-    borderRadius: 10,
+    borderRadius: 60,
   },
   textCart: {
     flexDirection: "row",
@@ -62,7 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   textNameAndCity: {
-    fontSize: 15,
+    fontSize: 18,
     marginTop: 5,
     marginBottom: 5,
   },

@@ -23,7 +23,6 @@ export default class TimeLine extends Component {
     this.GetAll();
   }
   onEventPress(data) {
-    console.log
     let ev=this.state.events;
     for (var i in ev) {
       var item = ev[i];
