@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,17 +8,17 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import image from "../../assets/images/Profile.png";
 import Colors from "../../constants/Colors";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Cart from "../../components/Cart";
 import { UrlServer } from "../../constants/UrlServer";
+import { getLightEstimationEnabled } from "expo/build/AR";
 
 function Events(props) {
   return (
     <View>
-      <View style={styles.Cart}>
+      {/* <View style={styles.Cart}>
         <Cart />
       </View>
       <View style={styles.Cart}>
@@ -26,7 +26,7 @@ function Events(props) {
       </View>
       <View style={styles.Cart}>
         <Cart />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -39,7 +39,57 @@ function About(props) {
 }
 
 export default function ProfilScreen({ route }) {
-  const { image, name, description } = route.params;
+  const { image, name, description, email } = route.params;
+
+  const [etat, setEtat] = useState(true);
+  useEffect(() => {
+    getEtat();
+  }, []);
+  getEtat = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "volunteer/getabonne", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data != null) setEtat(false);
+      })
+
+      .done();
+  };
+  AddFollower = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "volunteer/abonne", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailvol: EMAIL,
+        emailorg: email,
+        etat: "REQUEST",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+
+      .done();
+  };
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -56,6 +106,22 @@ export default function ProfilScreen({ route }) {
             <Text style={styles.textNumber}>0 </Text>
             <Text style={styles.text}>Events</Text>
           </View>
+          {etat ? (
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  AddFollower();
+                }}
+              >
+                <Text style={{ fontSize: 17 }}>Rejoignez-nous</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+              <Text>Deja Abonne</Text>
+            </View>
+          )}
+
           <View>
             <Text style={styles.text}>{description}</Text>
           </View>
@@ -74,6 +140,7 @@ export default function ProfilScreen({ route }) {
           <Events />
         </View>
       </View>
+      {/* )} */}
     </ScrollView>
   );
 }

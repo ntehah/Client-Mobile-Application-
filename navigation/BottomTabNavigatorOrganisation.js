@@ -5,7 +5,7 @@ import HomeScreen from "../screens/Organisation/HomeScreen";
 import MenuScreen from "../screens/Organisation/MenuScreen"
 import Community from "../screens/Organisation/Community"
 import CommunityDemo from "../screens/Organisation/CommunityDemo"
-import ProfilScreen from '../screens/Organisation/ProfilScreen'
+import ProfilOrganization from '../screens/Organisation/ProfilOrganization'
 import Messages from '../screens/Organisation/Messages'
 
 const BottomTab = createBottomTabNavigator();
@@ -36,7 +36,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Organisation"
-        component={ProfilScreen}
+        component={ProfilOrganization}
         options={{
           tabBarLabel: "Organisation",
           tabBarIcon: ({ focused }) => (

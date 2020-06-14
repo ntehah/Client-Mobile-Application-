@@ -49,6 +49,7 @@ function ListOrganization(props) {
       image: Org.photo,
       name: Org.name,
       description: Org.description,
+      email:Org.email,
     });
   }
   return (
@@ -85,6 +86,8 @@ function ListOrganization(props) {
 function ListEvent(props) {
   const [DataEv, setDataEv] = useState({});
   const [Eve, setEve] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [Org, setOrg] = useState({});
 
   useEffect(() => {
     GetEvents();
@@ -107,7 +110,7 @@ function ListEvent(props) {
       .done();
   };
   function handleEvent() {
-    props.navigation.navigate("EventDetait",{
+    props.navigation.navigate("EventDetait", {
       address: Eve.address,
       date: Eve.date,
       titre: Eve.titre,
@@ -115,9 +118,9 @@ function ListEvent(props) {
       description: Eve.description,
       fin: Eve.fin,
       city: Eve.city,
-      organizationName: Eve.organization.name,
+      organizationName: Org.name,
       photoEvent: Eve.photo,
-      photoOrganization: Eve.organization.photo,
+      photoOrganization: Org.photo,
     });
   }
   return (
@@ -133,6 +136,7 @@ function ListEvent(props) {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
+                    setOrg(eve.organization);
                     setEve(eve);
                     handleEvent();
                   }}
