@@ -1,7 +1,15 @@
 import React from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  AsyncStorage,
+} from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import image from "../../assets/images/Profile.png";
+import { UrlServer } from "../../constants/UrlServer";
+
 const contacts = [
   { id: 1, nom: "nom", prenom: "prenom", email: "email", photo: { image } },
   { id: 1, nom: "nom", prenom: "prenom", email: "email", photo: { image } },
@@ -13,44 +21,76 @@ export default class CommunityDemo extends React.Component {
 
     this.state = {
       loading: false,
-      data: [
-        {
-          id: 1,
-          nom: "nom",
-          prenom: "prenom",
-          email: "email",
-          photo: { image },
-        },
-        {
-          id: 2,
-          nom: "nom",
-          prenom: "prenom",
-          email: "email",
-          photo: { image },
-        },
-        {
-          id: 3,
-          nom: "nom",
-          prenom: "prenom",
-          email: "email",
-          photo: { image },
-        },
-      ],
+      data: [],
+      volunteers: [],
       error: null,
       refreshing: false,
     };
   }
 
   componentDidMount() {
-    this.makeRemoteRequest();
-  }
-
-  makeRemoteRequest = () => {
     this.setState({ loading: true });
-    this.setState({
-      loading: false,
-      refreshing: false,
-    });
+    this.makeRemoteRequest();
+    this.getBenevole();
+  }
+  getBenevole = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    console.log(EMAIL);
+    fetch(UrlServer + "volunteer/getvolunters", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (var i in data) {
+          var item = data[i];
+          this.setState({
+            data: [
+              ...this.state.data,
+              {
+                id: item.id,
+                name: item.name,
+                email: item.email,
+                image: item.photo,
+              },
+            ],
+          });
+          this.setState({
+            volunteers: [
+              ...this.state.volunteers,
+              {
+                id: item.id,
+                name: item.name,
+                email: item.email,
+                image: item.photo,
+                numero: item.numero,
+                address: item.address,
+                date_naissance: item.date_naissance,
+                photo: item.photo,
+                calendrier: item.calendrier,
+                qualifacations: item.qualifacations,
+                activites: item.activites,
+              },
+            ],
+          });
+        }
+        this.setState({ loading: false });
+      })
+      .done();
+  };
+  makeRemoteRequest = () => {
+    // this.setState({
+    //   loading: false,
+    //   refreshing: false,
+    // });
   };
 
   handleRefresh = () => {
@@ -98,8 +138,15 @@ export default class CommunityDemo extends React.Component {
       </View>
     );
   };
- goToView2 = () => {
-    console.log('Navigation router run...');
+  goToView2 = (id) => {
+    var array = this.state.volunteers;
+    console.log(id);
+    for (var i in array) {
+      var item = array[i];
+      if (item.id === id) {
+        this.props.navigation.navigate("ContactDetail", item);
+      }
+    }
   };
 
   render() {
@@ -109,14 +156,13 @@ export default class CommunityDemo extends React.Component {
         renderItem={({ item }) => (
           <ListItem
             button
-            onPress={this.goToView2}
-            title={`${item.nom} ${item.prenom}`}
+            onPress={() => this.goToView2(item.id)}
+            title={item.name}
             subtitle={item.email}
             leftAvatar={{
               rounded: true,
               source: {
-                uri:
-                  "https://pbs.twimg.com/profile_images/1210618202457292802/lt9KD2lt_400x400.jpg",
+                uri: item.image,
               },
             }}
             linearGradientProps={{

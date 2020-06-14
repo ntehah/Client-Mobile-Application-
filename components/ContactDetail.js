@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  DatePickerAndroid,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -14,7 +15,7 @@ import image from "../assets/images/Profile.png";
 import { MaterialIcons } from "@expo/vector-icons";
 import FormTextInput from "../components/FormTextInput";
 
-function Info() {
+function Info(props) {
   const [LundiMatin, setLundiMatin] = useState(false);
   const [LundiApresMidi, setLundiApresMidi] = useState(false);
   const [LundiSoiree, setLundiSoiree] = useState(false);
@@ -43,9 +44,62 @@ function Info() {
   const [DimancheApresMidi, setDimancheApresMidi] = useState(false);
   const [DimancheSoiree, setDimancheSoiree] = useState(false);
   //-------------------------------------------------------
-  const [AddNote, setAddNote] = useState(false);
-  const [Note, setNote] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Numero, setNumero] = useState("");
+  const [Address, setAddress] = useState("");
+  const [Date, setDate] = useState("");
+
   //-------------------------------------------------------
+  useEffect(() => {
+    setProfile();
+  }, []);
+  setProfile = () => {
+    setEmail(props.email);
+    setAddress(props.address);
+    setDate(props.date_naissance);
+    setNumero(props.numero);
+    let cal = props.calendrier;
+    for (var i in cal) {
+      var item = cal[i];
+      console.log(item);
+
+      if (item.journame == "lundi") {
+        setLundiMatin(item.matin);
+        setLundiApresMidi(item.midi);
+        setLundiSoiree(item.soir);
+      }
+      if (item.journame == "mardi") {
+        setMardiMatin(item.matin);
+        setMardiApresMidi(item.midi);
+        setMardiSoiree(item.soir);
+      }
+      if (item.journame == "mercredi") {
+        setMercrediMatin(item.matin);
+        setMercrediApresMidi(item.midi);
+        setMercrediSoiree(item.soir);
+      }
+      if (item.journame == "jeudi") {
+        setJeudiMatin(item.matin);
+        setJeudiApresMidi(item.midi);
+        setJeudiSoiree(item.soir);
+      }
+      if (item.journame == "vendredi") {
+        setVendrediMatin(item.matin);
+        setVendrediApresMidi(item.midi);
+        setVendrediSoiree(item.soir);
+      }
+      if (item.journame == "samedi") {
+        setSamediMatin(item.matin);
+        setSamediApresMidi(item.midi);
+        setSamediSoiree(item.soir);
+      }
+      if (item.journame == "dimanche") {
+        setDimancheMatin(item.matin);
+        setDimancheApresMidi(item.midi);
+        setDimancheSoiree(item.soir);
+      }
+    }
+  };
   const OnButtonToggleAddNote = () => {
     if (AddNote === true) {
       return (
@@ -79,19 +133,19 @@ function Info() {
 
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Email: </Text>
-        <Text style={InfoStyles.text}>ntehah.kdr07@gmail.com</Text>
+        <Text style={InfoStyles.text}>{Email}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Numero: </Text>
-        <Text style={InfoStyles.text}>+21695282211</Text>
+        <Text style={InfoStyles.text}>{Numero}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Address: </Text>
-        <Text style={InfoStyles.text}>Zarzouna,Bizerte</Text>
+        <Text style={InfoStyles.text}>{Address}</Text>
       </View>
       <View style={InfoStyles.row}>
         <Text style={InfoStyles.text}>Date de naissance: </Text>
-        <Text style={InfoStyles.text}>20/02/2000</Text>
+        <Text style={InfoStyles.text}>{Date}</Text>
       </View>
       <View style={InfoStyles.TitleView}>
         <Text style={InfoStyles.textTitle}>Documents</Text>
@@ -111,21 +165,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={LundiMatin}
-            onPress={() => {
-              setLundiMatin(!LundiMatin);
-            }}
+            // onPress={() => {
+            //   setLundiMatin(!LundiMatin);
+            // }}
           />
           <CheckBox
             checked={LundiApresMidi}
-            onPress={() => {
-              setLundiApresMidi(!LundiApresMidi);
-            }}
+            // onPress={() => {
+            //   setLundiApresMidi(!LundiApresMidi);
+            // }}
           />
           <CheckBox
             checked={LundiSoiree}
-            onPress={() => {
-              setLundiSoiree(!LundiSoiree);
-            }}
+            // onPress={() => {
+            //   setLundiSoiree(!LundiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -133,21 +187,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MardiMatin}
-            onPress={() => {
-              setMardiMatin(!MardiMatin);
-            }}
+            // onPress={() => {
+            //   setMardiMatin(!MardiMatin);
+            // }}
           />
           <CheckBox
             checked={MardiApresMidi}
-            onPress={() => {
-              setMardiApresMidi(!MardiApresMidi);
-            }}
+            // onPress={() => {
+            //   setMardiApresMidi(!MardiApresMidi);
+            // }}
           />
           <CheckBox
             checked={MardiSoiree}
-            onPress={() => {
-              setMardiSoiree(!MardiSoiree);
-            }}
+            // onPress={() => {
+            //   setMardiSoiree(!MardiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -155,21 +209,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MercrediMatin}
-            onPress={() => {
-              setMercrediMatin(!MercrediMatin);
-            }}
+            // onPress={() => {
+            //   setMercrediMatin(!MercrediMatin);
+            // }}
           />
           <CheckBox
             checked={MercrediApresMidi}
-            onPress={() => {
-              setMercrediApresMidi(!MercrediApresMidi);
-            }}
+            // onPress={() => {
+            //   setMercrediApresMidi(!MercrediApresMidi);
+            // }}
           />
           <CheckBox
             checked={MercrediSoiree}
-            onPress={() => {
-              setMercrediSoiree(!MercrediSoiree);
-            }}
+            // onPress={() => {
+            //   setMercrediSoiree(!MercrediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -177,21 +231,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={JeudiMatin}
-            onPress={() => {
-              setJeudiMatin(!JeudiMatin);
-            }}
+            // onPress={() => {
+            //   setJeudiMatin(!JeudiMatin);
+            // }}
           />
           <CheckBox
             checked={JeudiApresMidi}
-            onPress={() => {
-              setJeudiApresMidi(!JeudiApresMidi);
-            }}
+            // onPress={() => {
+            //   setJeudiApresMidi(!JeudiApresMidi);
+            // }}
           />
           <CheckBox
             checked={JeudiSoiree}
-            onPress={() => {
-              setJeudiSoiree(!JeudiSoiree);
-            }}
+            // onPress={() => {
+            //   setJeudiSoiree(!JeudiSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -199,21 +253,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={VendrediMatin}
-            onPress={() => {
-              setVendrediMatin(!VendrediMatin);
-            }}
+            // onPress={() => {
+            //   setVendrediMatin(!VendrediMatin);
+            // }}
           />
           <CheckBox
             checked={VendrediApresMidi}
-            onPress={() => {
-              setVendrediApresMidi(!VendrediApresMidi);
-            }}
+            // onPress={() => {
+            //   setVendrediApresMidi(!VendrediApresMidi);
+            // }}
           />
           <CheckBox
             checked={VendrediSoiree}
-            onPress={() => {
-              setVendrediSoiree(!VendrediSoiree);
-            }}
+            // onPress={() => {
+            //   setVendrediSoiree(!VendrediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -221,21 +275,21 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={SamediMatin}
-            onPress={() => {
-              setSamediMatin(!SamediMatin);
-            }}
+            // onPress={() => {
+            //   setSamediMatin(!SamediMatin);
+            // }}
           />
           <CheckBox
             checked={SamediApresMidi}
-            onPress={() => {
-              setSamediApresMidi(!SamediApresMidi);
-            }}
+            // onPress={() => {
+            //   setSamediApresMidi(!SamediApresMidi);
+            // }}
           />
           <CheckBox
             checked={SamediSoiree}
-            onPress={() => {
-              setSamediSoiree(!SamediSoiree);
-            }}
+            // onPress={() => {
+            //   setSamediSoiree(!SamediSoiree);
+            // }}
           />
         </View>
         <View style={InfoStyles.Jour}>
@@ -243,25 +297,25 @@ function Info() {
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={DimancheMatin}
-            onPress={() => {
-              setDimancheMatin(!DimancheMatin);
-            }}
+            // onPress={() => {
+            //   setDimancheMatin(!DimancheMatin);
+            // }}
           />
           <CheckBox
             checked={DimancheApresMidi}
-            onPress={() => {
-              setDimancheApresMidi(!DimancheApresMidi);
-            }}
+            // onPress={() => {
+            //   setDimancheApresMidi(!DimancheApresMidi);
+            // }}
           />
           <CheckBox
             checked={DimancheSoiree}
-            onPress={() => {
-              setDimancheSoiree(!DimancheSoiree);
-            }}
+            // onPress={() => {
+            //   setDimancheSoiree(!DimancheSoiree);
+            // }}
           />
         </View>
       </View>
-      <View style={InfoStyles.Note}>
+      {/* <View style={InfoStyles.Note}>
         <CheckBox
           center
           title="créer une note sur abdelkade"
@@ -277,7 +331,7 @@ function Info() {
         <View>
           <OnButtonToggleAddNote />
         </View>
-      </View>
+      </View> */}
       <View style={InfoStyles.ButtonView}>
         <TouchableOpacity style={InfoStyles.Button}>
           <Text style={InfoStyles.ButtonText}>Supprimer de l'organistaion</Text>
@@ -370,7 +424,7 @@ const InfoStyles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
-function Qualification() {
+function Qualification(props) {
   const [AddSikll, setAddSkill] = useState(false);
   const [skill, setskill] = useState("");
   const OnButtonToggleAddSkill = () => {
@@ -398,37 +452,32 @@ function Qualification() {
   return (
     <View style={QualificationStyles.container}>
       <View style={QualificationStyles.Skills}>
-        <Text style={QualificationStyles.textTitle}>Prenom Compétences</Text>
+        <Text style={QualificationStyles.textTitle}>Compétences</Text>
         <View style={QualificationStyles.skillTab}>
-          <View style={QualificationStyles.skill}>
-            <Text style={QualificationStyles.text}>Java</Text>
-          </View>
-          <View style={QualificationStyles.skill}>
-            <Text style={QualificationStyles.text}>Python</Text>
-          </View>
+          {props.Skills.map((s, index) => (
+            <View style={QualificationStyles.skill} key={index}>
+              <Text style={QualificationStyles.text}>{s.qualifacation}</Text>
+            </View>
+          ))}
         </View>
-        <View style={QualificationStyles.IconAdd}>
-          <CheckBox
-            iconRight
-            iconType="material"
-            checkedIcon="clear"
-            size={35}
-            uncheckedColor={Colors.DODGER_BLUE}
-            uncheckedIcon="add"
-            checked={AddSikll}
-            onPress={() => {
-              setAddSkill(!AddSikll);
-            }}
-          />
-        </View>
-        <View>
-          <OnButtonToggleAddSkill />
-        </View>
+        {/* <View style={QualificationStyles.IconAdd}>
+        <CheckBox
+          iconRight
+          iconType="material"
+          checkedIcon="clear"
+          size={35}
+          uncheckedColor={Colors.DODGER_BLUE}
+          uncheckedIcon="add"
+          checked={AddSikll}
+          onPress={() => {
+            setAddSkill(!AddSikll);
+          }}
+        />
+      </View> */}
+        {/* <View>
+        <OnButtonToggleAddSkill />
+      </View> */}
       </View>
-      <View style={QualificationStyles.Affectations}>
-        <Text style={QualificationStyles.textTitle}>Affectations</Text>
-      </View>
-
     </View>
   );
 }
@@ -438,7 +487,7 @@ const QualificationStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: 10,
-    marginTop:8,
+    marginTop: 8,
   },
   textSkill: {
     color: Colors.DODGER_BLUE,
@@ -466,8 +515,8 @@ const QualificationStyles = StyleSheet.create({
     justifyContent: "flex-end",
     marginRight: 6,
   },
-  Affectations:{
-    marginLeft:10,
+  Affectations: {
+    marginLeft: 10,
   },
 });
 function Activite() {
@@ -503,17 +552,33 @@ const FormStyles = StyleSheet.create({
   },
 });
 
-export default function ContactDetail(props) {
+export default function ContactDetail({ route }) {
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
   const [form, setForm] = useState(false);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    setDataContact();
+  }, []);
+  setDataContact = () => {
+    setData(route.params);
+  };
   const Affiche = () => {
     if (info) {
-      return <Info />;
+      return (
+        <Info
+          calendrier={data.calendrier}
+          email={data.email}
+          numero={data.numero}
+          dateDeNaissance={data.date_naissance}
+          address={data.address}
+        />
+      );
     }
     if (qualification) {
-      return <Qualification />;
+      return <Qualification Skills={data.qualifacations} />;
     }
     if (activite) {
       return <Activite />;
@@ -523,14 +588,13 @@ export default function ContactDetail(props) {
     }
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.imageView}>
-          <Image source={image} style={styles.image} />
+          <Image source={{ uri: data.image }} style={styles.image} />
         </View>
         <View style={styles.textView}>
-          <Text style={styles.text}>Prenom</Text>
-          <Text style={styles.text}>Nom</Text>
+          <Text style={styles.text}>{data.name}</Text>
           <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
         </View>
       </View>
@@ -605,7 +669,7 @@ export default function ContactDetail(props) {
       <View>
         <Affiche />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
