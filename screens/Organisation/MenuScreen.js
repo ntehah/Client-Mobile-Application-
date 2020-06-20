@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import image from "../../assets/images/Profile.png";
 import Colors from "../../constants/Colors";
+import Task from "./Task"
 import {
   MaterialCommunityIcons,
   Ionicons,
@@ -11,6 +12,8 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { AuthContext } from "../../Services/AuthContext";
 import { createStackNavigator } from "@react-navigation/stack";
 import AddEvenement from "./AddEvenement";
+import AddTask from "../../components/AddTask";
+
 const Stack = createStackNavigator();
 
 function Menu({ navigation }) {
@@ -18,6 +21,13 @@ function Menu({ navigation }) {
 
   AddEventHandler = () => {
     navigation.navigate("AddEvent");
+  };
+  AddTaskHandler = () => {
+    navigation.navigate("AddTask");
+
+  };
+  TasksHandler = () => {
+    navigation.navigate("Task");
   };
   SignOutHundler = () => {
     authContext.signOut();
@@ -39,11 +49,25 @@ function Menu({ navigation }) {
             size={35}
             color={Colors.DODGER_BLUE}
           />
-          <Text style={styles.text}>Toutes les</Text>
           <Text style={styles.text}>Événements</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={styles.Buttons}>
+        <TouchableOpacity style={styles.Button} onPress={AddTaskHandler}>
+          <Ionicons name="ios-add" size={40} color={Colors.DODGER_BLUE} />
+          <Text style={styles.text}>Ajouter</Text>
+          <Text style={styles.text}>Tâche</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.Button} onPress={TasksHandler}>
+          <MaterialIcons
+            name="event-available"
+            size={35}
+            color={Colors.DODGER_BLUE}
+          />
+          <Text style={styles.text}>Tâches</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.Buttons}>
         <TouchableOpacity style={styles.Button} onPress={SignOutHundler}>
           <MaterialCommunityIcons
             name="file-document-box-multiple"
@@ -71,7 +95,17 @@ export default function MenuScreen() {
       <Stack.Screen
         name="AddEvent"
         component={AddEvenement}
-        options={{ title: "inscription", headerBackTitle: "Retour" }}
+        options={{ title: "Ajouter Événement", headerBackTitle: "Retour" }}
+      />
+       <Stack.Screen
+        name="Task"
+        component={Task}
+        options={{ title: "Tâches", headerBackTitle: "Retour" }}
+      />
+       <Stack.Screen
+        name="AddTask"
+        component={AddTask}
+        options={{ title: "Ajouter Tâche", headerBackTitle: "Retour" }}
       />
     </Stack.Navigator>
   );
