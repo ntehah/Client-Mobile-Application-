@@ -8,7 +8,7 @@ import Cart from "../../components/Cart";
 
 function Add(props) {
   return (
-    <View>
+    <View>clea
       <Text>Add</Text>
     </View>
   );

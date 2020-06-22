@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import image from "../../assets/images/Profile.png";
 import Colors from "../../constants/Colors";
-import Task from "./Task"
+import Task from "./Task";
 import {
   MaterialCommunityIcons,
   Ionicons,
@@ -13,18 +13,21 @@ import { AuthContext } from "../../Services/AuthContext";
 import { createStackNavigator } from "@react-navigation/stack";
 import AddEvenement from "./AddEvenement";
 import AddTask from "../../components/AddTask";
+import EvenementScreen from "./EvenementScreen";
 
 const Stack = createStackNavigator();
 
 function Menu({ navigation }) {
-  const [state,authContext] = React.useContext(AuthContext);
+  const [state, authContext] = React.useContext(AuthContext);
 
   AddEventHandler = () => {
     navigation.navigate("AddEvent");
   };
+  EventHandler = () => {
+    navigation.navigate("EvenementScreen");
+  };
   AddTaskHandler = () => {
     navigation.navigate("AddTask");
-
   };
   TasksHandler = () => {
     navigation.navigate("Task");
@@ -43,7 +46,7 @@ function Menu({ navigation }) {
           <Text style={styles.text}>Ajouter</Text>
           <Text style={styles.text}>Événement</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Button}>
+        <TouchableOpacity style={styles.Button} onPress={EventHandler}>
           <MaterialIcons
             name="event-available"
             size={35}
@@ -97,12 +100,17 @@ export default function MenuScreen() {
         component={AddEvenement}
         options={{ title: "Ajouter Événement", headerBackTitle: "Retour" }}
       />
-       <Stack.Screen
+      <Stack.Screen
+        name="EvenementScreen"
+        component={EvenementScreen}
+        options={{ title: "Événements", headerBackTitle: "Retour" }}
+      />
+      <Stack.Screen
         name="Task"
         component={Task}
         options={{ title: "Tâches", headerBackTitle: "Retour" }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="AddTask"
         component={AddTask}
         options={{ title: "Ajouter Tâche", headerBackTitle: "Retour" }}

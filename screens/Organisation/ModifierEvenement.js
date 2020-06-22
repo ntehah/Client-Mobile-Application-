@@ -19,18 +19,30 @@ import * as Permissions from "expo-permissions";
 import { UrlServer } from "../../constants/UrlServer";
 
 import Constants from "expo-constants";
-export default function AddEvenement({navigation}) {
-  const [titre, setTitre] = useState("");
-  const [adress, setAdress] = useState("");
-  const [date, setDate] = useState(new Date());
+export default function ModifierEvenement({ route, navigation }) {
+  const {
+    address1,
+    id,
+    date1,
+    titre1,
+    debut1,
+    description1,
+    fin1,
+    city1,
+    photoEvent1,
+  } = route.params;
+  let date2 = Date.parse(date1);
+  const [titre, setTitre] = useState(titre1);
+  const [adress, setAdress] = useState(address1);
+  const [date, setDate] = useState(new Date(date2));
   const [debut, setDebut] = useState(new Date());
   const [fin, setFin] = useState(new Date());
-  const [city, setCity] = useState("");
-  const [description, setDescription] = useState("");
+  const [city, setCity] = useState(city1);
+  const [description, setDescription] = useState(description1);
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [isFinPickerVisible, setIsFinPickerVisible] = useState(false);
-  const [photo, setphoto] = useState(null);
+  const [photo, setphoto] = useState(photoEvent1);
   useEffect(() => {
     getPermissionAsync();
   });
@@ -72,7 +84,7 @@ export default function AddEvenement({navigation}) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: 0,
+        id: id,
         titre: titre,
         date: date.getTime(),
         debut: debut.getTime(),
@@ -94,6 +106,7 @@ export default function AddEvenement({navigation}) {
   };
   const AjouterEventHandler = () => {
     AjouterVolunteer();
+    console.log("date" + date.getTime() + "debut" + debut.getTime());
   };
   return (
     <ScrollView
