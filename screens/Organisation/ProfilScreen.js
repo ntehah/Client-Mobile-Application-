@@ -59,10 +59,9 @@ export default function ProfilScreen({ route }) {
         email: EMAIL,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
-        console.log(data);
-        if (data != null) setEtat(false);
+        if (data === "true") setEtat(false);
       })
 
       .done();
@@ -83,9 +82,10 @@ export default function ProfilScreen({ route }) {
         etat: "REQUEST",
       }),
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
         console.log(data);
+        setEtat(false);
       })
 
       .done();

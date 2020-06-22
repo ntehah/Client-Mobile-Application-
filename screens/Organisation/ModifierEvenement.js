@@ -106,7 +106,7 @@ export default function ModifierEvenement({ route, navigation }) {
   };
   const AjouterEventHandler = () => {
     AjouterVolunteer();
-    console.log("date" + date.getTime() + "debut" + debut.getTime());
+    navigation.navigate("ListEvent")
   };
   return (
     <ScrollView
@@ -243,7 +243,7 @@ export default function ModifierEvenement({ route, navigation }) {
             style={styles.ButtonPhoto}
             onPress={AjouterEventHandler}
           >
-            <Text style={styles.textButtonAdd}>Ajouter</Text>
+            <Text style={styles.textButtonAdd}>Modifier</Text>
 
             <FontAwesome
               name="angle-double-right"

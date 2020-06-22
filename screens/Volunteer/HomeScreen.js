@@ -44,12 +44,12 @@ function ListOrganization(props) {
 
       .done();
   };
-  function handleOrg() {
+  function handleOrg(org) {
     props.navigation.navigate("organization", {
-      image: Org.photo,
-      name: Org.name,
-      description: Org.description,
-      email:Org.email,
+      image: org.photo,
+      name: org.name,
+      description: org.description,
+      email: org.email,
     });
   }
   return (
@@ -62,13 +62,7 @@ function ListOrganization(props) {
           <View>
             {DataOr.map((org, index) => {
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setOrg(org);
-                    handleOrg();
-                  }}
-                  key={index}
-                >
+                <TouchableOpacity onPress={() => handleOrg(org)} key={index}>
                   <CartOrganization image={org.photo} name={org.name} />
                 </TouchableOpacity>
               );

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   AsyncStorage,
+  Alert,
 } from "react-native";
 import FormTextInput from "../../components/FormTextInput";
 import Colors from "../../constants/Colors";
@@ -19,7 +20,7 @@ import * as Permissions from "expo-permissions";
 import { UrlServer } from "../../constants/UrlServer";
 
 import Constants from "expo-constants";
-export default function AddEvenement({navigation}) {
+export default function AddEvenement({ navigation }) {
   const [titre, setTitre] = useState("");
   const [adress, setAdress] = useState("");
   const [date, setDate] = useState(new Date());
@@ -94,6 +95,19 @@ export default function AddEvenement({navigation}) {
   };
   const AjouterEventHandler = () => {
     AjouterVolunteer();
+    Alert.alert(
+      "Evénement!!!",
+      "l'événement est ajouter",
+      [
+        {
+          text: "Ok",
+          onPress: () => {
+            navigation.navigate("Menu");
+          },
+        },
+      ],
+      { cancelable: false },
+    );
   };
   return (
     <ScrollView

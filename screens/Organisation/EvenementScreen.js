@@ -93,9 +93,9 @@ function ListEvent(props) {
         {
           text: "Supprimer",
           onPress: () => {
+            DeleteEvent(id);
             setLoading(true);
             GetEvents();
-            DeleteEvent(id);
           },
         },
         {

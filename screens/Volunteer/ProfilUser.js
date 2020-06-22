@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
@@ -68,8 +69,6 @@ function Info(props) {
     let cal = props.calendrier;
     for (var i in cal) {
       var item = cal[i];
-      console.log(item);
-
       if (item.journame == "lundi") {
         setLundiMatin(item.matin);
         setLundiApresMidi(item.midi);
@@ -563,6 +562,8 @@ export default function ProfilUser() {
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [form, setForm] = useState(false);
   const [Data, setData] = useState({});
   useEffect(() => {
@@ -571,7 +572,6 @@ export default function ProfilUser() {
   getProfile = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
     var EMAIL = await AsyncStorage.getItem("email");
-    console.log(EMAIL);
     fetch(UrlServer + "volunteer/getprofil", {
       method: "POST",
       headers: {
@@ -586,7 +586,7 @@ export default function ProfilUser() {
       .then((response) => response.json())
       .then((data) => {
         setData(data);
-        // console.log(data.calendrier);
+        setLoading(false)
       })
       .done();
   };
@@ -610,107 +610,128 @@ export default function ProfilUser() {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.nav}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={SignOutHundler}
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
         >
-          <MaterialCommunityIcons
-            name="logout"
-            size={24}
-            color={Colors.DODGER_BLUE}
-          />
-          <Text style={{ color: Colors.DODGER_BLUE }}>Déconnexion</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-        <View style={styles.header}>
-          <View style={styles.imageView}>
-            <Image source={{ uri: Data.photo }} style={styles.image} />
-          </View>
-          <View style={styles.textView}>
-            <Text style={styles.text}>{Data.name}</Text>
-            <Text style={styles.textDateHeader}>Cree Juin 2020</Text>
-          </View>
+          <ActivityIndicator size="large" color={Colors.BLACK} />
         </View>
-        <View style={styles.NavBar}>
-          <TouchableOpacity
-            onPress={() => {
-              if (info) setInfo(info);
-              else {
-                setInfo(!info);
-                setQualification(false);
-                setActivite(false);
-                setForm(false);
-              }
-            }}
-          >
-            <Text
-              style={info ? styles.texttextNavBarOnpress : styles.textNavBar}
-            >
-              Profile
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (qualification) setQualification(qualification);
-              else {
-                setInfo(false);
-                setQualification(!qualification);
-                setActivite(false);
-                setForm(false);
-              }
-            }}
-          >
-            <Text
-              style={
-                qualification ? styles.texttextNavBarOnpress : styles.textNavBar
-              }
-            >
-              Qualification
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (activite) setActivite(activite);
-              else {
-                setInfo(false);
-                setQualification(false);
-                setActivite(!activite);
-                setForm(false);
-              }
-            }}
-          >
-            <Text
-              style={
-                activite ? styles.texttextNavBarOnpress : styles.textNavBar
-              }
-            >
-              Activité
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (form) setForm(form);
-              else {
-                setInfo(false);
-                setQualification(false);
-                setActivite(false);
-                setForm(!form);
-              }
-            }}
-          >
-            <Text
-              style={form ? styles.texttextNavBarOnpress : styles.textNavBar}
-            >
-              Form
-            </Text>
-          </TouchableOpacity>
-        </View>
+      ) : (
         <View>
-          <Affiche />
+          <View style={styles.nav}>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center" }}
+              onPress={SignOutHundler}
+            >
+              <MaterialCommunityIcons
+                name="logout"
+                size={24}
+                color={Colors.DODGER_BLUE}
+              />
+              <Text style={{ color: Colors.DODGER_BLUE }}>Déconnexion</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <View style={styles.header}>
+              <View style={styles.imageView}>
+                <Image source={{ uri: Data.photo }} style={styles.image} />
+              </View>
+              <View style={styles.textView}>
+                <Text style={styles.text}>{Data.name}</Text>
+                <Text style={styles.textDateHeader}>Cree Juin 2020</Text>
+              </View>
+            </View>
+            <View style={styles.NavBar}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (info) setInfo(info);
+                  else {
+                    setInfo(!info);
+                    setQualification(false);
+                    setActivite(false);
+                    setForm(false);
+                  }
+                }}
+              >
+                <Text
+                  style={
+                    info ? styles.texttextNavBarOnpress : styles.textNavBar
+                  }
+                >
+                  Profile
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (qualification) setQualification(qualification);
+                  else {
+                    setInfo(false);
+                    setQualification(!qualification);
+                    setActivite(false);
+                    setForm(false);
+                  }
+                }}
+              >
+                <Text
+                  style={
+                    qualification
+                      ? styles.texttextNavBarOnpress
+                      : styles.textNavBar
+                  }
+                >
+                  Qualification
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (activite) setActivite(activite);
+                  else {
+                    setInfo(false);
+                    setQualification(false);
+                    setActivite(!activite);
+                    setForm(false);
+                  }
+                }}
+              >
+                <Text
+                  style={
+                    activite ? styles.texttextNavBarOnpress : styles.textNavBar
+                  }
+                >
+                  Activité
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (form) setForm(form);
+                  else {
+                    setInfo(false);
+                    setQualification(false);
+                    setActivite(false);
+                    setForm(!form);
+                  }
+                }}
+              >
+                <Text
+                  style={
+                    form ? styles.texttextNavBarOnpress : styles.textNavBar
+                  }
+                >
+                  Form
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Affiche />
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      )}
     </View>
   );
 }

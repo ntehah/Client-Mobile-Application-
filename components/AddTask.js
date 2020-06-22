@@ -6,7 +6,7 @@ import {
   Picker,
   TouchableOpacity,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import Colors from "../constants/Colors";
 import {
@@ -53,8 +53,7 @@ export default function AddTask({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setEvents([...volunteers,data]);
-
+        console.log(data);
       })
       .done();
     fetch(UrlServer + "task/getallev", {
@@ -70,96 +69,99 @@ export default function AddTask({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setEvents([...Events,data]);
-
+        console.log(data);
       })
       .done();
-      setLoading(false);
+    setLoading(false);
   };
   return (
     <ScrollView style={styles.container}>
-     {loading ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 300,
-            }}
-          >
-            <ActivityIndicator size="large" color={Colors.BLACK} />
-          </View>
-        ) : (
-          <View>
-      <FormTextInput
-        placeHolder="Titre"
-        nameIcon="text"
-        ColorIcon={Colors.BLACK}
-        onChangeText={(text) => {
-          setTitre(text);
-        }}
-        value={titre}
-      />
-      <FormTextInput
-        placeHolder="Description"
-        nameIcon="text"
-        ColorIcon={Colors.BLACK}
-        onChangeText={(text) => {
-          setDescription(text);
-        }}
-        value={description}
-      />
-      <View style={styles.DateEventView}>
-        <Text style={styles.text}>Date Limite :</Text>
-        <Text style={styles.text}>
-          {date.getDate()} - {date.getMonth()} - {date.getFullYear()}
-        </Text>
-        <View>
-          <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
-            <MaterialCommunityIcons name="timetable" size={30} color="black" />
-          </TouchableOpacity>
-          <DateTimePicker
-            isVisible={isDatePickerVisible}
-            onConfirm={(date) => {
-              setDate(date);
-              setIsDatePickerVisible(false);
-            }}
-            onCancel={() => setIsDatePickerVisible(false)}
-          />
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
         </View>
-      </View>
-      <View style={styles.picker}>
-        <Text style={styles.text}>Sélectionné Bénévole </Text>
-        <Picker
-          selectedValue={selectedVolunteerName}
-          style={{ width: "100%" }}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedVolunteerName(itemValue)
-          }
-        >
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="Java1" value="java1" />
-          <Picker.Item label="Java2" value="java2" />
-          <Picker.Item label="Java3" value="java3" />
+      ) : (
+        <View>
+          <FormTextInput
+            placeHolder="Titre"
+            nameIcon="text"
+            ColorIcon={Colors.BLACK}
+            onChangeText={(text) => {
+              setTitre(text);
+            }}
+            value={titre}
+          />
+          <FormTextInput
+            placeHolder="Description"
+            nameIcon="text"
+            ColorIcon={Colors.BLACK}
+            onChangeText={(text) => {
+              setDescription(text);
+            }}
+            value={description}
+          />
+          <View style={styles.DateEventView}>
+            <Text style={styles.text}>Date Limite :</Text>
+            <Text style={styles.text}>
+              {date.getDate()} - {date.getMonth()} - {date.getFullYear()}
+            </Text>
+            <View>
+              <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
+                <MaterialCommunityIcons
+                  name="timetable"
+                  size={30}
+                  color="black"
+                />
+              </TouchableOpacity>
+              <DateTimePicker
+                isVisible={isDatePickerVisible}
+                onConfirm={(date) => {
+                  setDate(date);
+                  setIsDatePickerVisible(false);
+                }}
+                onCancel={() => setIsDatePickerVisible(false)}
+              />
+            </View>
+          </View>
+          <View style={styles.picker}>
+            <Text style={styles.text}>Sélectionné Bénévole </Text>
+            <Picker
+              selectedValue={selectedVolunteerName}
+              style={{ width: "100%" }}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedVolunteerName(itemValue)
+              }
+            >
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="Java1" value="java1" />
+              <Picker.Item label="Java2" value="java2" />
+              <Picker.Item label="Java3" value="java3" />
 
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
-      </View>
-      <View style={styles.picker}>
-        <Text style={styles.text}>Sélectionné l'événement</Text>
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+          </View>
+          <View style={styles.picker}>
+            <Text style={styles.text}>Sélectionné l'événement</Text>
 
-        <Picker
-          selectedValue={selectedEventName}
-          style={{ width: "100%" }}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedEventName(itemValue)
-          }
-        >
-          <Picker.Item label="Python" value="python" />
-          <Picker.Item label="C" value="C" />
-        </Picker>
-      </View>
-      </View>
+            <Picker
+              selectedValue={selectedEventName}
+              style={{ width: "100%" }}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedEventName(itemValue)
+              }
+            >
+              <Picker.Item label="Python" value="python" />
+              <Picker.Item label="C" value="C" />
+            </Picker>
+          </View>
+        </View>
       )}
     </ScrollView>
   );
