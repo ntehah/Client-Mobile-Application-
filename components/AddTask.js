@@ -9,24 +9,18 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Colors from "../constants/Colors";
-import {
-  MaterialCommunityIcons,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import FormTextInput from "./FormTextInput";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { UrlServer } from "../constants/UrlServer";
 
 export default function AddTask({ navigation }) {
-  const [selectedVolunteerName, setSelectedVolunteerName] = useState("java");
-  const [selectedVolunteerId, setSelectedVolunteerId] = useState("");
   const [volunteers, setVolunteers] = useState([]);
   const [Events, setEvents] = useState([]);
 
-  const [selectedEventName, setSelectedEventName] = useState("");
   const [selectedEventId, setSelectedEventId] = useState("");
+  const [selectedVolunteerId, setSelectedVolunteerId] = useState("");
 
   const [titre, setTitre] = useState("");
   const [description, setDescription] = useState("");
@@ -53,7 +47,7 @@ export default function AddTask({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        setVolunteers(data);
       })
       .done();
     fetch(UrlServer + "task/getallev", {
@@ -69,10 +63,36 @@ export default function AddTask({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        setEvents(data);
       })
       .done();
     setLoading(false);
+  };
+  AjouterTask = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    fetch(UrlServer + "task/addtask", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idEvent: selectedEventId,
+        idVolunteer: selectedVolunteerId,
+        titre: titre,
+        description: description,
+        date: date,
+      }),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+      })
+      .done();
+  };
+  AjouterTaskHandler = () => {
+    AjouterTask();
   };
   return (
     <ScrollView style={styles.container}>
@@ -133,33 +153,57 @@ export default function AddTask({ navigation }) {
           <View style={styles.picker}>
             <Text style={styles.text}>Sélectionné Bénévole </Text>
             <Picker
-              selectedValue={selectedVolunteerName}
+              selectedValue={selectedVolunteerId}
               style={{ width: "100%" }}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedVolunteerName(itemValue)
+                setSelectedVolunteerId(itemValue)
               }
             >
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="Java1" value="java1" />
-              <Picker.Item label="Java2" value="java2" />
-              <Picker.Item label="Java3" value="java3" />
-
-              <Picker.Item label="JavaScript" value="js" />
+              {volunteers.map((vol, index) => {
+                return (
+                  <Picker.Item
+                    label={vol.nameVolunteer}
+                    value={vol.idVolunteer}
+                    key={index}
+                  />
+                );
+              })}
             </Picker>
           </View>
           <View style={styles.picker}>
             <Text style={styles.text}>Sélectionné l'événement</Text>
 
             <Picker
-              selectedValue={selectedEventName}
+              selectedValue={selectedEventId}
               style={{ width: "100%" }}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedEventName(itemValue)
+                setSelectedEventId(itemValue)
               }
             >
-              <Picker.Item label="Python" value="python" />
-              <Picker.Item label="C" value="C" />
+              {Events.map((eve, index) => {
+                return (
+                  <Picker.Item
+                    label={eve.nameEvent}
+                    value={eve.idEvent}
+                    key={index}
+                  />
+                );
+              })}
             </Picker>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.Button}
+              onPress={AjouterTaskHandler}
+            >
+              <Text style={styles.text}>Ajouter</Text>
+
+              <FontAwesome
+                name="angle-double-right"
+                size={30}
+                color={Colors.WHITE}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       )}
