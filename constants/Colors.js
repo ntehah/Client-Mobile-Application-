@@ -18,5 +18,6 @@ export default {
   SILVER: "#CCE6F4",
   TORCH_RED: "#D00000",
   MISCHKA: "#40798C",
-  GREEN:"#23CE6B"
+  GREEN:"#23CE6B",
+  STATE:"#605B56"
 };

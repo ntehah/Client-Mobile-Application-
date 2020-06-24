@@ -1,5 +1,13 @@
-import * as React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  AsyncStorage,
+} from "react-native";
 import Colors from "../../constants/Colors";
 import {
   MaterialCommunityIcons,
@@ -8,12 +16,105 @@ import {
 } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
+import { UrlServer } from "../../constants/UrlServer";
+import TacheCard from "../../components/TacheCard";
 const Stack = createStackNavigator();
 
 function Tasks({ navigation }) {
+  const [DataTasks, setDataTasks] = useState({});
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    GetTasks();
+  }, []);
+  GetTasks = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "task/getalltasks", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setDataTasks(data);
+        setLoading(false);
+      })
+
+      .done();
+  };
   return (
     <ScrollView style={styles.container}>
-      <Text style={{ fontSize: 30 }}>Tasks</Text>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
+        </View>
+      ) : (
+        <View>
+          {
+            <View>
+              {DataTasks.length ? (
+                <View>
+                  {DataTasks.map((ta, index) => {
+                    return (
+                      <View key={index}>
+                        <TacheCard
+                          titre={ta.titre}
+                          description={ta.description}
+                          date={ta.date}
+                          state={ta.state}
+                        />
+                          <TacheCard
+                          titre={ta.titre}
+                          description={ta.description}
+                          date={ta.date}
+                          state={ta.state}
+                        />
+                          <TacheCard
+                          titre={ta.titre}
+                          description={ta.description}
+                          date={ta.date}
+                          state={ta.state}
+                        />
+                          <TacheCard
+                          titre={ta.titre}
+                          description={ta.description}
+                          date={ta.date}
+                          state={ta.state}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 300,
+                  }}
+                >
+                  <Text>tache mahoum 5alguin</Text>
+                </View>
+              )}
+            </View>
+          }
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -21,12 +122,7 @@ export default function Task() {
   return (
     <Stack.Navigator
       screenOptions={{
-        // headerStyle: {
-        //   backgroundColor: Colors.WHITE,
-        // },
-        // headerTitleStyle: { color: Colors.tintColor },
-        // headerTintColor: Colors.tintColor,
-        headerShown: false
+        headerShown: false,
       }}
     >
       <Stack.Screen
@@ -44,7 +140,6 @@ export default function Task() {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.DODGER_BLUE,
   },
   title: {
     paddingTop: 50,

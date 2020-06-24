@@ -70,6 +70,7 @@ export default function AddTask({ navigation }) {
   };
   AjouterTask = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
     fetch(UrlServer + "task/addtask", {
       method: "POST",
       headers: {
@@ -81,8 +82,10 @@ export default function AddTask({ navigation }) {
         idEvent: selectedEventId,
         idVolunteer: selectedVolunteerId,
         titre: titre,
+        emailorg: EMAIL,
         description: description,
-        date: date,
+        date: date.getTime(),
+        state:"A FAIRE"
       }),
     })
       .then((response) => response.text())
