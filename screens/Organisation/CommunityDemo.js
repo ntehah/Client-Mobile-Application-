@@ -1,20 +1,13 @@
 import React from "react";
 import {
   View,
-  Text,
   FlatList,
   ActivityIndicator,
   AsyncStorage,
 } from "react-native";
-import { List, ListItem, SearchBar } from "react-native-elements";
-import image from "../../assets/images/Profile.png";
+import {ListItem, SearchBar } from "react-native-elements";
 import { UrlServer } from "../../constants/UrlServer";
 
-const contacts = [
-  { id: 1, nom: "nom", prenom: "prenom", email: "email", photo: { image } },
-  { id: 1, nom: "nom", prenom: "prenom", email: "email", photo: { image } },
-  { id: 1, nom: "nom", prenom: "prenom", email: "email", photo: { image } },
-];
 export default class CommunityDemo extends React.Component {
   constructor(props) {
     super(props);
