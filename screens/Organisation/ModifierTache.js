@@ -3,33 +3,36 @@ import {
   StyleSheet,
   View,
   Text,
-  Picker,
+  Alert,
   TouchableOpacity,
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 import {
   MaterialCommunityIcons,
   FontAwesome,
   Ionicons,
 } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import FormTextInput from "./FormTextInput";
+import FormTextInput from "../../components/FormTextInput";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { UrlServer } from "../constants/UrlServer";
+import { UrlServer } from "../../constants/UrlServer";
 import RNPickerSelect from "react-native-picker-select";
 
-export default function AddTask({ navigation }) {
+export default function AddTask({ navigation, route }) {
+  const { titre1, description1, date1, id } = route.params;
+  let date2 = Date.parse(date1);
+
   const [volunteers, setVolunteers] = useState([]);
   const [Events, setEvents] = useState([]);
 
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedVolunteerId, setSelectedVolunteerId] = useState(null);
 
-  const [titre, setTitre] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [titre, setTitre] = useState(titre1);
+  const [description, setDescription] = useState(description1);
+  const [date, setDate] = useState(new Date(date2));
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -91,6 +94,7 @@ export default function AddTask({ navigation }) {
         }
       })
       .done();
+    console.log(titre1);
     setLoading(false);
   };
   AjouterTask = async () => {
@@ -104,7 +108,7 @@ export default function AddTask({ navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id:0,
+        id: id,
         idEvent: selectedEventId,
         idVolunteer: selectedVolunteerId,
         titre: titre,
@@ -130,6 +134,42 @@ export default function AddTask({ navigation }) {
       AjouterTask();
     }
   };
+  DeleteTask = async () => {
+    console.log(id);
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    fetch(UrlServer + "task/deletetask", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+      }),
+    }).done();
+  };
+  function handleSupprimerEvent() {
+    Alert.alert(
+      "Evénement!!!",
+      "Voulez vous supprimer l'événement ?",
+      [
+        {
+          text: "Supprimer",
+          onPress: () => {
+            DeleteTask();
+            navigation.navigate("Tasks");
+          },
+        },
+        {
+          text: "Annuler",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false },
+    );
+  }
   const placeholderEvenet = {
     label: "Sélectionné un événement...",
     value: null,
@@ -177,7 +217,7 @@ export default function AddTask({ navigation }) {
           />
           <View style={styles.DateEventView}>
             <Text style={styles.text}>Date Limite :</Text>
-            <Text style={styles.textDate}>
+            <Text style={styles.text}>
               {date.getDate()} - {date.getMonth()} - {date.getFullYear()}
             </Text>
             <View>
@@ -261,7 +301,13 @@ export default function AddTask({ navigation }) {
               style={styles.Button}
               onPress={AjouterTaskHandler}
             >
-              <Text style={styles.text}>Ajouter</Text>
+              <Text style={styles.text}>Modifier</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.ButtonSupprimer}
+              onPress={handleSupprimerEvent}
+            >
+              <Text style={styles.textSupprimer}>Supprimer</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -315,36 +361,52 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.WHITE,
   },
-  textDate:{
-    fontSize: 18,
-    fontWeight: "normal",
-    color: Colors.tintColor,
-  },
   Button: {
     width: 160,
-    height:40,
+    height: 40,
     borderRadius: 15,
-    marginTop: 40,
     backgroundColor: Colors.WHITE,
     paddingTop: 3,
     paddingBottom: 2,
     paddingLeft: 10,
-    shadowColor: "#0A369D",
+    shadowColor: Colors.BLUE,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
+  },
+  ButtonSupprimer: {
+    width: 160,
+    height: 40,
+    borderRadius: 15,
+    backgroundColor: Colors.WHITE,
+    paddingTop: 3,
+    paddingBottom: 2,
+    paddingLeft: 10,
+    shadowColor: Colors.TORCH_RED,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     fontSize: 18,
     fontWeight: "normal",
     color: Colors.BLUE,
   },
-  buttonView:{
-    width:"100%",
-    alignItems:"center",
-    justifyContent:"center",
-    marginBottom:100,
-}
+  textSupprimer: {
+    fontSize: 18,
+    fontWeight: "normal",
+    color: Colors.TORCH_RED,
+  },
+  buttonView: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop:20,
+    marginBottom: 20,
+  },
 });

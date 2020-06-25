@@ -7,6 +7,7 @@ import {
   MaterialCommunityIcons,
   Ionicons,
   MaterialIcons,
+  FontAwesome5
 } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { AuthContext } from "../../Services/AuthContext";
@@ -62,11 +63,7 @@ function Menu({ navigation }) {
           <Text style={styles.text}>Tâche</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.Button} onPress={TasksHandler}>
-          <MaterialIcons
-            name="event-available"
-            size={35}
-            color={Colors.DODGER_BLUE}
-          />
+        <FontAwesome5 name="tasks" size={30} color={Colors.DODGER_BLUE} />
           <Text style={styles.text}>Tâches</Text>
         </TouchableOpacity>
       </View>

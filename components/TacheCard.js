@@ -1,27 +1,43 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View,TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
-import profileimage from "../assets/images/logo.png";
-
+import { AntDesign } from "@expo/vector-icons";
 export default function TacheCard(props) {
-  //   let date =Date.parse(props.date);
-  //   var d = new Date(date);
+  modifier = () => {
+    props.navigation.navigate("ModifierTask",{
+      titre1:props.titre,
+      description1:props.description,
+      date1:props.date,
+      id:props.id
+    });
+  };
   return (
     <View style={styles.Cart}>
       <View style={styles.header}>
-        <Image source={profileimage} style={styles.image} />
-        <Text>userName</Text>
+        <View style={styles.headerUser}>
+          <Image source={{ uri: props.photovol }} style={styles.image} />
+          <Text style={styles.textTitleEvent}>{props.namevol}</Text>
+        </View>
+        <TouchableOpacity onPress={modifier}>
+          <AntDesign name="edit" size={30} color="#070707" />
+        </TouchableOpacity>
       </View>
       <View style={styles.titre}>
-        <Text style={styles.textTitle}>Ajouter une tache</Text>
+        <Text style={styles.textTitle}>{props.titre}</Text>
       </View>
 
       <View style={styles.description}>
         <Text style={styles.textDescription}>
-          If you check the react-native-vector-icons repo, there is a new icon
-          bundle which named Fontisto. You have two options right now, simply
-          fork the
+          React Native is an open-source mobile application framework created by
+          Facebook. It is used to develop applications for Android, iOS, Web and
+          UWP by enabling developers to use React along with native platform
+          capabilities. An incomplete port for Qt also exists.
         </Text>
+      </View>
+      <View style={styles.evenementView}>
+        <Text style={styles.textEvent}>Evénement: </Text>
+        <Image source={{ uri: props.photoEve }} style={styles.image} />
+        <Text style={styles.textTitleEvent}>{props.nameEve}</Text>
       </View>
       <View style={styles.footer}>
         <View>
@@ -29,7 +45,7 @@ export default function TacheCard(props) {
           <Text style={styles.textDate}>{props.date}</Text>
         </View>
         <View style={styles.state}>
-        <Text style={styles.textState}>{props.state}</Text>
+          <Text style={styles.textState}>{props.state}</Text>
         </View>
       </View>
     </View>
@@ -38,10 +54,9 @@ export default function TacheCard(props) {
 
 const styles = StyleSheet.create({
   Cart: {
-    height: 180,
     width: 300,
     flexDirection: "column",
-    backgroundColor: Colors.GREEN,
+    backgroundColor: Colors.BLUE,
     marginTop: 30,
     marginRight: 20,
     marginLeft: 36,
@@ -50,7 +65,8 @@ const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    borderWidth: 0.3,
+    borderWidth: 1,
+    borderColor:Colors.BLUE,
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
@@ -60,8 +76,14 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: Colors.WHITE,
     borderRadius: 20,
+    paddingRight: 10,
+  },
+  headerUser: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   titre: {
     width: "100%",
@@ -78,7 +100,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingLeft: 20,
     paddingRight: 20,
-    height: 60,
   },
   textDescription: {
     fontSize: 14,
@@ -92,8 +113,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 20,
     marginRight: 20,
-    paddingTop:10,
-
+    paddingTop: 10,
   },
   textDate: {
     fontSize: 14,
@@ -105,14 +125,36 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     color: Colors.WHITE,
   },
-  state:{
-      borderRadius:10,
-      borderBottomLeftRadius:0,
-      borderBottomEndRadius:0,
-      height:"100%",
-      width:80,
-      backgroundColor:Colors.STATE,
-      alignItems:"center",
-      justifyContent:"center",
-  }
+  state: {
+    borderRadius: 10,
+    borderBottomLeftRadius: 0,
+    borderBottomEndRadius: 0,
+    height: "100%",
+    width: 80,
+    backgroundColor: "#58A4B0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  evenementView: {
+    paddingTop: 10,
+    flexDirection: "row",
+    height: 50,
+    marginTop:10,
+    paddingBottom: 10,
+    alignItems: "center",
+    backgroundColor: Colors.WHITE,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  textEvent: {
+    paddingLeft: 10,
+    fontSize: 17,
+    fontWeight: "bold",
+    color: "#070707",
+  },
+  textTitleEvent: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#070707",
+  },
 });

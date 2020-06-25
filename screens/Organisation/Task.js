@@ -18,6 +18,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UrlServer } from "../../constants/UrlServer";
 import TacheCard from "../../components/TacheCard";
+import ModifierTache from "../Organisation/ModifierTache";
 const Stack = createStackNavigator();
 
 function Tasks({ navigation }) {
@@ -42,7 +43,6 @@ function Tasks({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setDataTasks(data);
         setLoading(false);
       })
@@ -76,24 +76,12 @@ function Tasks({ navigation }) {
                           description={ta.description}
                           date={ta.date}
                           state={ta.state}
-                        />
-                          <TacheCard
-                          titre={ta.titre}
-                          description={ta.description}
-                          date={ta.date}
-                          state={ta.state}
-                        />
-                          <TacheCard
-                          titre={ta.titre}
-                          description={ta.description}
-                          date={ta.date}
-                          state={ta.state}
-                        />
-                          <TacheCard
-                          titre={ta.titre}
-                          description={ta.description}
-                          date={ta.date}
-                          state={ta.state}
+                          photovol={ta.photoVolunteer}
+                          namevol={ta.nameVolunteer}
+                          nameEve={ta.nameEvenement}
+                          photoEve={ta.photoEvenement}
+                          navigation={navigation}
+                          id={ta.id}
                         />
                       </View>
                     );
@@ -130,17 +118,15 @@ export default function Task() {
         component={Tasks}
         options={{ title: "", headerBackTitle: "Retour" }}
       />
-      {/* <Stack.Screen
-          name="AddEvent"
-          component={AddEvenement}
-          options={{ title: "inscription", headerBackTitle: "Retour" }}
-        /> */}
+      <Stack.Screen
+          name="ModifierTask"
+          component={ModifierTache}
+        />
     </Stack.Navigator>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   title: {
     paddingTop: 50,
     paddingBottom: 10,

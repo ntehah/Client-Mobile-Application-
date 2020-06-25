@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     paddingRight:15
   },
   text:{
-    color:Colors.tintColor
+    color:Colors.BLUE,
   }
 
 });

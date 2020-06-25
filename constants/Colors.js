@@ -19,5 +19,6 @@ export default {
   TORCH_RED: "#D00000",
   MISCHKA: "#40798C",
   GREEN:"#23CE6B",
-  STATE:"#605B56"
+  STATE:"#605B56",
+  BLUE:"#0A369D",
 };
