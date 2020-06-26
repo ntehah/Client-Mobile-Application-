@@ -116,7 +116,6 @@ export default function AddTask({ navigation }) {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
       })
       .done();
   };

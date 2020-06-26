@@ -85,7 +85,6 @@ export default function ProfilScreen({ route }) {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
         setEtat(false);
       })
 

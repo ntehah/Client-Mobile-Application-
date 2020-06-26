@@ -100,12 +100,12 @@ function BenevolatInscription(props) {
           }
         });
     } else {
-      // Alert.alert(
-      //   "Login",
-      //   " verifier les champs ",
-      //   [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      //   { cancelable: false },
-      // );
+      Alert.alert(
+        "Login",
+        " verifier les champs ",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false },
+      );
     }
   }
   return (

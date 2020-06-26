@@ -139,7 +139,6 @@ class CommunityDemo extends React.Component {
   };
   goToView2 = (id) => {
     var array = this.state.volunteers;
-    console.log(id);
     for (var i in array) {
       var item = array[i];
       if (item.id === id) {

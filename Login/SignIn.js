@@ -48,7 +48,6 @@ export default function SignIn({ navigation }) {
       });
   };
   handleInscriptionPress = () => {
-    console.log("Inscription button pressed");
     navigation.navigate("inscription");
   };
   return (

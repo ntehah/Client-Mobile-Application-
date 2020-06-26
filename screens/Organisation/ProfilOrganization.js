@@ -130,7 +130,6 @@ function Demands(props) {
   };
   DetailProfile = (id) => {
     var array = volunteers;
-    console.log(id);
     for (var i in array) {
       var item = array[i];
       if (item.id === id) {

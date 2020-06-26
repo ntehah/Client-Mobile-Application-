@@ -94,7 +94,6 @@ export default function AddTask({ navigation, route }) {
         }
       })
       .done();
-    console.log(titre1);
     setLoading(false);
   };
   AjouterTask = async () => {
@@ -120,7 +119,6 @@ export default function AddTask({ navigation, route }) {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
       })
       .done();
   };
@@ -135,7 +133,6 @@ export default function AddTask({ navigation, route }) {
     }
   };
   DeleteTask = async () => {
-    console.log(id);
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
     fetch(UrlServer + "task/deletetask", {
       method: "POST",

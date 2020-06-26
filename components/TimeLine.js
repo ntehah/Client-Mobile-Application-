@@ -23,12 +23,9 @@ export default class TimeLine extends Component {
     this.GetAll();
   }
   onEventPress(data) {
-    let ev=this.state.events;
+    let ev = this.state.events;
     for (var i in ev) {
       var item = ev[i];
-
-      console.log(item.titre);
-      console.log(data.title);
 
       if (item.titre === data.title) {
         this.props.navigation.navigate("EventDetait", {
@@ -45,7 +42,6 @@ export default class TimeLine extends Component {
         });
       }
     }
-    console.log("header");
   }
   GetAll = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
@@ -63,7 +59,6 @@ export default class TimeLine extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(DEMO_TOKEN);
         for (var i in data) {
           var item = data[i];
 

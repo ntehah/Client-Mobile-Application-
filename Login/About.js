@@ -44,7 +44,6 @@ export default function About({ navigation, route }) {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
       })
       .done();
   };

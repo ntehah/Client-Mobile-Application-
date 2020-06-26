@@ -57,7 +57,6 @@ function Info(props) {
     let cal = props.calendrier;
     for (var i in cal) {
       var item = cal[i];
-      console.log(item);
 
       if (item.journame == "lundi") {
         setLundiMatin(item.matin);
