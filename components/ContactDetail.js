@@ -5,15 +5,11 @@ import {
   View,
   Image,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  DatePickerAndroid,
+  ActivityIndicator,
 } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
 import Colors from "../constants/Colors";
-import image from "../assets/images/Profile.png";
-import { MaterialIcons } from "@expo/vector-icons";
-import FormTextInput from "../components/FormTextInput";
 
 function Info(props) {
   const [LundiMatin, setLundiMatin] = useState(false);
@@ -100,31 +96,6 @@ function Info(props) {
       }
     }
   };
-  const OnButtonToggleAddNote = () => {
-    if (AddNote === true) {
-      return (
-        <View style={InfoStyles.AddNote}>
-          <KeyboardAvoidingView behavior="padding">
-            <FormTextInput
-              placeHolder="Note"
-              nameIcon="evernote"
-              onChangeText={(text) => setNote(text)}
-              value={Note}
-            />
-          </KeyboardAvoidingView>
-          <View style={InfoStyles.ButtonViewNote}>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Annuler</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Ajouter</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: 80 }} />
-        </View>
-      );
-    } else return <View></View>;
-  };
   return (
     <View>
       <View style={InfoStyles.TitleView}>
@@ -162,180 +133,58 @@ function Info(props) {
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Lundi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={LundiMatin}
-            // onPress={() => {
-            //   setLundiMatin(!LundiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={LundiApresMidi}
-            // onPress={() => {
-            //   setLundiApresMidi(!LundiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={LundiSoiree}
-            // onPress={() => {
-            //   setLundiSoiree(!LundiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={LundiMatin} />
+          <CheckBox checked={LundiApresMidi} />
+          <CheckBox checked={LundiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Mardi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={MardiMatin}
-            // onPress={() => {
-            //   setMardiMatin(!MardiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={MardiApresMidi}
-            // onPress={() => {
-            //   setMardiApresMidi(!MardiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={MardiSoiree}
-            // onPress={() => {
-            //   setMardiSoiree(!MardiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={MardiMatin} />
+          <CheckBox checked={MardiApresMidi} />
+          <CheckBox checked={MardiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Mercredi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MercrediMatin}
-            // onPress={() => {
-            //   setMercrediMatin(!MercrediMatin);
-            // }}
           />
-          <CheckBox
-            checked={MercrediApresMidi}
-            // onPress={() => {
-            //   setMercrediApresMidi(!MercrediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={MercrediSoiree}
-            // onPress={() => {
-            //   setMercrediSoiree(!MercrediSoiree);
-            // }}
-          />
+          <CheckBox checked={MercrediApresMidi} />
+          <CheckBox checked={MercrediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Jeudi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={JeudiMatin}
-            // onPress={() => {
-            //   setJeudiMatin(!JeudiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={JeudiApresMidi}
-            // onPress={() => {
-            //   setJeudiApresMidi(!JeudiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={JeudiSoiree}
-            // onPress={() => {
-            //   setJeudiSoiree(!JeudiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={JeudiMatin} />
+          <CheckBox checked={JeudiApresMidi} />
+          <CheckBox checked={JeudiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Vendredi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={VendrediMatin}
-            // onPress={() => {
-            //   setVendrediMatin(!VendrediMatin);
-            // }}
           />
-          <CheckBox
-            checked={VendrediApresMidi}
-            // onPress={() => {
-            //   setVendrediApresMidi(!VendrediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={VendrediSoiree}
-            // onPress={() => {
-            //   setVendrediSoiree(!VendrediSoiree);
-            // }}
-          />
+          <CheckBox checked={VendrediApresMidi} />
+          <CheckBox checked={VendrediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Samedi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={SamediMatin}
-            // onPress={() => {
-            //   setSamediMatin(!SamediMatin);
-            // }}
           />
-          <CheckBox
-            checked={SamediApresMidi}
-            // onPress={() => {
-            //   setSamediApresMidi(!SamediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={SamediSoiree}
-            // onPress={() => {
-            //   setSamediSoiree(!SamediSoiree);
-            // }}
-          />
+          <CheckBox checked={SamediApresMidi} />
+          <CheckBox checked={SamediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Dimanche</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={DimancheMatin}
-            // onPress={() => {
-            //   setDimancheMatin(!DimancheMatin);
-            // }}
           />
-          <CheckBox
-            checked={DimancheApresMidi}
-            // onPress={() => {
-            //   setDimancheApresMidi(!DimancheApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={DimancheSoiree}
-            // onPress={() => {
-            //   setDimancheSoiree(!DimancheSoiree);
-            // }}
-          />
+          <CheckBox checked={DimancheApresMidi} />
+          <CheckBox checked={DimancheSoiree} />
         </View>
-      </View>
-      {/* <View style={InfoStyles.Note}>
-        <CheckBox
-          center
-          title="créer une note sur abdelkade"
-          iconRight
-          iconType="material"
-          checkedIcon="add"
-          uncheckedIcon="add"
-          checked={AddNote}
-          onPress={() => {
-            setAddNote(!AddNote);
-          }}
-        />
-        <View>
-          <OnButtonToggleAddNote />
-        </View>
-      </View> */}
-      <View style={InfoStyles.ButtonView}>
-        <TouchableOpacity style={InfoStyles.Button}>
-          <Text style={InfoStyles.ButtonText}>Supprimer de l'organistaion</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -425,30 +274,6 @@ const InfoStyles = StyleSheet.create({
   },
 });
 function Qualification(props) {
-  const [AddSikll, setAddSkill] = useState(false);
-  const [skill, setskill] = useState("");
-  const OnButtonToggleAddSkill = () => {
-    if (AddSikll === true) {
-      return (
-        <View style={InfoStyles.AddNote}>
-          <KeyboardAvoidingView>
-            <FormTextInput
-              placeHolder="compétences"
-              nameIcon="man"
-              onChangeText={(text) => setskill(text)}
-              value={skill}
-            />
-          </KeyboardAvoidingView>
-          <View style={InfoStyles.ButtonViewNote}>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Ajouter</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: 100 }} />
-        </View>
-      );
-    } else return <View></View>;
-  };
   return (
     <View style={QualificationStyles.container}>
       <View style={QualificationStyles.Skills}>
@@ -460,23 +285,6 @@ function Qualification(props) {
             </View>
           ))}
         </View>
-        {/* <View style={QualificationStyles.IconAdd}>
-        <CheckBox
-          iconRight
-          iconType="material"
-          checkedIcon="clear"
-          size={35}
-          uncheckedColor={Colors.DODGER_BLUE}
-          uncheckedIcon="add"
-          checked={AddSikll}
-          onPress={() => {
-            setAddSkill(!AddSikll);
-          }}
-        />
-      </View> */}
-        {/* <View>
-        <OnButtonToggleAddSkill />
-      </View> */}
       </View>
     </View>
   );
@@ -556,14 +364,14 @@ export default function ContactDetail({ route }) {
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
   const [activite, setActivite] = useState(false);
-  const [form, setForm] = useState(false);
   const [data, setData] = useState({});
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     setDataContact();
   }, []);
   setDataContact = () => {
     setData(route.params);
+    setLoading(false);
   };
   const Affiche = () => {
     if (info) {
@@ -583,92 +391,92 @@ export default function ContactDetail({ route }) {
     if (activite) {
       return <Activite />;
     }
-    if (form) {
-      return <Form />;
-    }
   };
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.imageView}>
-          <Image source={{ uri: data.image }} style={styles.image} />
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
         </View>
-        <View style={styles.textView}>
-          <Text style={styles.text}>{data.name}</Text>
-          <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
+      ) : (
+        <View>
+          <View style={styles.header}>
+            <View style={styles.imageView}>
+              <Image source={{ uri: data.image }} style={styles.image} />
+            </View>
+            <View style={styles.textView}>
+              <Text style={styles.text}>{data.name}</Text>
+              <Text style={styles.textDateHeader}>Cree Feb 2020</Text>
+            </View>
+          </View>
+          <View style={styles.NavBar}>
+            <TouchableOpacity
+              onPress={() => {
+                if (info) setInfo(info);
+                else {
+                  setInfo(!info);
+                  setQualification(false);
+                  setActivite(false);
+                }
+              }}
+            >
+              <Text
+                style={info ? styles.texttextNavBarOnpress : styles.textNavBar}
+              >
+                Profile
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                if (qualification) setQualification(qualification);
+                else {
+                  setInfo(false);
+                  setQualification(!qualification);
+                  setActivite(false);
+                }
+              }}
+            >
+              <Text
+                style={
+                  qualification
+                    ? styles.texttextNavBarOnpress
+                    : styles.textNavBar
+                }
+              >
+                Qualification
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                if (activite) setActivite(activite);
+                else {
+                  setInfo(false);
+                  setQualification(false);
+                  setActivite(!activite);
+                }
+              }}
+            >
+              <Text
+                style={
+                  activite ? styles.texttextNavBarOnpress : styles.textNavBar
+                }
+              >
+                Activité
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Affiche />
+          </View>
         </View>
-      </View>
-      <View style={styles.NavBar}>
-        <TouchableOpacity
-          onPress={() => {
-            if (info) setInfo(info);
-            else {
-              setInfo(!info);
-              setQualification(false);
-              setActivite(false);
-              setForm(false);
-            }
-          }}
-        >
-          <Text style={info ? styles.texttextNavBarOnpress : styles.textNavBar}>
-            Profile
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (qualification) setQualification(qualification);
-            else {
-              setInfo(false);
-              setQualification(!qualification);
-              setActivite(false);
-              setForm(false);
-            }
-          }}
-        >
-          <Text
-            style={
-              qualification ? styles.texttextNavBarOnpress : styles.textNavBar
-            }
-          >
-            Qualification
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (activite) setActivite(activite);
-            else {
-              setInfo(false);
-              setQualification(false);
-              setActivite(!activite);
-              setForm(false);
-            }
-          }}
-        >
-          <Text
-            style={activite ? styles.texttextNavBarOnpress : styles.textNavBar}
-          >
-            Activité
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (form) setForm(form);
-            else {
-              setInfo(false);
-              setQualification(false);
-              setActivite(false);
-              setForm(!form);
-            }
-          }}
-        >
-          <Text style={form ? styles.texttextNavBarOnpress : styles.textNavBar}>
-            Form
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Affiche />
-      </View>
+      )}
     </ScrollView>
   );
 }
@@ -727,12 +535,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   texttextNavBarOnpress: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: "bold",
     color: Colors.DODGER_BLUE,
   },
   textNavBar: {
-    fontSize: 12,
+    fontSize: 14,
     opacity: 0.5,
     color: Colors.tintColor,
   },

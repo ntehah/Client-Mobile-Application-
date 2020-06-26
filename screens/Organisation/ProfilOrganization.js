@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,11 +9,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Colors from "../../constants/Colors";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Entypo, Foundation } from "@expo/vector-icons";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import Cart from "../../components/Cart";
+import ContactDetail from "../../components/ContactDetail";
 import { UrlServer } from "../../constants/UrlServer";
-import { Col } from "native-base";
+import { createStackNavigator } from "@react-navigation/stack";
 function Events() {
   return (
     <View>
@@ -87,40 +87,51 @@ function Demands(props) {
       })
       .done();
   };
+  DetailProfile = (id) => {
+    var array = volunteers;
+    console.log(id);
+    for (var i in array) {
+      var item = array[i];
+      if (item.id === id) {
+        props.navigation.navigate("ContactDetail", item);
+      }
+    }
+  };
   return (
     <ScrollView>
       {loading ? (
         <View
           style={{
-            flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 300,
+            marginTop: 20,
           }}
         >
-          <ActivityIndicator size="large" color={Colors.BLACK} />
+          <ActivityIndicator size="large" color={Colors.DODGER_BLUE} />
         </View>
       ) : (
         <View>
           {dataCart.map((v, index) => {
             return (
-              <View style={stylesDemands.Cart} key={index}>
-                <Image source={{ uri: v.image }} style={styles.image} />
-                <View style={stylesDemands.TextAndButtons}>
-                <View style={stylesDemands.TextNameAndEmail}>
-                  <Text style={stylesDemands.text}>{v.name}</Text>
-                  <Text style={stylesDemands.text}>{v.email}</Text>
+              <TouchableOpacity onPress={() => DetailProfile(v.id)} key={index}>
+                <View style={stylesDemands.Cart}>
+                  <Image source={{ uri: v.image }} style={styles.image} />
+                  <View style={stylesDemands.TextAndButtons}>
+                    <View style={stylesDemands.TextNameAndEmail}>
+                      <Text style={stylesDemands.textName}>{v.name}</Text>
+                      <Text style={stylesDemands.textEmail}>{v.email}</Text>
+                    </View>
+                    <View style={stylesDemands.ButtonsView}>
+                      <TouchableOpacity style={stylesDemands.Button}>
+                        <Text style={stylesDemands.textButton}>Confirm</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={stylesDemands.ButtonSupprimer}>
+                        <Text style={stylesDemands.textButton}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
-                <View style={stylesDemands.ButtonsView}>
-                  <TouchableOpacity style={stylesDemands.Button}>
-                    <Text>Confirm</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={stylesDemands.Button}>
-                    <Text>Delete</Text>
-                  </TouchableOpacity>
-                </View>
-                </View>
-              </View>
+              </TouchableOpacity>
             );
           })}
         </View>
@@ -128,70 +139,23 @@ function Demands(props) {
     </ScrollView>
   );
 }
-const stylesDemands = StyleSheet.create({
-  Cart: {
-    width: "100%",
-    height:100,
-    flexDirection: "row",
-    backgroundColor: Colors.WHITE,
-    marginTop: 30,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderWidth: 1,
-    borderColor: Colors.BLUE,
-    borderRadius: 30,
-    marginLeft: 20,
-    marginRight: 20,
-  },
-  TextAndButtons: {
-    flexDirection: "column",
-    alignItems: "center",
-    height:100,
-    justifyContent: "space-between",
-    paddingLeft: 10,
-  },
-  TextNameAndEmail: {
-    flexDirection: "column",
-    justifyContent:"space-between",
-    height:50,
-    paddingBottom:10,
-  },
-  ButtonsView: {
-    alignItems: "center",
-    flexDirection:"row",
-    justifyContent: "space-between",
-    height:50,
-    backgroundColor:Colors.GREEN,
-  },
-  Button: {
-    height: 40,
-    borderRadius: 15,
-    backgroundColor: Colors.BLUE,
-    padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: "normal",
-    color: Colors.BLUE,
-  },
-});
-export default class ProfilOrganization extends React.Component {
-  state = {
-    eventIcon: true,
-    aboutIcon: false,
-    image: null,
-    name: "",
-    nbMembre: 0,
-    nbEvents: 0,
-    description: "",
-    loading: true,
-  };
+
+class ProfilOrganization extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      eventIcon: true,
+      aboutIcon: false,
+      image: null,
+      name: "",
+      nbMembre: 0,
+      nbEvents: 0,
+      description: "",
+      loading: true,
+    };
+  }
+
   componentDidMount() {
     this.getProfile();
   }
@@ -214,8 +178,8 @@ export default class ProfilOrganization extends React.Component {
         this.setState({
           image: data.photo,
           name: data.name,
-          nbMembre: 0,
-          nbEvents: 0,
+          nbMembre: data.nbMembre,
+          nbEvents: data.nbEvents,
           description: data.description,
           loading: false,
         });
@@ -250,9 +214,9 @@ export default class ProfilOrganization extends React.Component {
                 <Text style={styles.titleText}>{this.state.name}</Text>
               </View>
               <View style={styles.MemberAndEvents}>
-                <Text style={styles.textNumber}>0</Text>
+                <Text style={styles.textNumber}>{this.state.nbMembre}</Text>
                 <Text style={styles.text}>Member </Text>
-                <Text style={styles.textNumber}>0 </Text>
+                <Text style={styles.textNumber}>{this.state.nbEvents} </Text>
                 <Text style={styles.text}>Events</Text>
               </View>
               <View>
@@ -260,26 +224,189 @@ export default class ProfilOrganization extends React.Component {
               </View>
             </View>
             <View style={styles.BarIcons}>
-            
-              <TouchableOpacity style={styles.EventIcon}>
-                <MaterialCommunityIcons
-                  name="eventbrite"
+              <TouchableOpacity
+                style={styles.EventIcon}
+                onPress={() => {
+                  this.setState({ eventIcon: true, aboutIcon: false });
+                }}
+              >
+                <Foundation
+                  name="social-500px"
                   size={30}
-                  color={Colors.tabIconSelected}
+                  color={
+                    this.state.eventIcon
+                      ? Colors.DODGER_BLUE
+                      : Colors.tabIconDefault
+                  }
                 />
-                <Text>Events</Text>
+                <Text
+                  style={
+                    this.state.eventIcon
+                      ? styles.textIconSelected
+                      : styles.textIconUnSelected
+                  }
+                >
+                  Social médias
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.EventIcon}
+                onPress={() => {
+                  this.setState({ eventIcon: false, aboutIcon: true });
+                }}
+              >
+                <Entypo
+                  name="users"
+                  size={30}
+                  color={
+                    this.state.eventIcon
+                      ? Colors.tabIconDefault
+                      : Colors.DODGER_BLUE
+                  }
+                />
+                <Text
+                  style={
+                    this.state.eventIcon
+                      ? styles.textIconUnSelected
+                      : styles.textIconSelected
+                  }
+                >
+                  Demandes
+                </Text>
               </TouchableOpacity>
             </View>
-              <Demands/>
+            <View>
+              {this.state.eventIcon ? (
+                <Events />
+              ) : (
+                <Demands navigation={this.props.navigation} />
+              )}
+            </View>
+            <View style={{ height: 80 }}></View>
           </View>
         )}
       </ScrollView>
     );
   }
 }
+
+const Stack = createStackNavigator();
+export default function Profile() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ProfilOrganization"
+        component={ProfilOrganization}
+        options={{
+          title: "Profile",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ContactDetail"
+        component={ContactDetail}
+        options={{
+          title: "Profile Bénévole",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerBackTitle: "Retour",
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+const stylesDemands = StyleSheet.create({
+  Cart: {
+    width: "100%",
+    height: 100,
+    flexDirection: "row",
+    backgroundColor: Colors.WHITE,
+    marginTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  image: {
+    width: "30%",
+    height: 80,
+    borderWidth: 1,
+    borderColor: Colors.BLUE,
+    borderRadius: 30,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  TextAndButtons: {
+    flexDirection: "column",
+    alignItems: "center",
+    height: 100,
+    width: "70%",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+  },
+  TextNameAndEmail: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: 50,
+    width: "100%",
+    paddingBottom: 10,
+  },
+  ButtonsView: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 50,
+    width: "100%",
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  Button: {
+    height: 40,
+    width: "45%",
+    borderRadius: 15,
+    backgroundColor: Colors.DODGER_BLUE,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  ButtonSupprimer: {
+    height: 40,
+    width: "45%",
+    borderRadius: 15,
+    backgroundColor: Colors.tabIconDefault,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textName: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: Colors.tintColor,
+  },
+  textEmail: {
+    fontSize: 16,
+    fontWeight: "normal",
+    color: Colors.tintColor,
+  },
+  textButton: {
+    fontSize: 17,
+    fontWeight: "normal",
+    color: Colors.WHITE,
+  },
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.WHITE,
   },
   header: {
     height: 250,
@@ -352,5 +479,15 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderRadius: 19,
     marginBottom: 10,
+  },
+  textIconSelected: {
+    fontSize: 17,
+    fontWeight: "bold",
+    color: Colors.DODGER_BLUE,
+  },
+  textIconUnSelected: {
+    fontSize: 17,
+    fontWeight: "normal",
+    color: Colors.tabIconDefault,
   },
 });

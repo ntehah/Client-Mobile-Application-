@@ -56,7 +56,8 @@ export default function ProfilScreen({ route }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: EMAIL,
+        emailvol: EMAIL,
+        emailorg: email,
       }),
     })
       .then((response) => response.text())
