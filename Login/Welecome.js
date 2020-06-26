@@ -11,9 +11,11 @@ import Colors from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { VolunteerInscription } from "../Services/VolunteerInscription";
 import { UrlServer } from "../constants/UrlServer";
+import { AuthContext } from "../Services/AuthContext";
 
 export default function Welecome({ navigation }) {
   const [state, InscriptionContext] = useContext(VolunteerInscription);
+  const [state1, authContext] = React.useContext(AuthContext);
 
   const AjouterVolunteer = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
@@ -37,15 +39,13 @@ export default function Welecome({ navigation }) {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(DEMO_TOKEN);
         console.log(data);
       })
       .done();
   };
   const ContinueHandler = () => {
-    console.log(state.Qualification);
-    console.log(state.Calendrier);
     AjouterVolunteer();
+    authContext.loggedIn();
   };
   return (
     <View style={Styles.container}>

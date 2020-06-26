@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Image,
-  Platform,
+  ActivityIndicator,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,7 +21,7 @@ const Stack = createStackNavigator();
 import { UrlServer } from "../../constants/UrlServer";
 function ListOrganization(props) {
   const [DataOr, setDataOr] = useState({});
-  const [Org, setOrg] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     GetAll();
@@ -42,7 +41,7 @@ function ListOrganization(props) {
         setDataOr(data);
       })
 
-      .done();
+      .done(() => setLoading(false));
   };
   function handleOrg(org) {
     props.navigation.navigate("organization", {
@@ -53,27 +52,45 @@ function ListOrganization(props) {
     });
   }
   return (
-    <View style={styles.prochain}>
-      <View style={styles.textView}>
-        <Text style={styles.textLeft}>Association</Text>
-      </View>
-      <ScrollView horizontal={true} style={styles.CardScrollView}>
-        {DataOr.length ? (
-          <View>
-            {DataOr.map((org, index) => {
-              return (
-                <TouchableOpacity onPress={() => handleOrg(org)} key={index}>
-                  <CartOrganization image={org.photo} name={org.name} />
-                </TouchableOpacity>
-              );
-            })}
+    <View>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
+        </View>
+      ) : (
+        <View style={styles.prochain}>
+          <View style={styles.textView}>
+            <Text style={styles.textLeft}>Association</Text>
           </View>
-        ) : (
-          <View>
-            <Text>Non Organization</Text>
-          </View>
-        )}
-      </ScrollView>
+          <ScrollView horizontal={true} style={styles.CardScrollView}>
+            {DataOr.length ? (
+              <View>
+                {DataOr.map((org, index) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => handleOrg(org)}
+                      key={index}
+                    >
+                      <CartOrganization image={org.photo} name={org.name} />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            ) : (
+              <View>
+                <Text>Non Organization</Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 }
@@ -101,7 +118,7 @@ function ListEvent(props) {
         setDataEv(data);
       })
 
-      .done();
+      .done(() => setLoading(false));
   };
   function handleEvent() {
     props.navigation.navigate("EventDetait", {
@@ -118,40 +135,55 @@ function ListEvent(props) {
     });
   }
   return (
-    <View style={styles.prochain}>
-      <View style={styles.textView}>
-        <Text style={styles.textLeft}>Evènement</Text>
-      </View>
-      <ScrollView horizontal={true} style={styles.CardScrollView}>
-        {DataEv.length ? (
-          <View>
-            {DataEv.map((eve, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => {
-                    setOrg(eve.organization);
-                    setEve(eve);
-                    handleEvent();
-                  }}
-                >
-                  <Cart
-                    image={eve.photo}
-                    name={eve.titre}
-                    debut={eve.debut}
-                    city={eve.city}
-                    date={eve.date}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+    <View>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
+        </View>
+      ) : (
+        <View style={styles.prochain}>
+          <View style={styles.textView}>
+            <Text style={styles.textLeft}>Evènement</Text>
           </View>
-        ) : (
-          <View>
-            <Text>Non Organization</Text>
-          </View>
-        )}
-      </ScrollView>
+          <ScrollView horizontal={true} style={styles.CardScrollView}>
+            {DataEv.length ? (
+              <View>
+                {DataEv.map((eve, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setOrg(eve.organization);
+                        setEve(eve);
+                        handleEvent();
+                      }}
+                    >
+                      <Cart
+                        image={eve.photo}
+                        name={eve.titre}
+                        debut={eve.debut}
+                        city={eve.city}
+                        date={eve.date}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            ) : (
+              <View>
+                <Text>Non Organization</Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 }
@@ -159,13 +191,8 @@ function Container({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.containerContent}>
-        {/* --------------------------------------Prochain Evènement-----------------------------------------------------*/}
-
         <ListEvent navigation={navigation} />
-        {/* -------------------------------------------------------------------------------------------*/}
-        {/* ------------------------------------Association--------------------------------------*/}
         <ListOrganization navigation={navigation} />
-        {/* -------------------------------------------------------------------------------------------*/}
       </ScrollView>
     </View>
   );

@@ -63,28 +63,27 @@ export default function App() {
       email: "",
     },
   );
+  const bootstrapAsync = async () => {
+    let userToken;
+    let userRole;
+    let userEmail;
+    try {
+      userToken = await AsyncStorage.getItem("id_token");
+      userRole = await AsyncStorage.getItem("id_role");
+      userEmail = await AsyncStorage.getItem("email");
+    } catch (e) {
+      console.log(e);
+    }
+
+    dispatch({
+      type: "RESTORE_TOKEN",
+      token: userToken,
+      role: userRole,
+      email: userEmail,
+    });
+  };
 
   React.useEffect(() => {
-    const bootstrapAsync = async () => {
-      let userToken;
-      let userRole;
-      let userEmail;
-      try {
-        userToken = await AsyncStorage.getItem("id_token");
-        userRole = await AsyncStorage.getItem("id_role");
-        userEmail = await AsyncStorage.getItem("email");
-      } catch (e) {
-        console.log(e);
-      }
-
-      dispatch({
-        type: "RESTORE_TOKEN",
-        token: userToken,
-        role: userRole,
-        email: userEmail,
-      });
-    };
-
     bootstrapAsync();
   }, []);
 
@@ -126,6 +125,9 @@ export default function App() {
         _onValueChange("id_token", data.accessToken);
         _onValueChange("id_role", data.role);
         _onValueChange("email", email);
+      },
+      loggedIn: () => {
+        bootstrapAsync();
       },
     }),
     [],

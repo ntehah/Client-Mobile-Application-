@@ -39,9 +39,10 @@ function Demands(props) {
     getDemands();
   }, []);
   getDemands = async () => {
+    setDataCart([]);
+    setVolunteers([]);
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
     var EMAIL = await AsyncStorage.getItem("email");
-    console.log(EMAIL);
     fetch(UrlServer + "volunteer/demands", {
       method: "POST",
       headers: {
@@ -87,6 +88,46 @@ function Demands(props) {
       })
       .done();
   };
+  Accept = async (email) => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "volunteer/acceptedemands", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailorg: EMAIL,
+        emailvol: email,
+      }),
+    }).done(() => getDemands());
+  };
+  Delete = async (email) => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "volunteer/deletedemands", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailorg: EMAIL,
+        emailvol: email,
+      }),
+    }).done(() => getDemands());
+  };
+  AcceptDemand = (email) => {
+    setLoading(true);
+    Accept(email);
+  };
+  DeleteDemand = (email) => {
+    setLoading(true);
+    Delete(email);
+  };
   DetailProfile = (id) => {
     var array = volunteers;
     console.log(id);
@@ -122,10 +163,16 @@ function Demands(props) {
                       <Text style={stylesDemands.textEmail}>{v.email}</Text>
                     </View>
                     <View style={stylesDemands.ButtonsView}>
-                      <TouchableOpacity style={stylesDemands.Button}>
+                      <TouchableOpacity
+                        style={stylesDemands.Button}
+                        onPress={() => AcceptDemand(v.email)}
+                      >
                         <Text style={stylesDemands.textButton}>Confirm</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={stylesDemands.ButtonSupprimer}>
+                      <TouchableOpacity
+                        style={stylesDemands.ButtonSupprimer}
+                        onPress={() => DeleteDemand(v.email)}
+                      >
                         <Text style={stylesDemands.textButton}>Delete</Text>
                       </TouchableOpacity>
                     </View>
