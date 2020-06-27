@@ -1,10 +1,17 @@
-import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from "react-native";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function EventDetail({ route }) {
+export default function EventDetailFromVolunteer({ route, navigation,props }) {
   const {
     address,
     date,
@@ -37,6 +44,19 @@ export default function EventDetail({ route }) {
             />
             <Text style={styles.OrganizationText}>{organizationName}</Text>
           </View>
+          {/* <View>
+            <TouchableOpacity style={styles.ButtonFollow}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: Colors.DODGER_BLUE,
+                }}
+              >
+                Abonné
+              </Text>
+            </TouchableOpacity>
+          </View> */}
         </View>
         <View style={styles.EventDate}>
           <MaterialIcons name="event" size={25} color={Colors.tintColor} />
@@ -77,6 +97,22 @@ export default function EventDetail({ route }) {
           </Text>
         </View>
       </ScrollView>
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.ButtonFooter}>
+          <Text
+            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
+          >
+            Participer
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.ButtonFooter}>
+          <Text
+            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
+          >
+            Organisé
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -135,6 +171,38 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     paddingLeft: 15,
+  },
+  footer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 30,
+    paddingRight: 30,
+    justifyContent: "space-between",
+    backgroundColor: Colors.WHITE,
+  },
+  ButtonFooter: {
+    marginBottom: 5,
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: Colors.DODGER_BLUE,
+    width: 120,
+    height: 35,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ButtonFollow: {
+    borderRadius: 5,
+    backgroundColor: Colors.WHITE,
+    borderColor: Colors.DODGER_BLUE,
+    borderWidth: 1,
+    width: 100,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
   },
   DescriptionView: {
     paddingLeft: 15,

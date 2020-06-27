@@ -8,14 +8,12 @@ import {
   AsyncStorage,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { Ionicons, EvilIcons } from "@expo/vector-icons";
-import profileimage from "../../assets/images/logo.png";
 import Colors from "../../constants/Colors";
 import Cart from "../../components/Cart";
 import CartOrganization from "../../components/CartOrganization";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfilScreen from "../Organisation/ProfilScreen";
-import EventDetait from "../../components/EventDetait";
+import EventDetaitFromVolunteer from "../../components/EventDetailFromVolunteer";
 const Stack = createStackNavigator();
 
 import { UrlServer } from "../../constants/UrlServer";
@@ -121,7 +119,7 @@ function ListEvent(props) {
       .done(() => setLoading(false));
   };
   function handleEvent() {
-    props.navigation.navigate("EventDetait", {
+    props.navigation.navigate("EventDetaitFromVolunteer", {
       address: Eve.address,
       date: Eve.date,
       titre: Eve.titre,
@@ -215,8 +213,8 @@ export default function HomeScreen() {
         }}
       />
       <Stack.Screen
-        name="EventDetait"
-        component={EventDetait}
+        name="EventDetaitFromVolunteer"
+        component={EventDetaitFromVolunteer}
         options={{
           title: "Evenement Description",
           headerStyle: {
