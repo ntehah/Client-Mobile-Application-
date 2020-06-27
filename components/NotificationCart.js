@@ -2,25 +2,22 @@ import * as React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import image from "../assets/images/Profile.png";
-
+import demand from "../assets/images/demand.png";
+import task from "../assets/images/task.png";
 export default function NotificationCart(props) {
   return (
     <View style={styles.container}>
       <View style={styles.imageView}>
-        <Image source={image} style={styles.image} />
+        {props.type === "DEMAND" ? (
+          <Image source={demand} style={styles.image} />
+        ) : (
+          <Image source={task} style={styles.image} />
+        )}
       </View>
       <View style={styles.textView}>
-        <Text style={styles.text}>Title Notification</Text>
-        <Text style={styles.text}>Body Notification</Text>
-        <Text style={styles.text}>20h</Text>
-      </View>
-      <View style={styles.IconView}>
-        <MaterialIcons
-          name="event-available"
-          size={20}
-          color={Colors.WHITE}
-        />
+        <Text style={styles.textTitle}>{props.title}</Text>
+        <Text style={styles.textBody}>{props.body}</Text>
+        <Text style={styles.text}>{props.time}</Text>
       </View>
     </View>
   );
@@ -29,13 +26,11 @@ export default function NotificationCart(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: Colors.MISCHKA,
-    width: "90%",
-    borderRadius: 10,
-    height: 80,
+    backgroundColor:"#0FA3B1",
+    height: 100,
     marginTop: 20,
-    marginLeft: "5%",
     alignItems: "center",
+    paddingBottom:10,
   },
   imageView: {
     flexDirection: "column",
@@ -43,27 +38,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 80,
     height: 80,
+
   },
   image: {
     width: 60,
     height: 60,
     borderRadius: 30,
+    borderColor:Colors.BLUE,
+    borderWidth:0.3,
+    padding:5,
   },
   textView: {
-    paddingTop:5,
-    height:"100%",
-    width:220,
+    paddingTop: 5,
+    height: "100%",
+    width: 220,
     flexDirection: "column",
   },
-  text: {
+  textBody: {
     fontSize: 16,
     color: Colors.tintColor,
+    paddingBottom:5,
   },
-  IconView:{
-    width:30,
-    height:"100%",
-    flexDirection:"column",
-    justifyContent:"center",
-    alignItems:"center",
-  }
+  textTitle:{
+    fontSize: 17,
+    fontWeight:"bold",
+    color: Colors.tintColor,
+    paddingBottom:5,
+  },
 });

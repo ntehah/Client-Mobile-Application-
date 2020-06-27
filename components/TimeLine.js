@@ -10,7 +10,8 @@ import {
 import Timeline from "react-native-timeline-flatlist";
 import Colors from "../constants/Colors";
 import { UrlServer } from "../constants/UrlServer";
-
+import { Ionicons } from "@expo/vector-icons";
+import eventIcon from "../assets/images/event.png";
 export default class TimeLine extends Component {
   constructor() {
     super();
@@ -21,6 +22,9 @@ export default class TimeLine extends Component {
   }
   componentDidMount() {
     this.GetAll();
+  }
+  NotificationHandler() {
+    
   }
   onEventPress(data) {
     let ev = this.state.events;
@@ -88,7 +92,7 @@ export default class TimeLine extends Component {
                 time: item.date,
                 title: item.titre,
                 description: item.description,
-                icon: require("../assets/images/event.png"),
+                icon: eventIcon,
                 imageUrl: item.photo,
               },
             ],
@@ -134,6 +138,14 @@ export default class TimeLine extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.notificationCart}>
+          <TouchableOpacity
+            style={styles.notification}
+            onPress={()=>this.props.navigation.navigate("Notification")}
+          >
+            <Ionicons name="ios-notifications" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
         <Timeline
           style={styles.list}
           data={this.state.data}
@@ -164,11 +176,13 @@ export default class TimeLine extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "white",
+    paddingTop: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   list: {
-    marginTop: 20,
+    // marginTop: 20,
   },
   title: {
     fontSize: 16,
@@ -186,5 +200,21 @@ const styles = StyleSheet.create({
   textDescription: {
     marginLeft: 10,
     color: "gray",
+  },
+  notificationCart: {
+    height: 40,
+    width: "100%",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingRight: 10,
+  },
+  notification: {
+    height: "100%",
+    width: 40,
+    borderColor: Colors.GREEN,
+    borderWidth: 1,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
