@@ -142,7 +142,7 @@ class CommunityDemo extends React.Component {
     for (var i in array) {
       var item = array[i];
       if (item.id === id) {
-        this.props.navigation.navigate("ContactDetail", item);
+        this.props.navigation.navigate("ContactDetail", {item:item});
       }
     }
   };

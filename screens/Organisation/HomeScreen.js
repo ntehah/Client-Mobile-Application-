@@ -12,7 +12,7 @@ export default function HomeScreen() {
         name="Home"
         component={TimeLine}
         options={{
-          title: "My home",
+          title: "Accueil",
           headerStyle: {
             backgroundColor: Colors.WHITE,
           },
@@ -41,7 +41,7 @@ export default function HomeScreen() {
         name="Notification"
         component={Notification}
         options={{
-          title: "Evenement Description",
+          title: "Notification",
           headerStyle: {
             backgroundColor: Colors.WHITE,
           },

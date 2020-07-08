@@ -23,9 +23,7 @@ export default class TimeLine extends Component {
   componentDidMount() {
     this.GetAll();
   }
-  NotificationHandler() {
-    
-  }
+  NotificationHandler() {}
   onEventPress(data) {
     let ev = this.state.events;
     for (var i in ev) {
@@ -141,7 +139,7 @@ export default class TimeLine extends Component {
         <View style={styles.notificationCart}>
           <TouchableOpacity
             style={styles.notification}
-            onPress={()=>this.props.navigation.navigate("Notification")}
+            onPress={() => this.props.navigation.navigate("Notification")}
           >
             <Ionicons name="ios-notifications" size={30} color="black" />
           </TouchableOpacity>

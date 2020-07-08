@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Alert,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  KeyboardAvoidingView
 } from "react-native";
 import Colors from "../constants/Colors";
 import * as ImagePicker from "expo-image-picker";
@@ -108,6 +109,7 @@ export default function About({ navigation, route }) {
           <Text>Choose Photo</Text>
         </TouchableOpacity>
       </View>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={64}>
       <FormTextInput
         placeHolder="Description"
         nameIcon="edit"
@@ -120,6 +122,7 @@ export default function About({ navigation, route }) {
         value={description}
       />
       
+      </KeyboardAvoidingView>
       <View style={Styles.ButtonViewContinue}>
         <TouchableOpacity
           style={Styles.ButtonContinue}
@@ -128,6 +131,8 @@ export default function About({ navigation, route }) {
           <Text>Continue</Text>
         </TouchableOpacity>
       </View>
+      <View style={{height:300}}></View>
+
     </ScrollView>
   );
 }

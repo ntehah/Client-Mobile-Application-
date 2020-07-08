@@ -7,18 +7,17 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
 } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { CheckBox } from "react-native-elements";
-import Colors from "../../constants/Colors";
-import image from "../../assets/images/Profile.png";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import FormTextInput from "../../components/FormTextInput";
+
+import Colors from "../../constants/Colors";
 import { AuthContext } from "../../Services/AuthContext";
 import { UrlServer } from "../../constants/UrlServer";
-
+import ModifierProfile from "./ModifierProfile";
 function Info(props) {
   const [LundiMatin, setLundiMatin] = useState(false);
   const [LundiApresMidi, setLundiApresMidi] = useState(false);
@@ -106,33 +105,6 @@ function Info(props) {
       }
     }
   };
-  //setLundiMatin(data.calendrier[1].matin)
-
-  const OnButtonToggleAddNote = () => {
-    if (AddNote === true) {
-      return (
-        <View style={InfoStyles.AddNote}>
-          <KeyboardAvoidingView behavior="padding">
-            <FormTextInput
-              placeHolder="Note"
-              nameIcon="evernote"
-              onChangeText={(text) => setNote(text)}
-              value={Note}
-            />
-          </KeyboardAvoidingView>
-          <View style={InfoStyles.ButtonViewNote}>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Annuler</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Ajouter</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: 80 }} />
-        </View>
-      );
-    } else return <View></View>;
-  };
   return (
     <View>
       <View style={InfoStyles.TitleView}>
@@ -157,7 +129,7 @@ function Info(props) {
       </View>
       <View></View>
       <View style={InfoStyles.TitleView}>
-        <Text style={InfoStyles.textTitle}>Availability</Text>
+        <Text style={InfoStyles.textTitle}>Emploi du temps</Text>
       </View>
       <View style={InfoStyles.Availability}>
         <View style={InfoStyles.isAvailable}>
@@ -167,181 +139,60 @@ function Info(props) {
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Lundi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={LundiMatin}
-            // onPress={() => {
-            //   setLundiMatin(!LundiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={LundiApresMidi}
-            // onPress={() => {
-            //   setLundiApresMidi(!LundiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={LundiSoiree}
-            // onPress={() => {
-            //   setLundiSoiree(!LundiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={LundiMatin} />
+          <CheckBox checked={LundiApresMidi} />
+          <CheckBox checked={LundiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Mardi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={MardiMatin}
-            // onPress={() => {
-            //   setMardiMatin(!MardiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={MardiApresMidi}
-            // onPress={() => {
-            //   setMardiApresMidi(!MardiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={MardiSoiree}
-            // onPress={() => {
-            //   setMardiSoiree(!MardiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={MardiMatin} />
+          <CheckBox checked={MardiApresMidi} />
+          <CheckBox checked={MardiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Mercredi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={MercrediMatin}
-            // onPress={() => {
-            //   setMercrediMatin(!MercrediMatin);
-            // }}
           />
-          <CheckBox
-            checked={MercrediApresMidi}
-            // onPress={() => {
-            //   setMercrediApresMidi(!MercrediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={MercrediSoiree}
-            // onPress={() => {
-            //   setMercrediSoiree(!MercrediSoiree);
-            // }}
-          />
+          <CheckBox checked={MercrediApresMidi} />
+          <CheckBox checked={MercrediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Jeudi</Text>
-          <CheckBox
-            containerStyle={InfoStyles.CheckBox}
-            checked={JeudiMatin}
-            // onPress={() => {
-            //   setJeudiMatin(!JeudiMatin);
-            // }}
-          />
-          <CheckBox
-            checked={JeudiApresMidi}
-            // onPress={() => {
-            //   setJeudiApresMidi(!JeudiApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={JeudiSoiree}
-            // onPress={() => {
-            //   setJeudiSoiree(!JeudiSoiree);
-            // }}
-          />
+          <CheckBox containerStyle={InfoStyles.CheckBox} checked={JeudiMatin} />
+          <CheckBox checked={JeudiApresMidi} />
+          <CheckBox checked={JeudiSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Vendredi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={VendrediMatin}
-            // onPress={() => {
-            //   setVendrediMatin(!VendrediMatin);
-            // }}
           />
-          <CheckBox
-            checked={VendrediApresMidi}
-            // onPress={() => {
-            //   setVendrediApresMidi(!VendrediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={VendrediSoiree}
-            // onPress={() => {
-            //   setVendrediSoiree(!VendrediSoiree);
-            // }}
-          />
+          <CheckBox checked={VendrediApresMidi} />
+          <CheckBox checked={VendrediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Samedi</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={SamediMatin}
-            // onPress={() => {
-            //   setSamediMatin(!SamediMatin);
-            // }}
           />
-          <CheckBox
-            checked={SamediApresMidi}
-            // onPress={() => {
-            //   setSamediApresMidi(!SamediApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={SamediSoiree}
-            // onPress={() => {
-            //   setSamediSoiree(!SamediSoiree);
-            // }}
-          />
+          <CheckBox checked={SamediApresMidi} />
+          <CheckBox checked={SamediSoiree} />
         </View>
         <View style={InfoStyles.Jour}>
           <Text style={InfoStyles.textJour}>Dimanche</Text>
           <CheckBox
             containerStyle={InfoStyles.CheckBox}
             checked={DimancheMatin}
-            // onPress={() => {
-            //   setDimancheMatin(!DimancheMatin);
-            // }}
           />
-          <CheckBox
-            checked={DimancheApresMidi}
-            // onPress={() => {
-            //   setDimancheApresMidi(!DimancheApresMidi);
-            // }}
-          />
-          <CheckBox
-            checked={DimancheSoiree}
-            // onPress={() => {
-            //   setDimancheSoiree(!DimancheSoiree);
-            // }}
-          />
+          <CheckBox checked={DimancheApresMidi} />
+          <CheckBox checked={DimancheSoiree} />
         </View>
       </View>
-      {/* <View style={InfoStyles.Note}>
-        <CheckBox
-          center
-          title="créer une note sur abdelkade"
-          iconRight
-          iconType="material"
-          checkedIcon="add"
-          uncheckedIcon="add"
-          checked={AddNote}
-          onPress={() => {
-            setAddNote(!AddNote);
-          }}
-        />
-        <View>
-          <OnButtonToggleAddNote />
-        </View>
-      </View> */}
-      {/* <View style={InfoStyles.ButtonView}>
-        <TouchableOpacity style={InfoStyles.Button}>
-          <Text style={InfoStyles.ButtonText}>Supprimer de l'organistaion</Text>
-        </TouchableOpacity>
-      </View> */}
+      <View style={{ height: 100 }} />
     </View>
   );
 }
@@ -430,30 +281,6 @@ const InfoStyles = StyleSheet.create({
   },
 });
 function Qualification(props) {
-  const [AddSikll, setAddSkill] = useState(false);
-  const [skill, setskill] = useState("");
-  const OnButtonToggleAddSkill = () => {
-    if (AddSikll === true) {
-      return (
-        <View style={InfoStyles.AddNote}>
-          <KeyboardAvoidingView>
-            <FormTextInput
-              placeHolder="compétences"
-              nameIcon="man"
-              onChangeText={(text) => setskill(text)}
-              value={skill}
-            />
-          </KeyboardAvoidingView>
-          <View style={InfoStyles.ButtonViewNote}>
-            <TouchableOpacity style={InfoStyles.ButtonNote}>
-              <Text>Ajouter</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: 100 }} />
-        </View>
-      );
-    } else return <View></View>;
-  };
   return (
     <View style={QualificationStyles.container}>
       <View style={QualificationStyles.Skills}>
@@ -465,23 +292,6 @@ function Qualification(props) {
             </View>
           ))}
         </View>
-        {/* <View style={QualificationStyles.IconAdd}>
-          <CheckBox
-            iconRight
-            iconType="material"
-            checkedIcon="clear"
-            size={35}
-            uncheckedColor={Colors.DODGER_BLUE}
-            uncheckedIcon="add"
-            checked={AddSikll}
-            onPress={() => {
-              setAddSkill(!AddSikll);
-            }}
-          />
-        </View> */}
-        {/* <View>
-          <OnButtonToggleAddSkill />
-        </View> */}
       </View>
     </View>
   );
@@ -540,24 +350,8 @@ const ActiviteStyles = StyleSheet.create({
     fontSize: 100,
   },
 });
-function Form() {
-  return (
-    <View style={FormStyles.container}>
-      <Text style={FormStyles.text}>Form</Text>
-    </View>
-  );
-}
-const FormStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.warningBackground,
-  },
-  text: {
-    fontSize: 100,
-  },
-});
 
-export default function ProfilUser() {
+export default function ProfilUser({ navigation }) {
   const [state, authContext] = React.useContext(AuthContext);
   const [info, setInfo] = useState(true);
   const [qualification, setQualification] = useState(false);
@@ -566,6 +360,23 @@ export default function ProfilUser() {
 
   const [form, setForm] = useState(false);
   const [Data, setData] = useState({});
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ flexDirection: "row", alignItems: "center" }}
+          onPress={SignOutHundler}
+        >
+          <MaterialCommunityIcons
+            name="logout"
+            size={24}
+            color={Colors.DODGER_BLUE}
+          />
+          <Text style={{ color: Colors.DODGER_BLUE }}>Déconnexion</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
   useEffect(() => {
     getProfile();
   }, []);
@@ -586,7 +397,7 @@ export default function ProfilUser() {
       .then((response) => response.json())
       .then((data) => {
         setData(data);
-        setLoading(false)
+        setLoading(false);
       })
       .done();
   };
@@ -601,7 +412,7 @@ export default function ProfilUser() {
       return <Activite />;
     }
     if (form) {
-      return <Form />;
+      return <ModifierProfile Data={Data} navigation={navigation} />;
     }
   };
 
@@ -616,27 +427,20 @@ export default function ProfilUser() {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 300,
           }}
         >
           <ActivityIndicator size="large" color={Colors.BLACK} />
         </View>
       ) : (
         <View>
-          <View style={styles.nav}>
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center" }}
-              onPress={SignOutHundler}
-            >
-              <MaterialCommunityIcons
-                name="logout"
-                size={24}
-                color={Colors.DODGER_BLUE}
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={()=>getProfile()}
               />
-              <Text style={{ color: Colors.DODGER_BLUE }}>Déconnexion</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView>
+            }
+          >
             <View style={styles.header}>
               <View style={styles.imageView}>
                 <Image source={{ uri: Data.photo }} style={styles.image} />
@@ -722,7 +526,7 @@ export default function ProfilUser() {
                     form ? styles.texttextNavBarOnpress : styles.textNavBar
                   }
                 >
-                  Form
+                  Modifier
                 </Text>
               </TouchableOpacity>
             </View>
@@ -739,7 +543,6 @@ export default function ProfilUser() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
   },
   header: {
     flexDirection: "row",

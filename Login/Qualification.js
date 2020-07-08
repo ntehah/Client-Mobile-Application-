@@ -12,7 +12,7 @@ import Colors from "../constants/Colors";
 import { VolunteerInscription } from "../Services/VolunteerInscription";
 
 export default function Qualification({ navigation }) {
-  const initialValue = [{ value: "" }];
+  const initialValue = [{ qualifacation: "" }];
   const [Skills, setSkills] = useState(initialValue);
   const [skill, setskill] = useState("");
   const  [state,InscriptionContext]  = useContext(VolunteerInscription);
@@ -28,7 +28,7 @@ export default function Qualification({ navigation }) {
         <View style={QualificationStyles.skillTab}>
           {Skills.map((s, index) => (
             <View style={QualificationStyles.skill} key={index}>
-              <Text style={QualificationStyles.text}>{s.value}</Text>
+              <Text style={QualificationStyles.text}>{s.qualifacation}</Text>
             </View>
           ))}
         </View>
@@ -46,7 +46,7 @@ export default function Qualification({ navigation }) {
               <TouchableOpacity
                 style={QualificationStyles.ButtonNote}
                 onPress={() => {
-                  if (skill != "") setSkills([...Skills, { value: skill }]);
+                  if (skill != "") setSkills(Skills=>[...Skills, { qualifacation: skill }]);
                   setskill("");
                 }}
               >

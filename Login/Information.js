@@ -10,31 +10,28 @@ import {
 } from "react-native";
 import FormTextInput from "../components/FormTextInput";
 import Colors from "../constants/Colors";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { VolunteerInscription } from "../Services/VolunteerInscription";
 
 export default function Information({ navigation, route }) {
   const [state, InscriptionContext] = useContext(VolunteerInscription);
-  const { email ,name} = route.params;
+  const { email, name } = route.params;
   const [Numero, setNumero] = useState("");
   const [Adresse, setAdress] = useState("");
-  const [Jour, setJour] = useState("");
-  const [Mois, setMois] = useState("");
-  const [Annee, setAnnee] = useState("");
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [date, setDate] = useState(new Date());
   const [ValidNumero, setValidNumero] = useState(false);
   const [ValidAdresse, setValidAdress] = useState(false);
-  const [ValidJour, setValidJour] = useState(false);
-  const [ValidMois, setValidMois] = useState(false);
-  const [ValidAnnee, setValidAnnee] = useState(false);
 
   const ContinueHandler = () => {
-    if (ValidNumero && ValidAdresse && ValidJour && ValidMois && ValidAnnee) {
-      let date = Jour + "/" + Mois + "/" + Annee;
+    if (ValidNumero && ValidAdresse) {
       InscriptionContext.Information({
         numero: Numero,
         adresse: Adresse,
         date: date,
         Email: email,
-        Name:name,
+        Name: name,
       });
       navigation.navigate("Photo");
     } else {
@@ -79,56 +76,28 @@ export default function Information({ navigation, route }) {
             autoCompleteType="street-address"
           />
         </KeyboardAvoidingView>
-        <View style={Styles.DateView}>
-          <Text>Date de naissance :</Text>
-          <View style={Styles.dateDeNaissance}>
-            <View style={{ width: 70, height: 50 }}>
-              <FormTextInput
-                placeHolder="Jour"
-                onChangeText={(text) => {
-                  setJour(text);
-                  let jour = parseInt(text, 10);
-                  if (jour > 0 && jour <= 31) {
-                    setValidJour(true);
-                  }
-                }}
-                value={Jour}
-                keyboardType="numeric"
-                maxLength="2"
+        <View style={Styles.DateEventView}>
+          <Text style={Styles.text}>Date de Naissance :</Text>
+          <Text style={Styles.text}>
+            {date.getDate()} - {date.getMonth()} - {date.getFullYear()}
+          </Text>
+          <View>
+            <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
+              <MaterialCommunityIcons
+                name="timetable"
+                size={30}
+                color="black"
               />
-            </View>
-            <View style={{ width: 100 }}>
-              <FormTextInput
-                placeHolder="Mois"
-                onChangeText={(text) => {
-                  setMois(text);
-                  let mois = parseInt(text, 10);
-                  if (mois > 0 && mois <= 12) {
-                    setValidMois(true);
-                  }
-                }}
-                value={Mois}
-                keyboardType="numeric"
-                maxLength="2"
-              />
-            </View>
-            <View style={{ width: 100 }}>
-              <FormTextInput
-                placeHolder="Année"
-                onChangeText={(text) => {
-                  setAnnee(text);
-                  let annee = parseInt(text, 10);
-                  if (annee > 1900 && annee <= 2020) {
-                    setValidAnnee(true);
-                  }
-                }}
-                value={Annee}
-                keyboardType="numeric"
-                maxLength="4"
-              />
-            </View>
+            </TouchableOpacity>
+            <DateTimePicker
+              isVisible={isDatePickerVisible}
+              onConfirm={(date) => {
+                setDate(date);
+                setIsDatePickerVisible(false);
+              }}
+              onCancel={() => setIsDatePickerVisible(false)}
+            />
           </View>
-          <View style={{ height: 50 }} />
         </View>
       </View>
       <View style={Styles.ButtonViewContinue}>
@@ -175,5 +144,12 @@ const Styles = StyleSheet.create({
   DateView: {
     flexDirection: "column",
     paddingLeft: 10,
+  },
+  text: { color: Colors.tintColor, fontSize: 19, fontWeight: "100" },
+  DateEventView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 5,
   },
 });

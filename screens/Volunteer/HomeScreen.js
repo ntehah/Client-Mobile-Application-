@@ -14,6 +14,9 @@ import CartOrganization from "../../components/CartOrganization";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfilScreen from "../Organisation/ProfilScreen";
 import EventDetaitFromVolunteer from "../../components/EventDetailFromVolunteer";
+import Notification from "../../components/Notification";
+import { Ionicons } from "@expo/vector-icons";
+
 const Stack = createStackNavigator();
 
 import { UrlServer } from "../../constants/UrlServer";
@@ -162,6 +165,7 @@ function ListEvent(props) {
                         setEve(eve);
                         handleEvent();
                       }}
+                      style={styles.Card}
                     >
                       <Cart
                         image={eve.photo}
@@ -188,10 +192,18 @@ function ListEvent(props) {
 function Container({ navigation }) {
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.containerContent}>
+      <View style={styles.notificationCart}>
+        <TouchableOpacity
+          style={styles.notification}
+          onPress={() => navigation.navigate("Notification")}
+        >
+          <Ionicons name="ios-notifications" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.containerContent}>
         <ListEvent navigation={navigation} />
         <ListOrganization navigation={navigation} />
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -242,6 +254,21 @@ export default function HomeScreen() {
           headerBackTitle: "Retour",
         }}
       />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          title: "Notification",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerBackTitle: "Retour",
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -257,13 +284,29 @@ const styles = StyleSheet.create({
     height: 120,
     // borderBottomColor: Colors.tintColor,
     // borderBottomWidth: 0.3,
-    flexDirection: "column",
+    flexDirection: "row",
   },
   buttonHeader: {
     marginTop: 22,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
+  },
+  notificationCart: {
+    height: 40,
+    width: "100%",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingRight: 10,
+  },
+  notification: {
+    height: "100%",
+    width: 40,
+    borderColor: Colors.GREEN,
+    borderWidth: 1,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
   profile: {
     marginRight: 10,
@@ -330,7 +373,7 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.5,
     // shadowRadius: 3,
   },
-  CardScrollView: {
-    height: 200,
-  },
+  // CardScrollView: {
+  //   height: 200,
+  // },
 });

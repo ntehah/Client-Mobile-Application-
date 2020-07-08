@@ -121,7 +121,7 @@ function BenevolatInscription(props) {
           ColorIcon={ValidNomEtPrenom ? Colors.BLACK : Colors.TORCH_RED}
           onChangeText={(text) => {
             setNomEtPrenom(text);
-            if (text.length < 8) setValidNomEtPrenom(false);
+            if (text.length < 5) setValidNomEtPrenom(false);
             else {
               setValidNomEtPrenom(true);
             }
@@ -284,7 +284,7 @@ function AssociationInscription(props) {
           ColorIcon={ValidNomEtPrenom ? Colors.BLACK : Colors.TORCH_RED}
           onChangeText={(text) => {
             setNomEtPrenom(text);
-            if (text.length < 8) setValidNomEtPrenom(false);
+            if (text.length < 3) setValidNomEtPrenom(false);
             else {
               setValidNomEtPrenom(true);
             }

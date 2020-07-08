@@ -1,15 +1,15 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Colors from "../constants/Colors";
+import { Image, StyleSheet, Text, View,TouchableOpacity } from "react-native";
+import Colors from "../../constants/Colors";
 import { AntDesign } from "@expo/vector-icons";
-export default function TacheCard(props) {
+export default function TaskCard(props) {
   modifier = () => {
-    props.navigation.navigate("ModifierTask", {
-      titre1: props.titre,
-      description1: props.description,
-      date1: props.date,
-      id: props.id,
-      state: props.state,
+    props.navigation.navigate("ModifierTask",{
+      titre1:props.titre,
+      description1:props.description,
+      date1:props.date,
+      id:props.id,
+      state:props.state
     });
   };
   return (
@@ -28,7 +28,9 @@ export default function TacheCard(props) {
       </View>
 
       <View style={styles.description}>
-        <Text style={styles.textDescription}>{props.description}</Text>
+        <Text style={styles.textDescription}>
+        {props.description}
+        </Text>
       </View>
       <View style={styles.evenementView}>
         <Text style={styles.textEvent}>Evénement: </Text>
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderWidth: 1,
-    borderColor: Colors.BLUE,
+    borderColor:Colors.BLUE,
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flexDirection: "row",
     height: 50,
-    marginTop: 10,
+    marginTop:10,
     paddingBottom: 10,
     alignItems: "center",
     backgroundColor: Colors.WHITE,

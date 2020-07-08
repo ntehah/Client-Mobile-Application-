@@ -18,6 +18,7 @@ export default function Welecome({ navigation }) {
   const [state1, authContext] = React.useContext(AuthContext);
 
   const AjouterVolunteer = async () => {
+    console.log(state.Qualification)
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
     fetch(UrlServer + "volunteer/ajouter", {
       method: "POST",
@@ -41,11 +42,10 @@ export default function Welecome({ navigation }) {
       .then((data) => {
         console.log(data);
       })
-      .done();
+      .done(() => authContext.loggedIn());
   };
   const ContinueHandler = () => {
     AjouterVolunteer();
-    authContext.loggedIn();
   };
   return (
     <View style={Styles.container}>

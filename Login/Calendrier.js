@@ -79,7 +79,7 @@ export default function Calendrier({ navigation }) {
   return (
     <View>
       <View style={InfoStyles.TitleView}>
-        <Text style={InfoStyles.textTitle}>Availability</Text>
+        <Text style={InfoStyles.textTitle}>Emploi du Temps</Text>
       </View>
       <View style={InfoStyles.Availability}>
         <View style={InfoStyles.isAvailable}>
@@ -257,6 +257,7 @@ const InfoStyles = StyleSheet.create({
   container: {},
   TitleView: {
     padding: 8,
+    paddingBottom:15,
   },
   row: {
     padding: 8,
