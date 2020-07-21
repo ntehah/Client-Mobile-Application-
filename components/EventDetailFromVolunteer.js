@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Image, TouchableOpacity ,ActivityIndicator,AsyncStorage} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
+import { UrlServer } from "../constants/UrlServer";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function EventDetailFromVolunteer({ route, navigation,props }) {
+export default function EventDetailFromVolunteer({ route, navigation, props }) {
   const {
     address,
     date,
@@ -23,96 +17,145 @@ export default function EventDetailFromVolunteer({ route, navigation,props }) {
     organizationName,
     photoEvent,
     photoOrganization,
+    id
   } = route.params;
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+  participe = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "evenement/participe", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: EMAIL,
+        id: id,
+      }),
+    }).done();
+  };
+  Handleparticiper = () => {
+    // participe();
+  };
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.imageView}>
-          <Image source={{ uri: photoEvent }} style={styles.image} />
+      {loading ? (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 200,
+          }}
+        >
+          <ActivityIndicator size="large" color={Colors.BLACK} />
         </View>
-        <View style={styles.TitleView}>
-          <Text style={styles.titleText}>{titre}</Text>
-        </View>
+      ) : (
+        <View>
+          <ScrollView>
+            <View style={styles.imageView}>
+              <Image source={{ uri: photoEvent }} style={styles.image} />
+            </View>
+            <View style={styles.TitleView}>
+              <Text style={styles.titleText}>{titre}</Text>
+            </View>
 
-        <View style={styles.Organization}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image
-              source={{
-                uri: photoOrganization,
-              }}
-              style={styles.OrganizationLogo}
-            />
-            <Text style={styles.OrganizationText}>{organizationName}</Text>
-          </View>
-          {/* <View>
-            <TouchableOpacity style={styles.ButtonFollow}>
+            <View style={styles.Organization}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={{
+                    uri: photoOrganization,
+                  }}
+                  style={styles.OrganizationLogo}
+                />
+                <Text style={styles.OrganizationText}>{organizationName}</Text>
+              </View>
+            </View>
+            <View style={styles.EventDate}>
+              <MaterialIcons name="event" size={25} color={Colors.tintColor} />
+              <View style={{ paddingLeft: 15 }}>
+                <Text
+                  style={{
+                    paddingBottom: 10,
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {date}
+                </Text>
+                <Text>
+                  {debut} - {fin}{" "}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.EventDate}>
+              <MaterialIcons
+                name="location-on"
+                size={25}
+                color={Colors.tintColor}
+              />
+              <View style={{ paddingLeft: 15 }}>
+                <Text
+                  style={{
+                    paddingBottom: 10,
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {city}
+                </Text>
+                <Text>{address}</Text>
+              </View>
+            </View>
+            <View style={styles.DescriptionView}>
+              <Text
+                style={{ paddingBottom: 10, fontSize: 17, fontWeight: "bold" }}
+              >
+                Description
+              </Text>
+              <Text
+                style={{
+                  paddingBottom: 10,
+                  fontSize: 15,
+                  fontWeight: "normal",
+                }}
+              >
+                {description}
+              </Text>
+            </View>
+            <View style={{height:150,}}></View>
+          </ScrollView>
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.ButtonFooter}>
               <Text
                 style={{
                   fontSize: 16,
                   fontWeight: "bold",
-                  color: Colors.DODGER_BLUE,
+                  color: Colors.WHITE,
                 }}
+                onPress={Handleparticiper}
               >
-                Abonné
+                Participer
               </Text>
             </TouchableOpacity>
-          </View> */}
-        </View>
-        <View style={styles.EventDate}>
-          <MaterialIcons name="event" size={25} color={Colors.tintColor} />
-          <View style={{ paddingLeft: 15 }}>
-            <Text
-              style={{ paddingBottom: 10, fontSize: 16, fontWeight: "bold" }}
-            >
-              {date}
-            </Text>
-            <Text>
-              {debut} - {fin}{" "}
-            </Text>
+            <TouchableOpacity style={styles.ButtonFooter}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: Colors.WHITE,
+                }}
+              >
+                Organisé
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.EventDate}>
-          <MaterialIcons
-            name="location-on"
-            size={25}
-            color={Colors.tintColor}
-          />
-          <View style={{ paddingLeft: 15 }}>
-            <Text
-              style={{ paddingBottom: 10, fontSize: 16, fontWeight: "bold" }}
-            >
-              {city}
-            </Text>
-            <Text>{address}</Text>
-          </View>
-        </View>
-        <View style={styles.DescriptionView}>
-          <Text style={{ paddingBottom: 10, fontSize: 17, fontWeight: "bold" }}>
-            Description
-          </Text>
-          <Text
-            style={{ paddingBottom: 10, fontSize: 15, fontWeight: "normal" }}
-          >
-            {description}
-          </Text>
-        </View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.ButtonFooter}>
-          <Text
-            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
-          >
-            Participer
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.ButtonFooter}>
-          <Text
-            style={{ fontSize: 16, fontWeight: "bold", color: Colors.WHITE }}
-          >
-            Organisé
-          </Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 }
@@ -121,7 +164,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.WHITE,
-    paddingBottom: 55,
   },
   imageView: {
     width: "100%",

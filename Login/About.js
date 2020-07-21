@@ -17,11 +17,13 @@ import Constants from "expo-constants";
 import FormTextInput from "../components/FormTextInput";
 import { OrganizationInscription } from "../Services/OrganizationInscription";
 import { UrlServer } from "../constants/UrlServer";
+import { AuthContext } from "../Services/AuthContext";
 
 export default function About({ navigation, route }) {
   const [photo, setphoto] = useState(null);
   const [description, setDescription] = useState("");
   const { email,name } = route.params;
+  const [state1, authContext] = React.useContext(AuthContext);
 
   const [state, Context] = useContext(OrganizationInscription);
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function About({ navigation, route }) {
       .then((response) => response.text())
       .then((data) => {
       })
-      .done();
+      .done(() => authContext.loggedIn());
   };
   getPermissionAsync = async () => {
     if (Constants.platform.ios) {

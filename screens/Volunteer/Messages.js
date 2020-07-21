@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Colors from "../../constants/Colors";
 import { UrlServer } from "../../constants/UrlServer";
-import Conversation from "./Conversation";
+import Conversation from "../../components/Conversation";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ListItem } from "react-native-elements";

@@ -50,6 +50,8 @@ function ListOrganization(props) {
       name: org.name,
       description: org.description,
       email: org.email,
+      abo: org.nbMembre,
+      eve: org.nbEvents,
     });
   }
   return (
@@ -70,7 +72,7 @@ function ListOrganization(props) {
           <View style={styles.textView}>
             <Text style={styles.textLeft}>Association</Text>
           </View>
-          <ScrollView horizontal={true} style={styles.CardScrollView}>
+          <ScrollView horizontal={true}>
             {DataOr.length ? (
               <View>
                 {DataOr.map((org, index) => {
@@ -85,9 +87,7 @@ function ListOrganization(props) {
                 })}
               </View>
             ) : (
-              <View>
-                <Text>Non Organization</Text>
-              </View>
+              <View></View>
             )}
           </ScrollView>
         </View>
@@ -106,13 +106,18 @@ function ListEvent(props) {
   }, []);
   GetEvents = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+
     fetch(UrlServer + "evenement/getallevent", {
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: "Bearer " + DEMO_TOKEN,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -124,6 +129,7 @@ function ListEvent(props) {
   function handleEvent() {
     props.navigation.navigate("EventDetaitFromVolunteer", {
       address: Eve.address,
+      id:Eve.id,
       date: Eve.date,
       titre: Eve.titre,
       debut: Eve.debut,
@@ -140,10 +146,9 @@ function ListEvent(props) {
       {loading ? (
         <View
           style={{
-            flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 300,
+            marginTop: 200,
           }}
         >
           <ActivityIndicator size="large" color={Colors.BLACK} />
@@ -153,7 +158,7 @@ function ListEvent(props) {
           <View style={styles.textView}>
             <Text style={styles.textLeft}>Evènement</Text>
           </View>
-          <ScrollView horizontal={true} style={styles.CardScrollView}>
+          <ScrollView contentContainerStyle={{ paddingLeft:25, }}>
             {DataEv.length ? (
               <View>
                 {DataEv.map((eve, index) => {
@@ -179,9 +184,7 @@ function ListEvent(props) {
                 })}
               </View>
             ) : (
-              <View>
-                <Text>Non Organization</Text>
-              </View>
+              <View></View>
             )}
           </ScrollView>
         </View>

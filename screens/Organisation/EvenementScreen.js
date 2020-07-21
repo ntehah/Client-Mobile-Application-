@@ -28,13 +28,17 @@ function ListEvent(props) {
   }, []);
   GetEvents = async () => {
     var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
-    fetch(UrlServer + "evenement/getallevent", {
-      method: "GET",
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "evenement/getall", {
+      method: "POST",
       headers: {
         Authorization: "Bearer " + DEMO_TOKEN,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email: EMAIL,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {

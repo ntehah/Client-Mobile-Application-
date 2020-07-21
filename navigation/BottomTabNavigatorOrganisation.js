@@ -4,7 +4,7 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/Organisation/HomeScreen";
 import MenuScreen from "../screens/Organisation/MenuScreen"
 import Community from "../screens/Organisation/Community"
-import Forum from '../screens/Organisation/Forum'
+import Messages from '../screens/Organisation/Messages'
 import Profile from "../screens/Organisation/ProfilOrganization"
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
@@ -44,7 +44,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Messages"
-        component={Forum}
+        component={Messages}
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: ({ focused }) => (

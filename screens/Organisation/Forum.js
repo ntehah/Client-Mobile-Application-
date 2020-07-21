@@ -1,75 +1,161 @@
 import React from "react";
-import { View, Text, AsyncStorage } from "react-native";
+import {
+  View,
+  Text,
+  AsyncStorage,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import SocketIOClient from "socket.io-client";
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
+import { Ionicons } from "@expo/vector-icons";
 import { UrlServer } from "../../constants/UrlServer";
-export default class Forum extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: [],
-      user: null,
-    };
+export default function Forum({ route, navigation }) {
+  const [messages, setMessages] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  React.useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: "Hello developer",
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: "React Native",
+          avatar: "https://placeimg.com/140/140/any",
+        },
+      },
+    ]);
+  }, []);
 
-    this.determineUser = this.determineUser.bind(this);
-    this.onReceivedMessage = this.onReceivedMessage.bind(this);
-    this.onSend = this.onSend.bind(this);
-    this._storeMessages = this._storeMessages.bind(this);
+  const onSend = React.useCallback((messages = []) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages),
+    );
+  }, []);
+  const getConversation = async () => {
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "message/getconversation", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: EMAIL,
+        to: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages([]);
 
-    this.socket = SocketIOClient(UrlServer);
-    this.socket.on("message", this.onReceivedMessage);
-    this.determineUser();
-  }
-
-  /**
-   * When a user joins the chatroom, check if they are an existing user.
-   * If they aren't, then ask the server for a userId.
-   * Set the userId to the component's state.
-   */
-  determineUser() {
-    AsyncStorage.getItem("email")
-      .then((userEmail) => {
-        // If there isn't a stored userId, then fetch one from the server.
-        this.socket.emit("userJoined", userEmail);
-        this.setState({ userEmail });
+        for (var i in data) {
+          var item = data[i];
+          console.log(item.time);
+          console.log(message);
+          setMessages((messages) => [
+            ...messages,
+            {
+              _id: item.id,
+              text: item.content,
+              createdAt: new Date(),
+              user: { _id: id, name: name, avatar: photo },
+            },
+          ]);
+        }
       })
-      .catch((e) => alert(e));
-  }
-
-  // Event listeners
-  /**
-   * When the server sends a message to this.
-   */
-  onReceivedMessage(messages) {
-    this._storeMessages(messages);
-  }
-
-  /**
-   * When a message is sent, send the message to the server
-   * and store it in this component's state.
-   */
-  onSend(messages = []) {
-    this.socket.emit("message", messages[0]);
-    this._storeMessages(messages);
-  }
-
-  render() {
-    var user = this.state.userEmail
+      .done();
+  };
+  const save = async () => {
+    console.log(message);
+    var DEMO_TOKEN = await AsyncStorage.getItem("id_token");
+    var EMAIL = await AsyncStorage.getItem("email");
+    fetch(UrlServer + "message/save", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + DEMO_TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: EMAIL,
+        to: email,
+        id_room: null,
+        content: message,
+      }),
+    }).done();
+  };
+  function renderBubble(props) {
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={this.onSend}
-        user={user}
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "#6646ee",
+          },
+        }}
+        textStyle={{
+          right: {
+            color: "#fff",
+          },
+        }}
       />
     );
   }
-
-  // Helper functions
-  _storeMessages(messages) {
-    this.setState((previousState) => {
-      return {
-        messages: GiftedChat.append(previousState.messages, messages),
-      };
-    });
+  function renderSend(props) {
+    return (
+      <Send {...props}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 300,
+          }}
+        >
+          <Ionicons name="ios-send" size={32} color="#6646ee" />
+        </View>
+      </Send>
+    );
   }
+  function renderLoading() {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 300,
+        }}
+      >
+        <ActivityIndicator size="large" color="#6646ee" />
+      </View>
+    );
+  }
+  // var user = { _id: id, name: name, avatar: photo };
+  return (
+    <GiftedChat
+      messages={messages}
+      onSend={onSend}
+      onInputTextChanged={(text) => setMessage(text)}
+      user={{
+        _id: 1,
+      }}
+      renderBubble={renderBubble}
+      renderSend={renderSend}
+      renderLoading={renderLoading}
+      placeholder="Tapez votre message ici..."
+      showUserAvatar
+      alwaysShowSend
+    />
+  );
 }
+const styles = StyleSheet.create({
+  sendingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

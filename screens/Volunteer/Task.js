@@ -96,7 +96,7 @@ function TaskList({ navigation }) {
                     marginTop: 300,
                   }}
                 >
-                  <Text>tache mahoum 5alguin</Text>
+                  <Text>il ya pas encore des taches</Text>
                 </View>
               )}
             </View>

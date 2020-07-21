@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import Activities from "./Activities"
 import Colors from "../../constants/Colors";
 import { AuthContext } from "../../Services/AuthContext";
 import { UrlServer } from "../../constants/UrlServer";
@@ -337,17 +337,15 @@ const QualificationStyles = StyleSheet.create({
 function Activite() {
   return (
     <View style={ActiviteStyles.container}>
-      <Text style={ActiviteStyles.text}>Activite</Text>
+      <Activities/>
     </View>
   );
 }
 const ActiviteStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.warningBackground,
   },
   text: {
-    fontSize: 100,
   },
 });
 

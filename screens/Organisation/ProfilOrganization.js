@@ -14,6 +14,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import ContactDetail from "../../components/ContactDetail";
 import { UrlServer } from "../../constants/UrlServer";
 import { createStackNavigator } from "@react-navigation/stack";
+import ModifierProfile from "./ModifierProfile";
 function Events() {
   return (
     <View>
@@ -199,9 +200,9 @@ class ProfilOrganization extends React.Component {
       nbEvents: 0,
       description: "",
       loading: true,
+      id: 0,
     };
   }
-
   componentDidMount() {
     this.getProfile();
   }
@@ -227,11 +228,48 @@ class ProfilOrganization extends React.Component {
           nbMembre: data.nbMembre,
           nbEvents: data.nbEvents,
           description: data.description,
+          id: data.id,
           loading: false,
         });
       })
 
-      .done();
+      .done(() => {
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingRight: 8,
+              }}
+              onPress={() => {
+                this.props.navigation.navigate("ModifierProfile", {
+                  email1: EMAIL,
+                  name1: this.state.name,
+                  description1: this.state.description,
+                  photo1: this.state.image,
+                  id: this.state.id,
+                });
+              }}
+            >
+              <MaterialCommunityIcons
+                name="account-edit"
+                size={26}
+                color={Colors.DODGER_BLUE}
+              />
+              <Text
+                style={{
+                  color: Colors.DODGER_BLUE,
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                Modifier
+              </Text>
+            </TouchableOpacity>
+          ),
+        });
+      });
   };
   render() {
     return (
@@ -359,6 +397,21 @@ export default function Profile() {
         component={ContactDetail}
         options={{
           title: "Profile Bénévole",
+          headerStyle: {
+            backgroundColor: Colors.WHITE,
+          },
+          headerTintColor: Colors.tintColor,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerBackTitle: "Retour",
+        }}
+      />
+      <Stack.Screen
+        name="ModifierProfile"
+        component={ModifierProfile}
+        options={{
+          title: "Modifier Profile",
           headerStyle: {
             backgroundColor: Colors.WHITE,
           },

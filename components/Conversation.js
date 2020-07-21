@@ -3,8 +3,8 @@ import { View, Text, AsyncStorage, StyleSheet ,ActivityIndicator} from "react-na
 import SocketIOClient from "socket.io-client";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import { Ionicons } from "@expo/vector-icons";
-import { UrlServer } from "../../constants/UrlServer";
-import Colors from "../../constants/Colors";
+import { UrlServer } from "../constants/UrlServer";
+import Colors from "../constants/Colors";
 import { BaseRouter } from "@react-navigation/native";
 export default function Conversation({ route, navigation }) {
   const { id, name, photo, email } = route.params;
